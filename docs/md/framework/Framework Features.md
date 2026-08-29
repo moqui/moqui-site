@@ -16,395 +16,165 @@ Moqui Framework helps you build applications quickly and scale complex applicati
 
 **True 3-Tier Architecture:** Many modern frameworks have tools for database interaction and user interaction but you have to roll your own logic layer. Moqui has a strongly defined and feature rich logic layer built around service-oriented principles. This makes it easy to build a service library for internal application use, and automatically expose services externally as needed.
 
-## Flexible deployment
+## Deployment and Runtime
 
-- Tested to run in Java on Windows, macOS, Linux, etc (Java 21 required)
-- Multi-instance management (separate app server in container or VM, separate databases)
-- Database
-  - Uses embedded H2 database by default
-  - Comes with configuration for H2, Derby, PostgreSQL, MySQL, HSQL, Oracle, DB2, and SQL Server
-  - Support for other databases usually with configuration only
-- Other data sources
-  - Plug in NoSQL and other data sources
-  - OrientDB graph and document database available through the optional `moqui-orientdb` component
-- Application Server
-  - Uses the [Bitronix](https://github.com/moqui/bitronix) transaction manager fork for JTA and connection pooling
-  - JTA factory interface to plug in other transaction managers without a full Jakarta EE container
-  - Support for JTA transaction manager and XA-aware connection pool from application server through JNDI
-  - Executable WAR file for command-line data loading and embedded Jetty servlet container (Jetty 12 / Jakarta EE)
-  - The same WAR file can be dropped in a servlet container like Tomcat or Jetty, or a more general app server like JBoss or Weblogic
-- Custom deployment (embedded, etc)
-  - Use the supplied MoquiServlet, or write your own based on that example, or use something other than a servlet for non-web apps
-  - Everything runs from an instance of the ExecutionContextFactory, so it is easy to include in custom apps or deploy through OSGi, Spring, etc
-  - Specify runtime directory path and conf file location using MoquiInit.properties file or System properties (java -D arguments)
-- Project Build
-  - Build, test, and deploy with Gradle
-  - Directory structure consistent with de-facto standards from Maven/Gradle/etc
-  - Deploy and WAR tools also in Ant build file for convenience
+- Java 21 on Windows, macOS, Linux, and other JVM platforms
+- Executable WAR file for command-line data loading and an embedded Jetty 12 servlet container (Jakarta EE)
+- The same WAR file can be dropped in a servlet container such as Tomcat or Jetty
+- Runtime directory separate from the framework: your applications, add-ons, and configuration
+- Runtime Moqui Conf XML is merged over `MoquiDefaultConf.xml`; sample conf for development, staging, and production
+- Default webroot with login, menus, and three UI wrappers (see User Interface below)
+- Embedded H2 database by default; configuration included for PostgreSQL, MySQL/MariaDB, Oracle, DB2, and SQL Server (other databases usually with configuration only)
+- JTA transactions and connection pooling with the [Bitronix](https://github.com/moqui/bitronix) fork; plug in another transaction manager, or use the application server's through JNDI
+- Build, test, and deploy with Gradle
+- Multi-instance: one container or VM and one database per instance, with Docker automation
+- Clustering through the optional `moqui-hazelcast` component: distributed entity cache invalidation, background service executor, notification topic, JCache, and servlet session replication
 
-## Clustering Support
+See [Run and Deploy](/docs/framework/Run+and+Deploy) and [Multi-instance with Docker](/docs/framework/Multi-instance+with+Docker).
 
-- Various interfaces to plug in distributed system tools
-- Default implementation using Hazelcast (in moqui-hazelcast tool component) with single configuration for all cluster coordination made easy with secure auto-discovery and cluster joining
-- Distributed Entity (database) Cache Invalidation
-- Distributed background service executor
-- Distributed notification topic
-- Distributed cache (JCache)
-- Web (Servlet) session replication
+## Components
 
-## Default Runtime
+A component is the unit of an application or add-on. Convention over configuration: put artifacts in the expected directories and the framework loads them.
 
-- Moqui is designed to have a runtime directory that is separate from the framework and that makes up your applications and add-ons
-- To help you get started Moqui comes with a sample runtime directory
-- Sample configurations for development, staging, and production
-- Configurable "root" screen with sample HTML wrappers, login, menus, etc
-- Separate screens under the root screen: undecorated subscreens, plus `/qapps` (Quasar, default), `/vapps` (Vue + Bootstrap), and `/apps` (server-rendered HTML) wrappers with header/footer/menus
-- Various configuration options and examples for flexible deployment and overriding templates for screen macros, xml-actions, etc
-- Easy to include the runtime directory inside the deployed war file
-- Support <component>/lib and runtime/lib jar loading in a cached and extended/extensible ClassLoader
+- Directories: `entity`, `service`, `screen`, `data`, `script`, `lib`, `classes` (plus optional `screen-extend`)
+- Optional `component.xml` (name, version, dependencies), `MoquiConf.xml` (merged at startup), and `build.gradle`
+- Install by dropping the directory in `runtime/component`, or with `./gradlew getComponent -Pcomponent=...`
+- Mount screens as subscreens of an existing screen (in the screen XML, in `MoquiConf.xml`, or with a `SubscreensItem` record)
+- `extend-entity` adds fields and relationships to an entity defined in another component
+- `screen-extend` adds transitions, actions, and widgets to an existing screen by matching path, without forking the original file
 
-## Technical Features
+See [Tool and Config Overview](/docs/framework/Tool+and+Config+Overview#extensions-and-add-ons) and [XML Screen](/docs/framework/User+Interface/XML+Screen#screen-extend).
 
-- Uses Groovy for scripting and FreeMarker for templates, plus other options and easy plug-in for any you want
-- Uses JTA transaction management and JDBC connection pool from JNDI, or internally managed with the Bitronix fork, or plug in any other
-- WebSocket support through the Jakarta WebSocket API or Moqui notification framework
-- Manage incoming and outgoing email
-- Network push printing through CUPS print servers (optional `moqui-cups` component)
-- Flexible resource access from files, JCR repository, and many others
-- JCR 2.0 (JSR-283) based content and artifact management for Apache Jackrabbit or other JCR implementations
-- Implicit internationalization and easy database-driven localization
-- Cache management for framework and application resources with pluggable local or distributed `javax.cache` (JSR-107) implementations; the default is MCache
-- Write-through per-transaction cache available for complex services to minimize database round-trips
-- Built-in profiling tools for framework artifacts including screens, services, and entities
-- Multi-instance management (one container or VM and one database per instance) with automation support for Docker, MySQL, etc
-- Logging using SLF4J
-- Built with Gradle, plus run and deploy tools included for Gradle and Ant
-- Spock and JUnit for unit and integration (service call and screen render) testing
+## API
 
-## Developer Friendly API
+The **ExecutionContext** (`ec`) is created for each web request, service call, or other execution. It holds the context (variable space) as a stack of maps, and is the handle to every framework facade:
 
-- Execution Context with information about user and application context, and access to tools
-- Execution Context Factory used to get instances of the ExecutionContext and control the life cycle of the framework
-- Facades for easy access to all framework functionality
-  - WebFacade for access to Servlet objects, parameter maps, etc
-  - UserFacade for current user data, login/logout/authentication, etc
-  - MessageFacade for general and error message management
-  - L10nFacade for localization of text
-  - Resource Facade for access to classpath, file, JCR, etc resources, and for running scripts and rendering templates (with caching for all)
-  - LoggerFacade for general logging, especially for non-class code
-  - CacheFacade for general caching, backed by MCache / JCache (`javax.cache`)
-  - TransactionFacade for general JTA-type operations and tracking what is currently going on with transactions, where errors originated, etc
-  - ScreenFacade for rendering screens using the ScreenRender interface
-  - Service Facade for running local and remote services by definition
-  - Entity Facade for database access
+- WebFacade — servlet objects, parameters, JSON request/response helpers (null when not in a web request)
+- UserFacade — current user, login/logout, preferences, locale/time zone/currency
+- MessageFacade — general and error messages, validation errors
+- ArtifactExecutionFacade — artifact stack and history; authorization and hit tracking
+- L10nFacade — localize text; parse and format numbers and dates
+- ResourceFacade — resources by location (`classpath://`, `component://`, `http(s)`, `file`, `content://`, and others); run scripts and render templates
+- LoggerFacade — logging for non-class code
+- CacheFacade — `javax.cache` (JSR-107); default implementation is MCache
+- TransactionFacade — JTA-style begin/commit/rollback and transaction tracking
+- EntityFacade — relational (and pluggable) data access
+- ElasticFacade (`ec.elastic`) — OpenSearch / ElasticSearch 7.x HTTP client
+- ServiceFacade — local and remote services
+- ScreenFacade — render screens through ScreenRender
+
+Also: `ec.getTool()` for configured ToolFactory instances, `ec.makeNotificationMessage()` for notifications, and `ec.runAsync()` for a lightweight ExecutionContext-aware executor.
+
+See [Tool and Config Overview](/docs/framework/Tool+and+Config+Overview) and the [API Javadoc](/javadoc/).
+
+## Data
+
+- Define entities in XML and use them; no generated persistence code
+- Java API (`EntityValue`, `EntityFind`) and XML Actions for create, update, delete, find, count, and related operations
+- Entity cache with automatic clearing; optional write-through per-transaction cache to cut database round-trips
+- Automatic schema work at runtime: create missing tables, columns, indexes, and foreign keys
+- Import and export XML, CSV, and JSON (API, Tools screens, and `java -jar moqui.war load`); data snapshots for full-database move
+- Entity ECA rules on data changes
+- View entities (including database-driven views); `extend-entity` from other components
+- Field audit logging and field encryption
+- Primary and secondary sequenced IDs
+- Data Documents: nested Map/JSON documents from database data, configured in records
+- Data Feed: generate documents on change and send them to services (search indexing, notifications, and so on)
+- Data Search through ElasticFacade and OpenSearch (ElasticSearch 7.x compatible)
+- Time-based Entity Sync between Moqui systems
+- Framework seed structures (not Mantle): enumerations and statuses with transitions, units of measure with conversion (including currency), geographic boundaries and points, time periods
+- Plug in other datasources; OrientDB is the optional `moqui-orientdb` component
+
+See [Data and Resources](/docs/framework/Data+and+Resources).
+
+## Logic
+
+- XML service definitions: typed parameters, conversion, validation; HTML allow-list per parameter (`none` / `safe` / `any`)
+- Call services synchronously, asynchronously, scheduled (`ServiceJob` with cron), or on transaction commit/rollback
+- Implicit entity-auto services for create, update, delete, and store (create or update)
+- Service ECA rules before/after validation, auth, run, commit, or rollback
+- Implementations in XML Actions, Groovy, Java methods, or a runner you plug in
+- XML Actions compile to Groovy for runtime performance; embeddable in service and screen definitions
+- Email: send from an EmailTemplate; receive with Email ECA rules against an EmailServer
+
+See [Logic and Services](/docs/framework/Logic+and+Services).
+
+## User Interface
+
+- XML Screens: hierarchical subscreens (directory, XML, conf, or database), automatic menus, virtual hosts by hostname
+- Transitions for input processing and conditional response (another screen, URL, or none); restriction by HTTP method
+- Standalone screens (no parent decoration) for dialogs, CSV/PDF, and similar
+- form-single and form-list; automatic fields from entity and service definitions, with client and server validation from the service
+- Database form extensions (DbForm) for all users or a user group
+- Three web wrappers over the same application screen tree:
+  - `/qapps` — default; Quasar + Vue (`qvt` / `qjs` / `qvue`)
+  - `/vapps` — Vue + Bootstrap (`vuet` / `js` / `vue`)
+  - `/apps` — server-rendered HTML
+- Hybrid XML widgets rendered as Vue templates; optional 100% client-rendered `.qvue` / `.vue` screens
+- Other render modes: CSV, XML, plain text, XSL-FO (PDF and related through the optional `moqui-fop` component)
+- Notifications: user- and topic-based publish/subscribe, optional persist and email, WebSocket at `/notws`
+- Localization of labels, titles, messages, and entity fields (base-language text is the lookup key)
+- WebFacade for parameters and JSON; webapp events (first-hit-in-visit, before/after request, login/logout, startup/shutdown)
+
+See [User Interface](/docs/framework/User+Interface).
 
 ## Security
 
-- Comprehensive security with declarative authorization
-  - Settings in the database, separate from implementation artifacts
-  - Define run-time inheritable permissions for any artifact in the system
-  - Both record level and implementation artifact level security
-- Protection from XSS and XSRF threats (uses JSoup HTML parser/cleaner)
-- Incorporates Apache Shiro 2, which is used for all authentication in Moqui, by default through the MoquiShiroRealm
-- Built-in second-factor authentication (TOTP, email, SMS, backup codes); optional SSO via the `moqui-sso` component (OIDC, OAuth, SAML)
-- Designed to run behind a WAF and reverse proxy; artifact tarpit and login lockout are application controls, not a WAF
-- Other realms such as for LDAP or Active Directory can be configured with `shiro.ini`
-- Permission model and checking for simple/flat permissions (to be used as an alternative to artifact authz)
-- Runs permission and role (UserGroup) checks through Shiro realm
-- User account and flexible password constraints and management
-- XML Screens can require authentication and/or encryption
-- XSRF protection by requiring encryption of input in body parameters
-- ESAPI web input canonicalization/filtering to protect against XSS attacks
-- Artifact stack and history tracking for each ExecutionContext instance (single web request, service call, etc)
-- Tracked artifacts currently include screen, transition, service, entity
-- Artifact Tarpitting based on configuration in db (see example ArtifactTarpit in ExampleSecurityData.xml)
-- Artifact Authorization based on configuration in db
-  - Persists data about authz failures (in ArtifactAuthzFailure entity)
-  - Support authorization checks through Shiro realm
-  - Disable authz on data loading; command line and assumed to be safe
-  - Handle direct service/entity calls through ArtifactGroupMember with pattern
-  - For entity-implicit service calls just look for entity authz
-  - Support authorization on subscreens even if no authz on parent screens, ie authz for EditExample even though not for ExampleApp or any other screens in that app
-  - Record-level authorization (ArtifactAuthzRecord/Cond)
-  - Authorization with a service (ArtifactAuthzService)
+Moqui handles **application** security. It is designed to run **behind** a WAF and reverse proxy; it is not a WAF.
 
-## Performance Monitoring
+- Apache Shiro 2 with MoquiShiroRealm (UserAccount); other realms such as LDAP or Active Directory in `shiro.ini`
+- Password constraints and hashing, login failure lockout, password-reset email
+- Built-in second-factor authentication (TOTP, email, SMS, backup codes)
+- Optional SSO through the `moqui-sso` component (OIDC, OAuth, SAML)
+- Login/API keys (`api_key` / `login_key` header or body) for API clients
+- CSRF: `moquiSessionToken` form field or `X-CSRF-Token` header (XML Forms and the SPA shells send this automatically)
+- Default response headers (CSP `frame-ancestors`, X-Frame-Options, HSTS on secure screens, and others)
+- XSS protection: input canonicalization, JSoup cleaning, `allow-html` on service parameters
+- Simple permissions (`ec.user.hasPermission`) and UserGroup (including automatic ALL_USERS)
+- Artifact-aware authorization in the database: inheritable allow/deny on screens, transitions, services, and entities
+- Record-level authorization and entity filter sets (automatic query conditions)
+- Artifact tarpit: per-user, per-artifact velocity limits (business-risk mitigation, not a WAF)
+- Screens can require authentication and/or HTTPS
 
-- ArtifactHit and ArtifactHitBin tracking for screen, screen-content, transition, service and entity (bin only)
-- Artifact hit data includes time to run, size of output (when available), date/time of hit, visit (session) the hit was in, etc
-- Skip artifact stats tracking based on a conditional expression
-- Lightweight "status" screen that can be used to see if server is running
-- Built-in profiling for high level artifacts
-  - Monitors performance of screens, transitions, services, and entities
-  - See a full call tree for the scope of an ExecutionContext (web request, independent service call, etc)
-  - See a consolidated report with counts and stats for multiple runs of each artifact in a tree by use
-  - See hot spots by own time, own plus child time, etc
+See [Security](/docs/framework/Security), [Single Sign-On](/docs/framework/Single+Sign-On), and [Run and Deploy](/docs/framework/Run+and+Deploy) (Production security).
 
-## Resources
+## Integration
 
-- Provides access to resources through various protocols, and extensible to add support for more
-- Simple API for running scripts and rendering templates
-- Caching for all resources, and for compiled scripts and templates
-- Interfaces you can implement for:
-  - resource reference and access (ResourceReference)
-  - template rendering (TemplateRenderer)
-  - script running (ScriptRunner)
-- Resource references supported OOTB include:
-  - Java Classpath (classpath://)
-  - Moqui Component (component://)
-  - JCR Content (content://) - JCR 2.0 (JSR-283) based content and artifact management with Apache JackRabbit
-  - Java URL (http, https, file, ftp, jar)
-- Templates supported OOTB include:
-  - FreeMarker (.ftl) templates (https://freemarker.apache.org)
-  - GString (.gstring) templates (https://groovy-lang.org/templating.html)
-  - Wiki markup via the optional `moqui-wikitext` component, including:
-    - Confluence (.cwiki, .confluence)
-    - MediaWiki (.mediawiki)
-    - Textile (.textile)
-    - TracWiki (.tracwiki)
-    - TWiki (.twiki)
-- Scripting languages supported OOTB include:
-  - Groovy script (.groovy)
-  - JavaScript (.js) via `javax.script` if a javascript engine is on the classpath
-  - Moqui XML Actions (.xml)
-    - Converts to Groovy code then compiles for good runtime performance
-    - Embeddable in service definitions, screens, etc
+- Service REST API: `*.rest.xml` resource trees at `/rest/s1/...`; generated Swagger
+- Entity REST API at `/rest/e1/...` and master-definition REST at `/rest/m1/...` (authc and authz still apply)
+- JSON-RPC 2.0 at `/rpc/json` for services with `allow-remote=true`; remote-json-rpc and remote-rest service runners for outgoing calls
+- HTTP-method-sensitive screen transitions as REST wrappers around internal services
+- System Messages: incoming and outgoing message queue with retry, history, HTTP receive, and configurable produce/send/process services
+- Optional transport and integration components: Camel, SFTP, AWS (see below)
 
-## Localization
+See [System Interfaces](/docs/framework/System+Interfaces) and [Web Service](/docs/framework/System+Interfaces/Web+Service).
 
-- Base language values used as the key for localized variation lookup in database
-- Localized messages/labels and entity fields
-- Automatic internationalization of literal and expanded strings in most places
-- Number and date/time parsing and formatting methods
+## Operations
 
-## Web Environment
+- ArtifactHit and ArtifactHitBin for screens, transitions, services, and entities
+- Built-in profiler: call tree for an ExecutionContext, consolidated counts, hot spots
+- Lightweight `/status` to see if the server is running
+- **Tools** (`/qapps/tools`): developer and data tools — entity data, import/export/snapshots, SQL runner, auto screens, service runner, Groovy shell, in-memory artifact stats
+- **System** (`/qapps/system`): administration — users and groups, artifact authz, jobs, cache, localization, data documents, visits, instance management, system messages, entity sync
+- Spock and JUnit for unit and integration tests (service call and screen render)
 
-- WebFacade for easy API access to Servlet objects, parameter maps, etc
-- WebApp event actions for first-hit-in-visit, before-request, after-request, after-login, before-logout, after-startup, before-shutdown
-- For convenience web.requestParameters Map is automatically added to the context when it is initialized for the web (helps reduce dependency in code on web-specific stuff, ie ec.web.requestParameter references)
-- Can send Maps/Lists/etc to HTTP response as JSON string (Web Facade), example of this is in EditExample.xml
-- Servlet for FOP transform to PDF, etc
-- Easy mapping of path and HTTP request method to services for REST, examples of this in ExampleApp.xml
+See [Performance](/docs/framework/Performance) and [The Tools Application](/docs/framework/The+Tools+Application).
 
-## User Management
+## Optional Tool Components
 
-- UserFacade for current user data, login/logout/authentication, etc
-- User preference management for predefined (with Enumeration records) or ad-hoc keys
-- UserGroup support, mostly for security, similar to the concept of security "role" (avoiding the term "role" because of its use in the Party data model)
-- UserGroup (ALL_USERS) that all users are automatically members of
-- In UserAccount userId is internal/sequenced and the username field is used for auth/login
-- Password reset email and forgot password form
-- Visitor tracking (automatic visitor ID in a cookie, separate from user)
-- Visit (session) tracking
+These are not in the framework JAR. Install with `./gradlew getComponent -Pcomponent=...` (see `addons.xml`).
 
-## Common business data structures and seed data
+- **moqui-hazelcast** — clustering and distributed cache, executor, notifications, sessions
+- **moqui-fop** — PDF, PS, SVG, and related output from XSL-FO and HTML
+- **moqui-poi** — spreadsheet and document files
+- **moqui-sftp** — SFTP client and server
+- **moqui-aws** — Amazon Web Services integrations (S3, SNS, SMS)
+- **moqui-image** — image format conversion and processing
+- **moqui-camel** — Apache Camel endpoint to and from Moqui services
+- **moqui-sso** — OpenID Connect, OAuth, and SAML
+- **moqui-orientdb** — OrientDB through the Entity Facade
+- **moqui-kie** — Drools rules and jBPM workflows
+- **moqui-cups** — printing through CUPS
+- **moqui-wikitext** — wiki markup rendering (Confluence, MediaWiki, and others)
 
-- Enumerations and statuses with transitions
-- Units of measure with conversion, including currency
-- Geographic boundaries (legal and arbitrary) and points
-- Time periods
-
-## Entities (Database)
-
-- Entity Facade
-  - Define your entities and go, no code to write and no redundancy
-  - Java API or XML tags for a wide variety of queries and common operations
-  - Event-Condition-Action rules to do things based on data changes
-  - Data import and export tools, including for seed and other setup data
-  - Configuration data documents based on database data available as nested maps or JSON
-  - Automatic data feed to send data documents to services on data changes for search indexing, sending notifications, etc
-  - Data search built on OpenSearch (ElasticSearch 7.x compatible) via ElasticFacade for any database, resource, or other custom data
-  - Support OOTB for H2, Derby, HSQL, PostgreSQL, MySQL (and Percona, MariaDB, etc), SQL Server, DB2, and Oracle
-  - Easy to add support for other databases, usually just through configuration
-  - Support for plugging in other data sources
-  - Optional OrientDB graph and document database support via the `moqui-orientdb` component
-  - Time-based data synchronization support between Moqui systems
-- Entity Definition
-  - Extension of other entities
-  - Entity field audit-logging
-  - Entity field encryption
-  - Automatic reverse-many relationship for type one relationships coming the other way (done on-demand at run-time)
-  - Database-driven view entity
-  - view-entity: merge the view-link element into the member element (also for DynamicViewEntity, DbViewEntity, *DbView screens)
-  - More intelligent group by fields, ie add all fields in view-entity and DynamicViewEntity to group by list if they don't have a function; with support for this get rid of alias.@group-by attribute, not needed when done automatically
-- EntityValue object with support for create, update, delete, refresh db operations, find related, various get and set options
-- Primary and secondary sequenced ID generation
-  - Simplified sequenced ID API for both primary and secondary sequenced IDs and moved configuration to entity definition, and methods to EntityValue
-  - Primary sequenced ID banking for better performance when creating records with sequenced single field primary key (default bank size 50)
-- Entity Find (Query)
-  - EntityFind object with various conditions, etc supported and results of one, list, iterator, count, updateAll, or deleteAll
-  - Support search-form-inputs to automatically populate an entity find from form *-find fields
-  - Entity Cache support
-  - Automatic cache clearing for one, list (using RA cache), count caches
-  - Support offset and limit as LIMIT/OFFSET or OFFSET/FETCH depending on configuration on the database element in the Moqui conf file
-  - Manual SQL find with results mapped to entity with results returned in an EntityListIterator (EntityFacade.sqlFind())
-- Database meta-data maintenance
-  - Automatically creates tables at runtime as they are used (checks entities once per server start, if configured to do so)
-  - Support for adding indexes when tables added
-  - Automatically add columns if missing in table check
-  - Add foreign keys to existing tables when table created
-  - Can check the foreign keys of all entities with existing tables and add missing ones where both tables exist; useful to run once all desired tables have been created (through a data load, test script, etc) to round out the DB meta-data
-- Comprehensive data loader from entity XML files with API and command-line access
-- Entity export to XML
-- Entity Master data export (master record and all dependent records)
-- Entity ECA rules to trigger services on entity operations
-- Data Documents
-  - Generates JSON (or nested Map/List) data documents based on database data
-  - Data document and mapping to entities configured in simple database records for ad-hoc or preconfigured use
-- Data Feed
-  - Automatically generates documents when database records change and sends them to services
-  - Easy to setup data document indexing by sending to OOTB service
-- Data Search
-  - Search Data Documents by search string and/or named fields in the document
-  - Based on OpenSearch or ElasticSearch 7.x (Apache Lucene) through ElasticFacade (`ec.elastic`)
-
-## Services
-
-- Service Facade
-  - Call services synchronously, asynchronously, or scheduled
-  - Local async service run with java.util.concurrent.ThreadPoolExecutor
-  - Distributed async services run with pluggable java.util.concurrent.ExecutorService implementation
-  - Scheduled service jobs run with java.util.concurrent.ScheduledThreadPoolExecutor, configured with extended Cron strings
-  - Services can be local or remote and implemented in a variety of languages
-  - Flexible XML service definitions
-  - Validation of data type, required or not, regexp, and other constraints; validation runs on server and in client with JavaScript library
-  - Event-Condition-Action (ECA) rules to orchestrate high level processes, externally change or augment behavior of existing services, and much more
-  - Apache Camel integration via the optional `moqui-camel` component
-  - System-to-System Message management for producing/sending and receiving/consuming
-- Service Definition
-  - Service parameter type/subtype checking
-  - Service parameter conversion/parsing and validation checks
-  - Service parameter HTML checking and cleaning (any/safe/none) with Jsoup
-  - Service authentication
-  - Service expand auto-parameters, get parameters from implements
-  - Automatic (with no definition) entity-based services for create, update, delete and store (create or update)
-- Service running
-  - Call services synchronously in-thread with minimal overhead
-  - Call services asynchronously or scheduled (java.util.concurrent worker and scheduled pools, configured with ServiceJob)
-  - Service run on commit or rollback of current tx
-  - Service Event-Condition-Action (ECA) rules to trigger other services before validation, auth, service run, or after service run or commit, or when the tx is actually committed or rolled back
-  - Service runners for Java, XML Actions, inline actions, Scripts
-  - Interface for adding your own service runners
-- Write-through per-transaction cache available for complex services to minimize database round-trips
-- Email handling
-  - Incoming email handling with Email ECA Rules (emeca) with the `org.moqui.impl.EmailServices.poll#EmailServer` service, configured with the EmailServer entity
-  - Service (`org.moqui.impl.EmailServices.send#EmailTemplate`) to send email based on settings in the EmailTemplate entity
-- Web Services
-  - REST web services with minimal configuration for internal service mapping
-  - Generic RESTful data interface based on entity definitions, secure with authc and authz
-  - JSON-RPC 2.0 incoming service handler and outgoing service runner
-- Apache Camel endpoint (in `moqui-camel`) for receiving messages to call Moqui services, or defining services that call into Camel
-- JBoss Drools KIE Support (optional `moqui-kie` component)
-  - Easily use Drools rules in your business logic
-  - Use jBPM workflows for easier control and monitoring of business processes
-
-## XML Screens
-
-- Screen Facade
-  - Declarative multi-platform screens, text templates, or any combination
-  - Generate HTML, XML, PDF (XSL-FO), CSV, Fixed-width plain text, or drive GWT or Swing screens
-  - Screen files and included sets of subscreens in directories with the same structure as the application
-  - Nested subscreens for multiple levels of tabs or other types of menus
-  - Data preparation logic declared with screens to make each screen modular
-  - Outgoing transitions point to input processing logic and conditional forwarding to other screens or external URLs
-  - Forms (single, list), trees, panels, and various other common widgets
-- Screen Definition
-  - Subscreens hierarchical to any depth, URL "path info" is path to screen in hierarchy
-  - Screen menus automatically generated based on sub-screens
-  - Choose default subscreen (override by path) based on user agent or other condition (using any data available in the ec)
-  - Sub-screens by directory structure, XML elements, or database record
-  - Screens and sub-content can be located in files or in a JCR repository
-  - Screen sub-content (stand-alone or included in screen) including support for text and binary files and all template types supported by the Resource Facade
-  - Can include or inline HTML and other text content
-  - Standalone screens that are rendered independently of parent screens and can still be subscreens of any other screen
-  - Support for multiple root screens determined by host name using regexp, or in other words virtual host support
-  - Screen transition supports restriction by HTTP request method
-  - Dynamic transition name handling (support regex transition names)
-  - Override login path in screen (use value from deepest screen in path)
-  - Screen pre-actions that all run before any parent screen is rendered to allow for setting parameters in parent screens, setting up general things, etc
-  - Database-driven screen visual themes
-  - Output encoding, configurable on various screen/form elements
-  - Includes container-dialog widget that creates a button that when clicked on opens a dialog with the contents of the container-dialog.
-- Screen Rendering
-  - ScreenFacade for rendering screens using the ScreenRender interface
-  - Templates for various render modes:
-    - csv (mainly for form-list report-like output)
-    - text (for email alternative message, etc)
-    - xml (like CSV, but more structured and support multiple forms per screen)
-    - xsl-fo (generate PDF or other FOP output types)
-  - URL building based on configuration
-  - Can specify macro template in screen def to override default in moqui-conf
-  - Supports URL parameters for renderMode and pageNoLimit which along with the lastStandalone parameter make it easy to reuse screens and forms meant for user interaction as definitions for CSV output
-  - Screen subscreen menu dynamic tabs (last level only) that loads content as a standalone screen from the server with an ajax call
-  - Server-rendered HTML mode (`/apps`) uses jQuery; the default user-facing UI is Quasar under `/qapps` (qvt render mode), with Vue + Bootstrap under `/vapps` (vuet)
-  - Automatic I18n (with L10nFacade) for labels and titles in screens, forms, menus
-- Screen Forms
-  - Single forms (form-single)
-    - For editing a single record (or single set of fields across records)
-    - Manual field-layout support
-    - Default HTML uses fieldset and label instead of a table
-  - List forms (form-list)
-    - For editing or viewing multiple records (or multiple sets of fields across records)
-    - Explicit form-list-column support
-    - Pagination (with defaults in search-form-inputs)
-    - multi=false support (one form per row)
-    - multi=true support (one form for all rows), service call multi=true
-    - Header widget rendering
-    - Automatic sort order links in header
-  - Extend XML form definitions with database records for all users or specific groups
-  - Form field types for many common form widgets
-  - Auto-complete option for text-line field type
-  - Form focus-field, skip-start and skip-end supported
-  - Automatic form fields from entity and service definitions
-    - Client JS validation based on target transition service definition (define once, run on client and server); using jquery validation (http://docs.jquery.com/Plugins/Validation); so far for required, number-integer, number-decimal, text-email, text-url, text-digits, credit-card, regexp; try out on the Edit Example screen
-    - Auto create drop-downs for fields with a relationship to Enumeration using relationship.title as the enumTypeId, check to see if is valid enumTypeId before creating drop-down
-    - Auto create drop-downs for fields with a type one relationship, with limit of 200 to avoid crazy drop-downs
-  - Localized output formatting, based on service parameter format if applicable, otherwise on format specified in form field
-  - Includes datetimepicker, which is the standard jquery datepicker plus the timepicker add-on, combined using some code from Apache OFBiz
-
-## Tools Application
-
-The Tools app (`/qapps/tools`) is for developer and data tools. System administration screens (instance management, jobs, users, caches) live in the System app (`/qapps/system`). The list below still mixes some of both; see those apps for the current screen tree.
-
-- Auto Screen
-  - Screens generated automatically based on the data model with a find screen and a screen for each "master" entity (an entity with dependents) with tabs for each dependent entity
-  - There are two main types of dependent entities: "detail" entities with additional information about the master and "join" entities that go between two master entities
-  - Master Entity List: use autocomplete box to select any entity or select a master entity from the list
-  - AutoFind Screen (find, create, delete master entity records)
-  - AutoEditMaster (tab to edit master entity record)
-  - AutoEditDetail (tab for each dependent entity (detail and join entities) with CrUD)
-  - Order by links in column headers by default (by default for all auto fields entity as well)
-- Data Document
-  - A Data Document is a JSON document (or nested Maps/Lists) based on data from databases and structured as defined for the document in configuration records
-  - Trigger document indexing
-  - Export data documents
-  - Search data documents across various indexes, view the documents, and link to application screens for the documents
-- Data View
-  - Choose master entity, select fields from all related entities, save as DbViewEntity and related records
-  - Specify functions for selected fields
-  - Choose column(s) to order by
-  - Specify search constraints
-  - View in webapp
-  - Export to CSV
-- Service
-  - Select service and run from form based on service definition
-- Entity
-  - Entity Data UI
-    - entity list
-    - find on entity with delete
-    - create/update entity record
-    - view entity record with related entities and links to them
-  - Entity Data Import from file, directory, configured file set, or web form
-  - Entity Data Export with entity select, dependents option, date range, filter map, sort order
-  - SQL Query Runner
-- System Info
-  - Artifact Hit Bins and Summary report
-  - Audit Log
-  - Visit and Hit Info/Stats (Find Visits, Visit details with hit list)
-  - Cache List and Elements
-  - Localization: Messages, Entity Fields
-
-## Example Application
-
-- Example application with screens, sub-content (CSS, html.ftl, cwiki.ftl), entities and services, security, l10n data, etc
-- Example entities and seed data follow pattern used in Moqui and Mantle where the relationship.title is the enumTypeId or the statusTypeId
+The [example](https://github.com/moqui/example) component is a small application (entities, services, screens, security, localization) used by the [Quick Tutorial](/docs/framework/Quick+Tutorial).

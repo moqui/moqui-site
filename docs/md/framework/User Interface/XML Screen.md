@@ -90,6 +90,10 @@ The *subscreens.conditional-default* element is still available if you need a co
 
 Once a screen such as FindExample is rendered through one of these wrappers, its links retain that base screen path in URLs generated from relative screen paths so the user stays in the path the original default pointed to.
 
+## Screen Extend
+
+To change a screen you do not own, put a `screen-extend` XML file in your component under `screen-extend/` with a path and filename that matches the original screen (the path under that component's `screen/` directory, or the full location after `://`). The extend file can add parameters, transitions, and subscreens, insert or replace actions (`actions-extend` with `when` = before, after, or replace), and insert widgets (`widgets-extend` matching a `name` or `id`, `where` = before or after). Forms and sections in the extend file merge with or override the originals by name. This is how add-on components such as `moqui-sso` attach to the Login screen without forking it.
+
 ## Standalone Screen
 
 Normally screens will be rendered following the render path, starting with the root screen. Each screen along the way may add to the output. A screen further down the path that is rendered without any previous screens in the path adding to the output is a "standalone" screen.
