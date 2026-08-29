@@ -2,25 +2,16 @@
 
 This space contains documentation about Moqui Framework. It is more technical in nature, meant for developers and IT staff.
 
-The full wiki corpus has not been imported yet. This page is a stub so the documentation viewer can be used and tested. When the wiki is migrated, files such as `Quick Tutorial.md` will be listed in `docs/manifest.json` and rendered here.
+If you're just getting started with Moqui the recommended reading order for these documents is:
 
-If you're just getting started with Moqui the recommended reading order (after import) is:
+1. [Introduction to Moqui Framework](/docs/framework/Introduction)
+2. [Moqui Framework Features](/docs/framework/Framework+Features)
+3. [Running and Deployment Instructions](/docs/framework/Run+and+Deploy)
+4. [Moqui Framework Quick Tutorial](/docs/framework/Quick+Tutorial)
+5. [Framework Tool and Configuration Overview](/docs/framework/Tool+and+Config+Overview)
 
-1. Introduction to Moqui Framework
-2. Moqui Framework Features
-3. Running and Deployment Instructions
-4. Moqui Framework Quick Tutorial
-5. Framework Tool and Configuration Overview
+Before you begin a larger project or do more significant development these documents will be helpful:
 
-Useful links that already work on this static site:
+* [Source Management Guide](/docs/framework/Source+Management)
+* [IDE Setup](/docs/framework/IDE+Setup)
 
-- [Framework overview](/framework.html)
-- [API Javadoc](/javadoc/)
-- [Download](https://github.com/moqui/moqui-framework/releases/latest)
-
-```groovy
-def tutorial = ec.entity.makeValue("tutorial.Tutorial")
-tutorial.setFields(context, true, null, null)
-if (!tutorial.tutorialId) tutorial.setSequencedIdPrimary()
-tutorial.create()
-```

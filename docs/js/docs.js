@@ -156,6 +156,100 @@
     return html;
   }
 
+  function isDocsAssetHref(href) {
+    return (
+      href.indexOf("/docs/js/") === 0 ||
+      href.indexOf("/docs/md/") === 0 ||
+      href.indexOf("/docs/attachment/") === 0 ||
+      href.indexOf("/m/docs/attachment/") === 0 ||
+      href === "/docs/manifest.json"
+    );
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function slugify(text) {
+    var s = String(text).toLowerCase().trim()
+      .replace(/['"]/g, "")
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    return s || "section";
+  }
+
+  function parseTocLevels(spec) {
+    if (!spec) return { min: 2, max: 6, set: null };
+    spec = spec.trim();
+    if (spec.indexOf(",") >= 0) {
+      var set = {};
+      spec.split(",").forEach(function (bit) {
+        var n = parseInt(bit, 10);
+        if (n) set[n] = true;
+      });
+      return { min: 1, max: 6, set: set };
+    }
+    if (spec.indexOf("-") >= 0) {
+      var parts = spec.split("-");
+      return { min: parseInt(parts[0], 10) || 2, max: parseInt(parts[1], 10) || 6, set: null };
+    }
+    var only = parseInt(spec, 10);
+    return { min: only || 2, max: only || 6, set: null };
+  }
+
+  function headingLevel(el) {
+    return parseInt(el.tagName.slice(1), 10);
+  }
+
+  function assignHeadingIds(container) {
+    var used = {};
+    var headings = [];
+    container.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach(function (h) {
+      var text = (h.textContent || "").trim();
+      var base = h.id ? h.id : slugify(text);
+      var id = base;
+      var n = 1;
+      while (used[id]) {
+        n += 1;
+        id = base + "-" + n;
+      }
+      used[id] = true;
+      h.id = id;
+      headings.push({ level: headingLevel(h), text: text, id: id });
+    });
+    return headings;
+  }
+
+  function expandToc(container, headings) {
+    container.querySelectorAll("p").forEach(function (p) {
+      var t = (p.textContent || "").trim();
+      var m = t.match(/^\[TOC(?:\s+levels=([^\]]+))?\]$/i);
+      if (!m) return;
+      var filter = parseTocLevels(m[1]);
+      var items = headings.filter(function (h) {
+        if (filter.set) return !!filter.set[h.level];
+        return h.level >= filter.min && h.level <= filter.max;
+      });
+      var nav = document.createElement("nav");
+      nav.className = "docs-toc";
+      nav.setAttribute("aria-label", "Table of contents");
+      var html = "<p class='docs-toc-title'>Contents</p><ul class='docs-toc-list'>";
+      items.forEach(function (h) {
+        html += "<li class='docs-toc-l" + h.level + "'><a href='#" + h.id + "'>" +
+          escapeHtml(h.text) + "</a></li>";
+      });
+      html += "</ul>";
+      nav.innerHTML = html;
+      p.parentNode.replaceChild(nav, p);
+    });
+  }
+
   function rewriteLinks(container, route) {
     container.querySelectorAll("a[href]").forEach(function (a) {
       var href = a.getAttribute("href") || "";
@@ -164,14 +258,25 @@
         a.setAttribute("rel", "noopener noreferrer");
         return;
       }
+      if (href.charAt(0) === "#") return;
+      if (isDocsAssetHref(href)) return;
       var docsMatch = href.match(/^\/(?:m\/)?docs\/?(.*)$/);
       if (docsMatch) {
-        var parts = docsMatch[1].split("/").filter(Boolean).map(decodeSegment);
+        var rest = docsMatch[1] || "";
+        if (
+          rest.indexOf("attachment/") === 0 ||
+          rest.indexOf("js/") === 0 ||
+          rest.indexOf("md/") === 0 ||
+          rest === "manifest.json"
+        ) {
+          return;
+        }
+        var parts = rest.split("/").filter(Boolean).map(decodeSegment);
         a.setAttribute("href", routeHref(parts[0] || route.space, parts.slice(1).join("/"), false));
         a.setAttribute("data-docs-link", "");
         return;
       }
-      if (href.indexOf("://") === -1 && href.charAt(0) !== "#" && href.charAt(0) !== "/") {
+      if (href.indexOf("://") === -1 && href.charAt(0) !== "/") {
         var resolved = (route.pagePath ? route.pagePath.split("/").slice(0, -1).join("/") : "");
         var combined = (resolved ? resolved + "/" : "") + href.replace(/\.md$/, "");
         a.setAttribute("href", routeHref(route.space, combined, false));
@@ -182,8 +287,10 @@
 
   function renderMarkdown(md, container, route) {
     var html = window.marked.parse(md, { gfm: true, breaks: false });
-    html = window.DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
+    html = window.DOMPurify.sanitize(html, { USE_PROFILES: { html: true }, ADD_ATTR: ["id"] });
     container.innerHTML = html;
+    var headings = assignHeadingIds(container);
+    expandToc(container, headings);
     container.querySelectorAll("pre code").forEach(function (block) {
       if (window.hljs) window.hljs.highlightElement(block);
     });
@@ -247,7 +354,7 @@
       return;
     }
     if (!route.space) {
-      article.innerHTML = "<div class='docs-empty'><h1>Select a documentation space</h1><p>Choose a space from the list to browse its pages. Wiki content will be added in a later import; the viewer is ready for markdown files under <code>docs/md/</code>.</p></div>";
+      article.innerHTML = "<div class='docs-empty'><h1>Select a documentation space</h1><p>Choose a space from the list to browse its pages.</p></div>";
       return;
     }
 

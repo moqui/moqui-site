@@ -25,6 +25,8 @@ Plain `python3 -m http.server` also works for real files, but `/docs/{space}/{pa
 | `docs/` | Markdown documentation viewer |
 | `docs/manifest.json` | Space list and page tree (GitHub Pages cannot list directories) |
 | `docs/md/{space}/` | Markdown files fetched and rendered in the browser |
+| `docs/attachment/{wikiPageId}/` | Wiki images and diagrams (`/docs/attachment/...` URLs) |
+| `scripts/import_wiki.py` | Re-import from the live HiveMind wiki |
 | `javadoc/` | Drop generated Javadoc / Groovydoc here (`index.html` is a placeholder until then) |
 | `xsd/` | XML schemas, same `/xsd/...` URLs as the previous site |
 | `img/` | Logo and related images |
@@ -33,13 +35,17 @@ Plain `python3 -m http.server` also works for real files, but `/docs/{space}/{pa
 
 ## Documentation viewer
 
-`/docs/` is a client-side viewer (marked + DOMPurify + highlight.js). It is ready for the wiki import:
+`/docs/` is a client-side viewer (marked + DOMPurify + highlight.js). Wiki URLs such as `/docs/framework/Quick+Tutorial` map to `docs/md/framework/Quick Tutorial.md`. Nested wiki paths become nested directories (`Data and Resources/The Entity Facade.md` next to `Data and Resources.md`). `[TOC]` / `[TOC levels=2-4]` is expanded in the browser.
 
-1. Put markdown at `docs/md/{space}/{Page Name}.md` (nested wiki paths become nested directories).
-2. List each page in `docs/manifest.json`.
-3. Existing wiki URLs such as `/docs/framework/Quick+Tutorial` map to `Quick Tutorial.md`.
+The four public spaces (Community, Framework, Mantle, Applications) were imported from the live HiveMind wiki. Three older Framework pages were Confluence wiki markup and converted to Markdown; the rest were already Markdown.
 
-This repository currently ships one stub page per wiki space plus a short Framework Quick Tutorial sample so the viewer can be exercised. The full wiki dump is a separate task.
+To refresh from moqui.org (read-only exporter account):
+
+```bash
+MOQUI_WIKI_USER=exporter MOQUI_WIKI_PASSWORD='...' python3 scripts/import_wiki.py
+```
+
+The importer reads page lists from `/m/alldocs/{space}`, source from `/apps/hm/EditWikiPage` (the `/qapps` shell has no textarea until JavaScript runs), and attachments from `/docs/attachment/{wikiPageId}/{filename}`. Fetches are cached under `/tmp/moqui-wiki-import`; `--convert-only` rebuilds markdown from that cache.
 
 ## CDN pins
 
@@ -65,7 +71,6 @@ Do not flip the live domain until this site is reviewed.
 
 ## Not in this site
 
-- Wiki corpus (import later)
 - Full-text search (was Elasticsearch on the old site)
 - HiveMind / issue tracking / login hosted on moqui.org (use GitHub and the Forum; demos remain on demo.moqui.org)
 

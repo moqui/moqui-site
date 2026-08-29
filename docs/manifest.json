@@ -1,23 +1,550 @@
 {
   "spaces": [
-    { "id": "moqui", "title": "Moqui Community" },
-    { "id": "framework", "title": "Moqui Framework" },
-    { "id": "mantle", "title": "Mantle Business Artifacts" },
-    { "id": "apps", "title": "Moqui Applications" }
+    {
+      "id": "moqui",
+      "title": "Moqui Community"
+    },
+    {
+      "id": "framework",
+      "title": "Moqui Framework"
+    },
+    {
+      "id": "mantle",
+      "title": "Mantle Business Artifacts"
+    },
+    {
+      "id": "apps",
+      "title": "Moqui Applications"
+    }
   ],
   "pages": {
     "moqui": [
-      { "path": "", "title": "Moqui Community" }
+      {
+        "path": "",
+        "title": "Moqui Community"
+      },
+      {
+        "path": "Adoption of Moqui",
+        "title": "Adoption of Moqui"
+      },
+      {
+        "path": "Community Guide",
+        "title": "Community Guide"
+      },
+      {
+        "path": "Contributor Guide",
+        "title": "Contributor Guide"
+      },
+      {
+        "path": "Economics of Moqui",
+        "title": "Economics of Moqui"
+      },
+      {
+        "path": "How to Operate Open Source First",
+        "title": "How to Operate Open Source First"
+      },
+      {
+        "path": "Issue and Pull Request Guide",
+        "title": "Issue and Pull Request Guide"
+      },
+      {
+        "path": "Proposal for Moqui Governance",
+        "title": "Proposal for Moqui Governance"
+      },
+      {
+        "path": "Resource Model",
+        "title": "Resource Model"
+      }
     ],
     "framework": [
-      { "path": "", "title": "Moqui Framework" },
-      { "path": "Quick Tutorial", "title": "Quick Tutorial" }
+      {
+        "path": "",
+        "title": "Moqui Framework"
+      },
+      {
+        "path": "Introduction",
+        "title": "Introduction"
+      },
+      {
+        "path": "Run and Deploy",
+        "title": "Run and Deploy"
+      },
+      {
+        "path": "IDE Setup",
+        "title": "IDE Setup"
+      },
+      {
+        "path": "IDE Setup/IntelliJ IDEA Setup",
+        "title": "IntelliJ IDEA Setup"
+      },
+      {
+        "path": "Source Management",
+        "title": "Source Management"
+      },
+      {
+        "path": "Tool and Config Overview",
+        "title": "Tool and Config Overview"
+      },
+      {
+        "path": "Quick Tutorial",
+        "title": "Quick Tutorial"
+      },
+      {
+        "path": "Framework Features",
+        "title": "Framework Features"
+      },
+      {
+        "path": "Multi-instance with Docker",
+        "title": "Multi-instance with Docker"
+      },
+      {
+        "path": "Data and Resources",
+        "title": "Data and Resources"
+      },
+      {
+        "path": "Data and Resources/Resources and Content",
+        "title": "Resources and Content"
+      },
+      {
+        "path": "Data and Resources/Data Model Definition",
+        "title": "Data Model Definition"
+      },
+      {
+        "path": "Data and Resources/Data Model Patterns",
+        "title": "Data Model Patterns"
+      },
+      {
+        "path": "Data and Resources/The Entity Facade",
+        "title": "The Entity Facade"
+      },
+      {
+        "path": "Data and Resources/Entity ECA Rules",
+        "title": "Entity ECA Rules"
+      },
+      {
+        "path": "Data and Resources/Entity Data Import and Export",
+        "title": "Entity Data Import and Export"
+      },
+      {
+        "path": "Data and Resources/Data Document",
+        "title": "Data Document"
+      },
+      {
+        "path": "Data and Resources/Data Feed",
+        "title": "Data Feed"
+      },
+      {
+        "path": "Data and Resources/Data Search",
+        "title": "Data Search"
+      },
+      {
+        "path": "Logic and Services",
+        "title": "Logic and Services"
+      },
+      {
+        "path": "Logic and Services/Service Definition",
+        "title": "Service Definition"
+      },
+      {
+        "path": "Logic and Services/Service Implementation",
+        "title": "Service Implementation"
+      },
+      {
+        "path": "Logic and Services/Calling Services",
+        "title": "Calling Services"
+      },
+      {
+        "path": "Logic and Services/Service Jobs",
+        "title": "Service Jobs"
+      },
+      {
+        "path": "Logic and Services/Service ECA Rules",
+        "title": "Service ECA Rules"
+      },
+      {
+        "path": "Logic and Services/Overview of XML Actions",
+        "title": "Overview of XML Actions"
+      },
+      {
+        "path": "User Interface",
+        "title": "User Interface"
+      },
+      {
+        "path": "User Interface/XML Screen",
+        "title": "XML Screen"
+      },
+      {
+        "path": "User Interface/Client Rendered Vue Screen",
+        "title": "Client Rendered Vue Screen"
+      },
+      {
+        "path": "User Interface/XML Form",
+        "title": "XML Form"
+      },
+      {
+        "path": "User Interface/Templates",
+        "title": "Templates"
+      },
+      {
+        "path": "User Interface/Sending and Receiving Email",
+        "title": "Sending and Receiving Email"
+      },
+      {
+        "path": "User Interface/Notification and WebSocket",
+        "title": "Notification and WebSocket"
+      },
+      {
+        "path": "System Interfaces",
+        "title": "System Interfaces"
+      },
+      {
+        "path": "System Interfaces/Data and Logic Level Interfaces",
+        "title": "Data and Logic Level Interfaces"
+      },
+      {
+        "path": "System Interfaces/XML CSV and Plain Text Handling",
+        "title": "XML CSV and Plain Text Handling"
+      },
+      {
+        "path": "System Interfaces/Web Service",
+        "title": "Web Service"
+      },
+      {
+        "path": "System Interfaces/Enterprise Integration with Apache Camel",
+        "title": "Enterprise Integration with Apache Camel"
+      },
+      {
+        "path": "System Interfaces/System Message",
+        "title": "System Message"
+      },
+      {
+        "path": "Security",
+        "title": "Security"
+      },
+      {
+        "path": "Performance",
+        "title": "Performance"
+      },
+      {
+        "path": "The Tools Application",
+        "title": "The Tools Application"
+      },
+      {
+        "path": "The Tools Application/Auto Screen",
+        "title": "Auto Screen"
+      },
+      {
+        "path": "The Tools Application/Data View",
+        "title": "Data View"
+      },
+      {
+        "path": "The Tools Application/Entity Tools",
+        "title": "Entity Tools"
+      }
     ],
     "mantle": [
-      { "path": "", "title": "Mantle Business Artifacts" }
+      {
+        "path": "",
+        "title": "Mantle Business Artifacts"
+      },
+      {
+        "path": "Mantle Structure and UDM",
+        "title": "Mantle Structure and UDM"
+      },
+      {
+        "path": "Mantle Structure and UDM/Accounting",
+        "title": "Accounting"
+      },
+      {
+        "path": "Mantle Structure and UDM/Facility",
+        "title": "Facility"
+      },
+      {
+        "path": "Mantle Structure and UDM/Human Resources",
+        "title": "Human Resources"
+      },
+      {
+        "path": "Mantle Structure and UDM/Marketing",
+        "title": "Marketing"
+      },
+      {
+        "path": "Mantle Structure and UDM/Order",
+        "title": "Order"
+      },
+      {
+        "path": "Mantle Structure and UDM/Party",
+        "title": "Party"
+      },
+      {
+        "path": "Mantle Structure and UDM/Product",
+        "title": "Product"
+      },
+      {
+        "path": "Mantle Structure and UDM/Request",
+        "title": "Request"
+      },
+      {
+        "path": "Mantle Structure and UDM/Sales",
+        "title": "Sales"
+      },
+      {
+        "path": "Mantle Structure and UDM/Shipment",
+        "title": "Shipment"
+      },
+      {
+        "path": "Mantle Structure and UDM/Work Effort",
+        "title": "Work Effort"
+      },
+      {
+        "path": "USL Business Processes",
+        "title": "USL Business Processes"
+      },
+      {
+        "path": "Business Process Library",
+        "title": "Business Process Library"
+      },
+      {
+        "path": "Business Process Library/Accountant Receives Invoice and Sends Payment",
+        "title": "Accountant Receives Invoice and Sends Payment"
+      },
+      {
+        "path": "Business Process Library/Accountant Reconciles Bank Account",
+        "title": "Accountant Reconciles Bank Account"
+      },
+      {
+        "path": "Business Process Library/Accountant Sends Invoice and Receives Payment",
+        "title": "Accountant Sends Invoice and Receives Payment"
+      },
+      {
+        "path": "Business Process Library/Actor Definitions",
+        "title": "Actor Definitions"
+      },
+      {
+        "path": "Business Process Library/Buyer Places Purchase Order",
+        "title": "Buyer Places Purchase Order"
+      },
+      {
+        "path": "Business Process Library/Carrier Does Not Deliver Shipment to Customer",
+        "title": "Carrier Does Not Deliver Shipment to Customer"
+      },
+      {
+        "path": "Business Process Library/Carrier Returns Undeliverable Shipment to Company",
+        "title": "Carrier Returns Undeliverable Shipment to Company"
+      },
+      {
+        "path": "Business Process Library/Company Approves Sales Order",
+        "title": "Company Approves Sales Order"
+      },
+      {
+        "path": "Business Process Library/Company Fulfills Sales Order",
+        "title": "Company Fulfills Sales Order"
+      },
+      {
+        "path": "Business Process Library/Company Processes Return Received",
+        "title": "Company Processes Return Received"
+      },
+      {
+        "path": "Business Process Library/Customer Cancels Order",
+        "title": "Customer Cancels Order"
+      },
+      {
+        "path": "Business Process Library/Customer Creates and Edits Account",
+        "title": "Customer Creates and Edits Account"
+      },
+      {
+        "path": "Business Process Library/Customer Finds Product",
+        "title": "Customer Finds Product"
+      },
+      {
+        "path": "Business Process Library/Customer Returns Product",
+        "title": "Customer Returns Product"
+      },
+      {
+        "path": "Business Process Library/Customer Reviews Order History and Status",
+        "title": "Customer Reviews Order History and Status"
+      },
+      {
+        "path": "Business Process Library/Inventory Mover Checks Physical Inventory",
+        "title": "Inventory Mover Checks Physical Inventory"
+      },
+      {
+        "path": "Business Process Library/Inventory Mover does Stock Move",
+        "title": "Inventory Mover does Stock Move"
+      },
+      {
+        "path": "Business Process Library/Inventory Mover Puts Away Inventory",
+        "title": "Inventory Mover Puts Away Inventory"
+      },
+      {
+        "path": "Business Process Library/Marketer Maintains General Site Content",
+        "title": "Marketer Maintains General Site Content"
+      },
+      {
+        "path": "Business Process Library/OAGIS Order to Cash",
+        "title": "OAGIS Order to Cash"
+      },
+      {
+        "path": "Business Process Library/OAGIS Procure to Pay",
+        "title": "OAGIS Procure to Pay"
+      },
+      {
+        "path": "Business Process Library/OAGIS Work Plan to Cash",
+        "title": "OAGIS Work Plan to Cash"
+      },
+      {
+        "path": "Business Process Library/Placing Customer Adds Product to Cart",
+        "title": "Placing Customer Adds Product to Cart"
+      },
+      {
+        "path": "Business Process Library/Placing Customer Places a Sales Order - Online Checkout",
+        "title": "Placing Customer Places a Sales Order - Online Checkout"
+      },
+      {
+        "path": "Business Process Library/Placing Customer Places a Sales Order - Through CSR",
+        "title": "Placing Customer Places a Sales Order - Through CSR"
+      },
+      {
+        "path": "Business Process Library/Placing Customer Places a Sales Order - Through EBay",
+        "title": "Placing Customer Places a Sales Order - Through EBay"
+      },
+      {
+        "path": "Business Process Library/Product Marketer Maintains Product Information",
+        "title": "Product Marketer Maintains Product Information"
+      },
+      {
+        "path": "Business Process Library/Resources with Information about General Business Processes",
+        "title": "Resources with Information about General Business Processes"
+      },
+      {
+        "path": "Business Process Library/Sales Representative Leads Prospects from RFQ to Sales Order",
+        "title": "Sales Representative Leads Prospects from RFQ to Sales Order"
+      },
+      {
+        "path": "Business Process Library/Sales Representative Seeks Prospects and Opportunities",
+        "title": "Sales Representative Seeks Prospects and Opportunities"
+      },
+      {
+        "path": "Business Process Library/Shipment Receiver Receives Shipment",
+        "title": "Shipment Receiver Receives Shipment"
+      },
+      {
+        "path": "Business Process Library/Story of Online Retail Company",
+        "title": "Story of Online Retail Company"
+      },
+      {
+        "path": "Business Process Library/UBPL Index",
+        "title": "UBPL Index"
+      },
+      {
+        "path": "Business Process Library/B2B Sales Process",
+        "title": "B2B Sales Process"
+      },
+      {
+        "path": "Technical How To",
+        "title": "Technical How To"
+      },
+      {
+        "path": "Technical How To/Transactional Emails",
+        "title": "Transactional Emails"
+      }
     ],
     "apps": [
-      { "path": "", "title": "Moqui Applications" }
+      {
+        "path": "",
+        "title": "Moqui Applications"
+      },
+      {
+        "path": "Marble ERP User Guide",
+        "title": "Marble ERP User Guide"
+      },
+      {
+        "path": "Marble ERP User Guide/Initial Setup and Basics",
+        "title": "Initial Setup and Basics"
+      },
+      {
+        "path": "Marble ERP User Guide/Application Outline",
+        "title": "Application Outline"
+      },
+      {
+        "path": "Marble ERP User Guide/Statuses and Types",
+        "title": "Statuses and Types"
+      },
+      {
+        "path": "Marble ERP User Guide/Configuration",
+        "title": "Configuration"
+      },
+      {
+        "path": "Marble ERP User Guide/Configuration/Company Setup",
+        "title": "Company Setup"
+      },
+      {
+        "path": "Marble ERP User Guide/Configuration/Products",
+        "title": "Products"
+      },
+      {
+        "path": "Marble ERP User Guide/Configuration/Products/Pricing and Promotions",
+        "title": "Pricing and Promotions"
+      },
+      {
+        "path": "Marble ERP User Guide/Order to Cash",
+        "title": "Order to Cash"
+      },
+      {
+        "path": "Marble ERP User Guide/Order to Cash/Find and Create Customer",
+        "title": "Find and Create Customer"
+      },
+      {
+        "path": "Marble ERP User Guide/Order to Cash/Place and Approve Sales Order",
+        "title": "Place and Approve Sales Order"
+      },
+      {
+        "path": "Marble ERP User Guide/Order to Cash/Ship Sales Order",
+        "title": "Ship Sales Order"
+      },
+      {
+        "path": "Marble ERP User Guide/Order to Cash/Shipping Management with Picklists",
+        "title": "Shipping Management with Picklists"
+      },
+      {
+        "path": "Marble ERP User Guide/Procure to Pay",
+        "title": "Procure to Pay"
+      },
+      {
+        "path": "Marble ERP User Guide/Warehouse",
+        "title": "Warehouse"
+      },
+      {
+        "path": "Marble ERP User Guide/Warehouse/Transfer Shipments",
+        "title": "Transfer Shipments"
+      },
+      {
+        "path": "Marble ERP User Guide/Accounting",
+        "title": "Accounting"
+      },
+      {
+        "path": "Marble ERP User Guide/Accounting/Bank Accounts",
+        "title": "Bank Accounts"
+      },
+      {
+        "path": "Marble ERP User Guide/Accounting/Period Closing",
+        "title": "Period Closing"
+      },
+      {
+        "path": "Planning and Designs",
+        "title": "Planning and Designs"
+      },
+      {
+        "path": "Planning and Designs/Manufacturing Screens",
+        "title": "Manufacturing Screens"
+      },
+      {
+        "path": "Planning and Designs/Product Store Screens",
+        "title": "Product Store Screens"
+      },
+      {
+        "path": "Planning and Designs/Survey Screens",
+        "title": "Survey Screens"
+      }
     ]
   }
 }
