@@ -1,6 +1,6 @@
 # Accountant Receives Invoice and Sends Payment
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 ## Dependencies
 
@@ -8,7 +8,7 @@
 
 ## Story
 
-Supplier sends invoice or other payment request to Accountant. If payment term is "pay on deliver" Accountant
+Supplier sends invoice or other payment request to Accountant. If payment term is "pay on delivery" Accountant
 sends the payment immediately. If payment term is "credit" Accountant sends payment within the payment
 period agreed to.
 

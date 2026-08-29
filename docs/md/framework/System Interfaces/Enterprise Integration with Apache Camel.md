@@ -1,14 +1,16 @@
-## Enterprise Integration with Apache Camel
+# Enterprise Integration with Apache Camel
 
-Apache Camel ([*http://camel.apache.org*](http://camel.apache.org)) is a tool for routing and processing messages with tools for Enterprise Integration Patterns which are described here (and other pages on this site have much other good information about EIP): [*http://www.eaipatterns.com/toc.html*](http://www.eaipatterns.com/toc.html)
+Apache Camel ([http://camel.apache.org](http://camel.apache.org)) is a tool for routing and processing messages with tools for Enterprise Integration Patterns which are described here (and other pages on this site have much other good information about EIP): [http://www.eaipatterns.com/toc.html](http://www.eaipatterns.com/toc.html)
 
-Moqui Framework has a Message Endpoint for Camel (*MoquiServiceEndpoint*) that ties it to the Service Facade. This allows services (with **type**=camel) to send the service call as a message to Camel using the *MoquiServiceConsumer*. The endpoint also includes a message producer (*MoquiServiceProducer*) that is available in Camel routing strings as moquiservice.
+Apache Camel is **not** bundled with Moqui Framework. It lives in the optional **moqui-camel** component (`./gradlew getComponent -Pcomponent=moqui-camel`). That component registers a Camel ToolFactory and a Service Facade runner for *service*.**type**=camel, plus a Message Endpoint (*MoquiServiceEndpoint*) that ties Camel to the Service Facade.
 
-Here are some example Camel services from the ExampleServices.xml file:
+With the component installed, services with **type**=camel send the service call as a message to Camel using the *MoquiServiceConsumer*. The endpoint also includes a message producer (*MoquiServiceProducer*) that is available in Camel routing strings as **moquiservice**.
+
+Here are example Camel services from the example component (`ExampleServices.xml`). They only run if **moqui-camel** is installed. The same pair also exists in the component as `moqui.camel.CamelTestServices`.
 
 ```
 <service verb="localCamelExample" type="camel"
- location="moquiservice:org.moqui.example.ExampleServices.targetCamelExample">
+ location="moquiservice:moqui.example.ExampleServices.targetCamelExample">
  <in-parameters><parameter name="testInput"/></in-parameters>
  <out-parameters><parameter name="testOutput"/></out-parameters>
 </service>
@@ -16,16 +18,16 @@ Here are some example Camel services from the ExampleServices.xml file:
  <in-parameters><parameter name="testInput"/></in-parameters>
  <out-parameters><parameter name="testOutput"/></out-parameters>
  <actions>
- <set field="testOutput" value="Here's the input: ${testInput}"/>
- <log level="warn"
- message="targetCamelExample testOutput: ${result.testOutput}"/>
+ <set field="testOutput" value="Input was: ${testInput}"/>
+ <log level="info"
+ message="targetCamelExample testOutput: '${testOutput}'"/>
  </actions>
 </service>
 ```
 
 When you call the **localCamelExample** service it calls the **targetCamelExample** service through Apache Camel. This is a very simple example of using services with Camel. To get an idea of the many things you can do with Camel the components reference is a good place to start:
 
-[*http://camel.apache.org/components.html*](http://camel.apache.org/components.html)
+[http://camel.apache.org/components.html](http://camel.apache.org/components.html)
 
 The general idea is you can:
 

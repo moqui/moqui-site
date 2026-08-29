@@ -8,7 +8,7 @@ This document explains how to run Moqui through the executable war file, or by d
 
 ### Required Software: Java JDK 21 (Temurin recommended) and OpenSearch
 
-The only required software for the default configuration of Moqui Framework is the **Java SE JDK version 21** or later. The recommended distribution is **Eclipse Temurin (OpenJDK)** from the Adoptium project. **OpenSearch** is also required for certain functionality in the service library (mantle-usl) and applications including POPC ERP, HiveMind, and Marble ERP.
+The only required software for the default configuration of Moqui Framework is the **Java SE JDK version 21** or later. The recommended distribution is **Eclipse Temurin (OpenJDK)** from the Adoptium project. **OpenSearch** is also required for certain functionality in the service library (mantle-usl) and applications including Marble ERP, POP Commerce, and HiveMind.
 
 On Linux OpenJDK is generally the best option. For Debian based distributions the apt package is **openjdk-21-jdk**. For Fedora/CentOS/RedHat distributions the yum/dnf package is **java-21-openjdk-devel**.
 
@@ -22,7 +22,7 @@ Moqui Framework also includes an OpenSearch client compatible with OpenSearch an
 
 [https://opensearch.org/downloads.html](https://opensearch.org/downloads.html)
 
-NOTE: Before the **java11** branch in the moqui-framework repository was merged on 25 April 2022 Moqui required Java 8 or later. For more information see [pull request 527](https://github.com/moqui/moqui-framework/pull/527).
+NOTE: Moqui 3.x required Java 11. Moqui 4.0 requires Java 21. The older **java11** branch discussion is in [pull request 527](https://github.com/moqui/moqui-framework/pull/527).
 
 ### Moqui Binary Release Quick Start
 
@@ -33,7 +33,7 @@ NOTE: Before the **java11** branch in the moqui-framework repository was merged 
 1. Run the framework (with embedded Servlet Container, Transaction Manager, Database):
   - `$ java -jar moqui.war`
 1. In your browser (on the same machine) go to:
-  - `http://localhost:8080/`
+  - `http://localhost:8080/` (the default UI is Quasar under `/qapps`)
 1. With the demo data loaded you can login with username "john.doe" and password "moqui"
 
 ### From Source Quick Start with OpenSearch
@@ -43,44 +43,47 @@ Use the following steps to do a local install from source and run with the defau
 1. Clone the moqui-framework repository
   - `$ git clone https://github.com/moqui/moqui-framework.git moqui`
   - `$ cd moqui`
-1. Get desired components, for example PopCommerce and/or HiveMind
+1. Get desired components, for example MarbleERP, PopCommerce, and/or HiveMind
+  - `$ ./gradlew getComponent -Pcomponent=MarbleERP`
   - `$ ./gradlew getComponent -Pcomponent=PopCommerce`
   - `$ ./gradlew getComponent -Pcomponent=HiveMind`
   1. Alternatively just get the default runtime directory (if you don't want any components)
     - `$ ./gradlew getRuntime`
-1. Download OpenSearch (Linux/Mac/Windows, OSS no-JDK version)
+1. Download OpenSearch into `runtime/opensearch` (Linux x64 tarball; on macOS or Windows install OpenSearch yourself or run it separately)
   - `$ ./gradlew downloadOpenSearch`
 1. Build then load seed and demo data (the load task depends on the build task)
   - `$ ./gradlew load`
-1. Start Moqui with run OpenSearch (add 'no-run-es' to not run OpenSearch)
+1. Start Moqui (it starts OpenSearch in `runtime/opensearch` if present; add `no-run-es` to skip)
   - `$ java -jar moqui.war`
-1. In your browser go to `http://localhost:8080`
+1. In your browser go to `http://localhost:8080` (default UI: `http://localhost:8080/qapps`)
 
 ### From Source Quick Start with Docker Compose
 
 Use the following steps to do a local install from source and run with a database and OpenSearch in Docker containers separate from Moqui. This works best on Linux but can be used with some variations on MacOS and Windows.
 
-1. Install Docker (docker-ce) and Docker Compose (docker-compose), make sure your user is in the 'docker' group, etc
-  - [https://docs.docker.com/install/](https://docs.docker.com/install/)
-  - [https://docs.docker.com/install/linux/linux-postinstall/](https://docs.docker.com/install/linux/linux-postinstall/)
+1. Install Docker Engine and the Docker Compose plugin, make sure your user is in the 'docker' group, etc
+  - [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
+  - [https://docs.docker.com/engine/install/linux-postinstall/](https://docs.docker.com/engine/install/linux-postinstall/)
 1. Clone the moqui-framework repository
   - `$ git clone https://github.com/moqui/moqui-framework.git moqui`
   - `$ cd moqui`
-1. Get desired components, for example PopCommerce and/or HiveMind
+1. Get desired components, for example MarbleERP, PopCommerce, and/or HiveMind
+  - `$ ./gradlew getComponent -Pcomponent=MarbleERP`
   - `$ ./gradlew getComponent -Pcomponent=PopCommerce`
   - `$ ./gradlew getComponent -Pcomponent=HiveMind`
   1. Alternatively just get the default runtime directory (if you don't want any components)
     - `$ ./gradlew getRuntime`
+1. Put a JDBC driver JAR for the target database in `runtime/lib` (or use `./gradlew getPostgresJdbc` / `./gradlew getMySqlJdbc`)
 1. Build Moqui and create the moqui-plus-runtime.war file
   - `$ ./gradlew addRuntime`
 1. Build a local Docker image using the default name **moqui** (see the Docker section below for using a different group/name, pushing to a Docker repository, etc)
   - `$ cd docker/simple`
   - `$ ./docker-build.sh`
-1. Got back to the **docker** directory
+1. Go back to the **docker** directory
   - `$ cd ..`
-1. Create a Docker Compose YML file, you can start with one of the files in the docker directory
-1. Start the configured containers using the compose-up.sh script (replace the filename with your preferred compose file)
-  - `$ ./compose-up.sh moqui-ng-my-compose.yml`
+1. Choose a Compose file in `docker/` (see `docker/README.md`). Current examples include `moqui-postgres-compose.yml`, `moqui-mysql-compose.yml`, and `moqui-acme-postgres.yml`
+1. Build the image if needed and start the configured containers (replace the filename with your preferred compose file)
+  - `$ ./build-compose-up.sh moqui-postgres-compose.yml`
   - When Moqui starts for the first time it will see the database is empty (no records in the table for the Enumeration entity) and will automatically load the configured data sets; with the default MoquiProductionConf.xml file that includes all **seed**, **seed-initial**, and **install** data files
 1. If you use one of these default files with the VIRTUAL_HOST for nginx-proxy set to **moqui.local** add a line for it in /etc/hosts like:
   - `127.0.0.1	moqui.local`
@@ -89,7 +92,7 @@ Use the following steps to do a local install from source and run with a databas
   - If you use moqui.local and the included self-signed certificate you'll get a warning about that in your browser and will need to follow the links to go there regardless of the certificate
   - When you access Moqui for the first time and there are no users in the database (no demo, etc data loaded) the Login screen will show a form to create an admin user
 1. Stop the configured containers (make sure to use the same YML file you used to start)
-  - `$ ./compose-down.sh moqui-ng-my-compose.yml`
+  - `$ ./compose-down.sh moqui-postgres-compose.yml`
 1. Clean up mapped directories (IF you want to remove the database, etc to start fresh; note that this requires root access because the database and other folders mapped to the host file system will be owned by root)
   - `$ sudo ./clean.sh`
 
@@ -152,7 +155,7 @@ If the first argument is **load** it will load data. If the first argument is **
 | port=<port> | The http listening port. Default is 8080 |
 | threads=<max threads> | Maximum number of threads. Default is 100 |
 | conf=<moqui.conf> | The Moqui Conf XML file to use, overrides other ways of specifying it |
-| no-run-es | Don't Try starting and stopping ElasticSearch or OpenSearch in runtime/elasticsearch |
+| no-run-es | Don't try starting and stopping OpenSearch in runtime/opensearch or ElasticSearch in runtime/elasticsearch |
 
 ### Load Data Arguments
 
@@ -172,7 +175,7 @@ If no **types** or **location** argument is used all found data files of all typ
 | disable-data-feed | Disable Entity DataFeed |
 | raw | For raw data load to an empty database; short for no-fk-create, use-try-insert, disable-eeca, disable-audit-log, disable-data-feed |
 | conf=<moqui.conf> | The Moqui Conf XML file to use, overrides other ways of specifying it |
-| no-run-es | Don't try starting and stopping ElasticSearch or OpenSearch in runtime/elasticsearch |
+| no-run-es | Don't try starting and stopping OpenSearch in runtime/opensearch or ElasticSearch in runtime/elasticsearch |
 
 ## 4. Examples and Common Approaches
 
@@ -204,7 +207,7 @@ Run these commands:
 1. Add components and other resources as needed to the runtime directory
 1. Change ${moqui.home}/MoquiInit.properties with desired settings
 1. Change Moqui conf file (runtime/conf/Moqui*Conf.xml) as needed
-1. Create a derived WAR file based on the moqui.war file and with your runtime directory contents and MoquiInit.properties file with: `"./gradlew addRuntime"` or `"ant add-runtime"`
+1. Create a derived WAR file based on the moqui.war file and with your runtime directory contents and MoquiInit.properties file with: `./gradlew addRuntime` (or `ant add-runtime`)
 1. Copy the created WAR file (moqui-plus-runtime.war) to deployment target
 1. Run server (or restart to deploy live WAR)
 
@@ -216,7 +219,7 @@ Following this pattern the Gradle build scripts in Moqui have tasks to download 
 
 Known open source components are already configured in the `addons.xml` file. To add private and other components or override settings for components in the addons.xml file, create a file called `myaddons.xml` and put it in the moqui directory.
 
-Here is a summary of the Gradle tasks for component management (using the HiveMind component for example). All of the get tasks get the specified component plus all components it depends on (as specified in its component.xml file).
+Here is a summary of the Gradle tasks for component management (using the HiveMind component for example). Prefer the Gradle wrapper (`./gradlew`). All of the get tasks get the specified component plus all components it depends on (as specified in its component.xml file).
 
 |   |   |   |
 | --- | --- | --- |
@@ -251,7 +254,7 @@ Moqui Framework uses Gradle for building from source. There are various custom t
 | Clean up JARs, WAR | `$ ./gradlew clean` |  |
 | Clean up ALL built and runtime files (logs, dbs, etc) | `$ ./gradlew cleanAll` |  |
 
-The examples above use the Gradle Wrapper (gradlew) included with Moqui. You can also install Gradle (2.0 or later) The load and run tasks depend on the build task, so the easiest to get a new development system running with a populated database is:
+The examples above use the Gradle Wrapper (`gradlew`) included with Moqui (Gradle **9.2**). You can also install Gradle locally, but the wrapper is preferred so the version matches the project. The load and run tasks depend on the build task, so the easiest way to get a new development system running with a populated database is:
 
 |   |   |
 | --- | --- |
@@ -261,66 +264,70 @@ The examples above use the Gradle Wrapper (gradlew) included with Moqui. You can
 
 This will build the war file, run the data loader, then run the server. To stop it just press <ctrl-c> (or your preferred alternative).
 
-## 7. ElasticSearch Configuration and Install
+## 7. OpenSearch Configuration and Install
 
-### External ElasticSearch
+**OpenSearch** is the recommended search engine. The built-in ElasticFacade client (`ec.elastic`) also works with ElasticSearch 7.x-compatible HTTP APIs. There is no embedded-in-JVM search node. Install OpenSearch under `runtime/opensearch` (or ElasticSearch under `runtime/elasticsearch`) and run it as a separate process, or point `elasticsearch_url` at an external cluster.
 
-Note that we recommend using OpenSearch now as a default. The configuration is essentially the same. If you have questions, you can ask on the forum.
+### External OpenSearch or ElasticSearch
 
-In production it is more common to have an external ElasticSearch cluster running separate from the Moqui server or cluster. This can also be used for local development where you start, stop, clear data, etc separate from Moqui or the Moqui Gradle tasks. This will work with any variation of ElasticSearch version 7.0.0 or later (OSS or not, with or without JDK, hosted by Elastic or AWS, etc). If you are installing ElasticSearch the recommended variation is the OSS with no JDK:
+In production it is more common to have an external OpenSearch (or ElasticSearch) cluster running separate from the Moqui server or cluster. This can also be used for local development where you start, stop, and clear data separately from Moqui or the Moqui Gradle tasks.
 
-[https://www.elastic.co/downloads/elasticsearch-oss-no-jdk](https://www.elastic.co/downloads/elasticsearch-oss-no-jdk)
+The recommended install is OpenSearch:
 
-The configuration for ElasticSearch clusters is in the Moqui Conf XML file with a 'default' cluster in the MoquiDefaultConf.xml file that uses environment variables (or Java system properties) for easier configuration. See the section below for ElasticSearch and other environment variables available. Unless you are using an ElasticSearch install that requires HTTP Basic Authentication the only env var (property) you need to configure is `elasticsearch_url` which defaults to `http://localhost:9200`.
+[https://opensearch.org/downloads.html](https://opensearch.org/downloads.html)
 
-### ElasticSearch Installed in Runtime
+ElasticSearch 7.x (last Apache 2.0 OSS release: 7.10.2) is still usable if you need it.
 
-ElasticSearch may be installed in the `runtime/elasticsearch` directory and run by Moqui when it starts (through MoquiStart only) as well as started, stopped, and data cleaned through various Gradle tasks. In local development environments it is more common to run a local instance of ElasticSearch and clear the data in it along with the H2 database data. This can also be used for production environments where you do not need or want a separate ElasticSearch cluster.
+Cluster configuration is in the Moqui Conf XML file. The `default` cluster in MoquiDefaultConf.xml uses environment variables (or Java system properties). Unless you are using a server that requires HTTP Basic Authentication, the only property you typically need is `elasticsearch_url`, which defaults to `http://127.0.0.1:9200`.
 
-Note that the current support for ElasticSearch installed in runtime/elasticsearch in MoquiStart and Gradle tasks is limited to Unix variants only (ie Linux, MacOS) and uses the OSS no-JDK build for Linux (with no JDK it also works on MacOS). This will not currently work on Windows machines, so if you're doing development on Windows you get to install and manage ElasticSearch separately, just make sure it's available at `http://localhost:9200` (or configure `elasticsearch_url` to point elsewhere).
+### OpenSearch Installed in Runtime
 
-Make sure that the `JAVA_HOME` environment variable is set so ElasticSearch knows where to find the Java JDK.
+OpenSearch may be installed in the `runtime/opensearch` directory (or ElasticSearch in `runtime/elasticsearch`) and started by Moqui when it starts (through MoquiStart only), as well as started, stopped, and data-cleaned through Gradle tasks. In local development it is common to run a local instance and clear its data along with the H2 database. This can also be used in production when you do not need a separate search cluster.
 
-To install ElasticSearch in runtime/elasticsearch the easiest way is to use the Gradle task. This will download the OSS no-JDK Linux, Mac, or Windows build of ElasticSearch and expand the archive in runtime/elasticsearch.
+If both directories exist, OpenSearch is preferred. Make sure `JAVA_HOME` is set so the search process can find a JDK.
 
-`$ ./gradlew downloadElasticSearch`
+To install OpenSearch in `runtime/opensearch` use:
 
-In Gradle there are also `startElasticSearch` and `stopElasticSearch` tasks. Note that Gradle supports partial task names as long as they match a single task so you can use shorter task names like `downloadel`, `startel`, and `stopel`.
+`$ ./gradlew downloadOpenSearch`
+
+That task downloads the OpenSearch min (no bundled JDK) **Linux x64** tarball. On macOS or Windows, install OpenSearch yourself into `runtime/opensearch`, run an external instance, or use Docker.
+
+The older `downloadElasticSearch` task still exists and downloads ElasticSearch OSS 7.10.2 (no JDK) for Linux, macOS, or Windows into `runtime/elasticsearch`. Prefer OpenSearch.
+
+Gradle also has `startElasticSearch` and `stopElasticSearch` tasks. They operate on `runtime/opensearch` if present, otherwise `runtime/elasticsearch`. Gradle matches partial task names as long as they match a single task, so you can use shorter names like `downloadop`, `startel`, and `stopel`.
 
 `$ ./gradlew startel`
 `$ ./gradlew stopel`
 
-These report a message when trying to start or stop, and do nothing if they don't find an ElasticSearch install (if the `runtime/elasticsearch/bin` directory does not exist) or they find that ES is already running or not running (is running if the `runtime/elasticsearch/pid` file exists). Because of this if you aren't sure of ElasticSearch is running or not you can run `startel` to make sure it's running or `stopel` to make sure it's not running.
+These report a message when trying to start or stop, and do nothing if they don't find an install (`bin` directory) or if a `pid` file already exists (already running). If you aren't sure whether search is running, `startel` starts it if needed and `stopel` stops it if a pid file is present.
 
-The `cleanDb`, `load`, `loadSave`, `reloadSave`, and `test` tasks all respect the runtime/elasticsearch install. If ES is running (pid file exists) cleanDb will stop ES, delete the data directory, then start ES. Note that the `test` task automatically starts ES if the `bin` directory exists (detect ES install) and the `pid` file does not, but it does not currently stop ES after running all tests.
+The `cleanDb`, `load`, `loadSave`, `reloadSave`, and `test` tasks respect a runtime OpenSearch or ElasticSearch install. If it is running (pid file exists) `cleanDb` will stop it, delete the data directory, then start it again. The `test` task starts search if `bin` exists and `pid` does not, but it does not currently stop search after tests.
 
-The `MoquiStart` class will try to start ElasticSearch installed in runtime/elasticsearch if it finds a 'bin' directory there. To disable this behavior use the `no-run-es` argument. To use this just run Moqui with:
+The `MoquiStart` class starts OpenSearch in `runtime/opensearch` (or ElasticSearch in `runtime/elasticsearch`) if it finds a `bin` directory there. To disable this use the `no-run-es` argument:
 
 `$ java -jar moqui.war`
 
-This also works with along with the load argument, ie:
+This also works with the load argument:
 
 `$ java -jar moqui.war load`
 
-This will start and stop ElasticSearch along with Moqui, running it in a forked process using `Runtime.exec()`. Note that the MoquiStart class is used when running the executable WAR with `java -jar` as in the examples above, and when running from the root directory of the expanded WAR file as the Procfile does, like:
+Search is started in a forked process. MoquiStart is used when running the executable WAR with `java -jar`, and when running from the root of an expanded WAR as the Procfile does, like:
 
 `java -cp . MoquiStart port=5000 conf=conf/MoquiProductionConf.xml`
 
-The MoquiStart class is NOT used when you drop the embedded WAR file in an external Servlet Container like Tomcat or Jetty. If you deploy Moqui that way you must use an external ElasticSearch server or cluster.
+MoquiStart is **not** used when you drop the WAR file in an external Servlet Container like Tomcat or Jetty. If you deploy that way you must use an external OpenSearch or ElasticSearch server or cluster.
 
-For a local development instance of Moqui a common development cycle is to clean then load data, run tests, reload data from saved archives and run tests, etc. To do a full test run make sure ElasticSearch is installed in `runtime/elasticsearch` and preferably is not already running, then do:
+For a local development instance a common cycle is to clean then load data, run tests, reload saved data and run tests, and so on. To do a full test run make sure OpenSearch is installed in `runtime/opensearch` and preferably is not already running, then:
 
-`$ ./gradlew loadsave test stopel`
+`$ ./gradlew loadSave test stopel`
 
-After running that to reload the data saved just after the initial data load (including H2 and ElasticSearch data) and run a specific component's tests (like mantle-usl), just run:
+To reload the data saved just after the initial data load (including H2 and search data) and run a specific component's tests (like mantle-usl):
 
-`$ ./gradlew reloadsave startel runtime:component:mantle-usl:test stopel`
+`$ ./gradlew reloadSave startel runtime:component:mantle-usl:test stopel`
 
-After running a build, load, etc through whatever approach you prefer just start Moqui and it starts and stops ElasticSearch:
+After a build and load, start Moqui and it starts and stops search with the process:
 
 `$ java -jar moqui.war`
-
-Those are examples of common things to do in local development and can vary depending on your preferred process and Gradle tasks.
 
 ## 8. Database and Other Configuration
 
@@ -346,15 +353,16 @@ Environment variables are a convenient way to configure the database when using 
 | entity_ds_user | moqui | Database user |
 | entity_ds_password | CHANGEME | Password for database user |
 | entity_ds_crypt_pass | CHANGEME | The key used for encrypted fields, should be protected just like a password |
-| entity_add_missing_startup | true | Defaults to true for MySQL, set to 'false' to not add missing tables, columns, etc on startup |
+| entity_add_missing_startup | true | Defaults to true; set to 'false' to not add missing tables, columns, etc on startup |
 
-To configure the ElasticSearch client built into Moqui Framework use the following environment variables:
+To configure the ElasticFacade client (OpenSearch or ElasticSearch) use the following environment variables:
 
 | Env Var or Property | Example | Description |
 | --- | --- | --- |
-| elasticsearch_url | http://localhost:9200 | The base URL for the ElasticSearch server |
-| elasticsearch_user |  | The user for HTTP Basic Authentication on the ES server |
-| elasticsearch_password |  | The password for HTTP Basic Authentication on the ES server |
+| elasticsearch_url | http://127.0.0.1:9200 | The base URL for the OpenSearch or ElasticSearch server |
+| elasticsearch_user |  | The user for HTTP Basic Authentication |
+| elasticsearch_password |  | The password for HTTP Basic Authentication |
+| elasticsearch_index_prefix |  | Optional prefix for index names |
 
 Another set of common environment variables to use is for URL writing, locale, time zone, etc:
 
@@ -374,25 +382,24 @@ Another set of common environment variables to use is for URL writing, locale, t
 
 Database (or datasource) setup is done in the Moqui Conf XML file with `moqui-conf.entity-facade.datasource` elements. There is one element for each entity group and the `datasource.@group-name` attribute matches against `entity.@group-name` attribute in entity definitions. By default in Moqui there are 4 entity groups: `transactional, nontransactional, configuration, and analytical`. If you only configure a `datasource` for the `transactional` group it will also be used for the other groups.
 
-Here is the default configuration for the H2 database:
+The default transactional datasource uses `entity_ds_*` environment variables (or Java properties) and the `h2` database configuration. An explicit H2 datasource looks like:
 
 ```xml
-<datasource group-name="transactional" database-conf-name="h2" schema-name=""
-        start-server-args="-tcpPort 9092 -ifExists -baseDir ${moqui.runtime}/db/h2">
-    <!-- with this setup you can connect remotely using "jdbc:h2:tcp://localhost:9092/MoquiDEFAULT" -->
-    <inline-jdbc pool-minsize="5" pool-maxsize="50">
-        <xa-properties url="jdbc:h2:${moqui.runtime}/db/h2/MoquiDEFAULT" user="sa" password="sa"/>
+<datasource group-name="transactional" database-conf-name="h2" schema-name="">
+    <!-- with this setup you can connect remotely using "jdbc:h2:tcp://localhost:9092/moqui" -->
+    <inline-jdbc>
+        <xa-properties url="jdbc:h2:${moqui_runtime}/db/h2/moqui;lock_timeout=30000" user="sa" password=""/>
     </inline-jdbc>
 </datasource>
 ```
 
 The database-conf-name attribute points to a database configuration and matches against a `database-list.database.@name` attribute to identify which. Database configurations specify things like SQL types to use, SQL syntax options, and JDBC driver details.
 
-This example uses a xa-properties element to use the XA (transaction aware) interfaces in the JDBC driver. The attribute on the element are specific to each JDBC driver. Some examples for reference are included in the MoquiDefaultConf.xml file, but for a full list of options look at the documentation for the JDBC driver.
+This example uses an xa-properties element to use the XA (transaction aware) interfaces in the JDBC driver. The attributes on the element are specific to each JDBC driver. Some examples for reference are included in the MoquiDefaultConf.xml file, but for a full list of options look at the documentation for the JDBC driver.
 
-The JDBC driver must be in the Java classpath. The easiest way get it there, regardless of deployment approach, is to put it in the `runtime/lib` directory.
+The JDBC driver must be in the Java classpath. The easiest way to get it there, regardless of deployment approach, is to put it in the `runtime/lib` directory.
 
-Here is an example of a XA configuration for MySQL:
+Here is an example of a XA configuration for MySQL (use `database-conf-name="mysql8"` for MySQL 8 / 9, as the Docker compose files do):
 
 ```xml
 <datasource group-name="transactional" database-conf-name="mysql" schema-name="">
@@ -422,18 +429,18 @@ For example after adding all components, JDBC drivers, and anything else you wan
 
 |   |   |
 | --- | --- |
-| `$ gradle addRuntime` | Build then create the moqui-plus-runtime.war file |
+| `$ ./gradlew addRuntime` | Build then create the moqui-plus-runtime.war file |
 | `$ cd docker/simple` |  |
-| `$ ./docker-build.sh ../.. mygroup/myrepo` | Build Docker image using Dockerfile, tagged latest by default |
+| `$ ./docker-build.sh ../.. mygroup/myrepo` | Build Docker image using Dockerfile, tagged latest by default (Eclipse Temurin 21) |
 | `$ docker tag mygroup/myrepo:latest mygroup/myrepo:1.0.0` | Add a tag for the version of the image |
 | `$ docker login -u <username> -p <password>` | Login to Docker Hub (or other image repo) if not already logged in |
 | `$ docker push mygroup/myrepo` | Push to Docker Hub (or elsewhere) |
 
-On the server where the image will run make sure Docker (docker-ce) and Docker Compose (docker-compose) are installed and then pull the image created above.  There are various Docker Compose examples in the moqui/docker directory:
+On the server where the image will run make sure Docker Engine and the Docker Compose plugin are installed and then pull the image created above. There are various Compose examples in the moqui/docker directory:
 
 [https://github.com/moqui/moqui-framework/tree/master/docker](https://github.com/moqui/moqui-framework/tree/master/docker)
 
-You'll need to create a custom compose YAML file based on one of these. This is where you put database, host, and other settings and is where you specify the image to use (like mygroup/myrepo above). To pull your image and start it up along with other Docker images for other needed applications (nginx, mysql or postgres, etc) do something like:
+You'll need to create a custom compose YAML file based on one of these (`moqui-postgres-compose.yml`, `moqui-mysql-compose.yml`, `moqui-acme-postgres.yml`, and others). This is where you put database, host, and other settings and is where you specify the image to use (like mygroup/myrepo above). Compose files do not use a `version` key. To pull your image and start it up along with other Docker images for other needed applications (nginx-proxy, mysql or postgres, OpenSearch, etc) do something like:
 
 |   |   |
 | --- | --- |
@@ -452,22 +459,24 @@ The recommended approach for deployment with AWS ElasticBeanstalk is to use a 'J
 In a AWS EB Java SE environment you'll have a nginx proxy already in place that by default expects the application to be running on port 5000. The Java SE environment is used by uploading an application archive containing files for the application(s) and to tell the Java SE environment what to do. Since Moqui Framework 2.1.1 there is a Procfile included that will be added to the moqui-plus-runtime.war file. By default it contains:
 
 ```
-web: java -cp . MoquiStart port=5000 conf=conf/MoquiProductionConf.xml run-es
+web: java -cp . MoquiStart port=5000 conf=conf/MoquiProductionConf.xml
 ```
 
-Note that it does not contain memory options so that they may be set with the JAVA_TOOL_OPTIONS environment variable. For example set it to "-Xmx1024m -Xms1024m" for a 1024 MB Java heap. The heap size on a dedicated instance should be about 1/2 the total system memory (leaving room for off-heap Java memory usage and operating system memory usage). 
+Note that it does not contain memory options so that they may be set with the JAVA_TOOL_OPTIONS environment variable. For example set it to "-Xmx1024m -Xms1024m" for a 1024 MB Java heap. The heap size on a dedicated instance should be about 1/2 the total system memory (leaving room for off-heap Java memory usage and operating system memory usage).
 
-The 'run-es' argument tells the MoquiStart class to run ElasticSearch if installed in runtime/elasticsearch. To install the Linux, Mac, or Windows no-JDK version of ElasticSearch download and expand the archive manually in runtime/elasticsearch or use the Gradle download task:
+MoquiStart starts OpenSearch in `runtime/opensearch` (or ElasticSearch in `runtime/elasticsearch`) automatically if a `bin` directory is present. There is no `run-es` argument; use `no-run-es` if you do **not** want that. To install OpenSearch in the runtime directory:
 
 ```
-$ ./gradlew downloadElasticSearch
+$ ./gradlew downloadOpenSearch
 ```
+
+That Gradle task currently downloads the Linux x64 OpenSearch distribution. On other platforms, install OpenSearch into `runtime/opensearch` yourself, or run an external cluster and set `elasticsearch_url`.
 
 The archive to deploy is basically just the moqui-plus-runtime.war file. The WAR file must be renamed from .war to .zip so that the AWS Java SE environment treats it like a plain archive and not an executable jar. To build a file to upload to AWS ElasticBeanstalk do something like:
 
 |   |   |
 | --- | --- |
-| `$ gradle addRuntime` | Build then create the moqui-plus-runtime.war file |
+| `$ ./gradlew addRuntime` | Build then create the moqui-plus-runtime.war file |
 | `$ mv moqui-plus-runtime.war ../myapp-1.0.0.zip` | Rename the WAR file and move to parent directory to keep separate |
 
 Then upload the ZIP file in the Elastic Beanstalk section of the AWS Console when you create your Java SE environment.
@@ -507,13 +516,13 @@ The smallest recommended servers to use are t2.small for the EC2 instance and t2
     - component      : Application/etc components to deploy
     - conf           : Configuration files separated by dev, staging, prod, etc
     - db             : Database files for H2, Derby, OrientDB, etc will go here
+    - opensearch     : Optional OpenSearch install directory (recommended)
     - elasticsearch  : Optional ElasticSearch install directory
-    - opensearch  : Optional OpenSearch install directory
-    - lib            : JAR files to add to the runtime classpath
+    - lib            : JAR files to add to the runtime classpath (JDBC drivers, etc)
     - log            : Log files will go here
     - template       : General Templates
     - tmp            : Temporary files
-    - txlog          : Transaction log files will go here (Atomikos or Bitronix files)
+    - txlog          : Transaction log files will go here (Bitronix files)
 ```
 
 The main place to put your components is in the runtime/component directory. When you use the Gradle get component tasks this is where they will go.

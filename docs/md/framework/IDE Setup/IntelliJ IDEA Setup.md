@@ -8,13 +8,13 @@ While you can create a project from VCS sources in IntelliJ this is not recommen
 - select the **moqui** root directory (whatever you named it, *moqui-framework* by default from the git repository name) then click on **OK**
 - select *Import project from external model* and under it select **Gradle**, then click on **Next**
 - verify the *Gradle project* location, the directory containing the moqui root build.gradle file
-- for other options on this dialog do what you prefer, I usually leave all checkboxes un-checked, set *Group modules* to *using explicit module groups*, and because I have gradle setup locally I choose the *Use local gradle distribution* option and specify the directory where it is (generally ~/gradle, may be elsewhere)
-- make sure you have a JVM already setup in IntelliJ and select a Java 11 JDK for *Gradle JVM*
+- for other options on this dialog do what you prefer; leave checkboxes unchecked unless you have a reason not to, and set *Group modules* to *using explicit module groups*. Prefer **Use Gradle from: 'gradle-wrapper.properties' file** so IntelliJ uses Gradle 9.2 from the project wrapper. A local Gradle 9.2+ install also works.
+- make sure you have a JVM already set up in IntelliJ and select a **Java 21** JDK for *Gradle JVM* (Eclipse Temurin recommended). Moqui's Gradle wrapper is **9.2**; using the wrapper (`gradle/wrapper`) is simpler than a local Gradle install.
 - for project format I prefer *.idea (directory based)*
 - you may specify other advanced options
 - click on **Finish** and let it do the initial gradle build
 
-Once the window comes up you should see a message that says *Unregistered VCS roots detected*. Click on that, or go to the **Version Control** pane in the Settings dialog (File => Settings). There is will list the directories for all git repositories under *Unregistered roots*. Click on each and then on the green plus sign on the right.
+Once the window comes up you should see a message that says *Unregistered VCS roots detected*. Click on that, or go to the **Version Control** pane in the Settings dialog (File => Settings). It will list the directories for all git repositories under *Unregistered roots*. Click on each and then on the green plus sign on the right.
 
 This will give you the basic setup. As you update moqui-framework and others getting new build.gradle files IntelliJ will tell you its Gradle configuration is out of date. Click on the notification or the Gradle button (usually on the far right), then click on the blue circle/arrows button on the left to *Refresh all Gradle projects*.
 

@@ -5,13 +5,13 @@ With Moqui Framework the main unit of logic is the service. This is a service-or
 -   transactional
 -   secure (both authentication and authorization, plus tarpit for velocity limits)
 -   validated (data types and various constraints for input parameters)
--   implemented with any of a wide variety of languages and tools including scripting languages, Java methods, an even an Apache Camel endpoint
+-   implemented with any of a wide variety of languages and tools including scripting languages, Java methods, and even an Apache Camel endpoint
 -   run from a local or remote caller
 -   run synchronously, asynchronously, or on a schedule
 -   a source of triggers at various phases of execution to run other services using service event-condition-action (SECA) rules
 -   optionally restricted to a single running instance with a database semaphore
 
-*Services* are defined in a services XML file using the service element. A service name is composed of a path, a *verb* and a *noun* in this structure: **${path.verb#noun}**. Note that the noun is optional in a service definition, and in a service name the hash (#) between the verb and noun is also optional. Here is an example, the `mantle.party.PartyServices.create#Person` service (from Mantle Business Artifacts):
+*Services* are defined in a services XML file using the service element. A service name is composed of a path, a *verb*, and a *noun* in this structure: **${path}.${verb}#${noun}**. Note that the noun is optional in a service definition, and in a service name the hash (#) between the verb and noun is also optional. Here is an example, the `mantle.party.PartyServices.create#Person` service (from Mantle Business Artifacts):
 ```
 <service verb="create" noun="Person">
         <in-parameters>
@@ -34,17 +34,17 @@ The only attribute that is required for a service is **verb**, though use of a *
 
 The example above has in-parameters including individual parameter elements and an auto-parameters element to pull in all non-PK fields on the `mantle.party.Person` entity. It also has one out-parameter, a *partyId* that in this case is either generated if no partyId is passed as an input parameter or the passed in value is simply passed through.
 
-The actions element has the implementation of the service, containing a XML Actions script. In this case it calls a couple of services, and then conditionally calls a third if a *roleTypeId* is passed in. Note that there is no explicit setting of the *partyId* output parameter (in the result Map) as the *Service Facade* automatically picks up the context value for each declared output parameter after the service implementation is run to populate the output/results Map.
+The actions element has the implementation of the service, containing an XML Actions script. In this case it calls a couple of services, and then conditionally calls a third if a *roleTypeId* is passed in. Note that there is no explicit setting of the *partyId* output parameter (in the result Map) as the *Service Facade* automatically picks up the context value for each declared output parameter after the service implementation is run to populate the output/results Map.
 
 These are the attributes available on the service element:
 
 -   **verb**: This can be any verb, and will often be one of: create, update, store, delete, or find. The full name of the service will be: "${path}.${verb}\#${noun}". The verb is required and the noun is optional so if there is no noun the service name will be just the verb.
 -   **noun**: For entity-auto services this should be a valid entity name. In many other cases an entity name is the best way to describe what is being acted on, but this can really be anything.
--   **type**: The service type specifies how the service is implemented. The default available options include: inline, entity-auto, script, java, interface, remote-xml-rpc, remote-json-rpc, and camel. Additional types can be added by implementing the `org.moqui.impl.service.ServiceRunner` interface and adding a *service-facade.service-type* element in the Moqui Conf XML file. The default value is inline meaning the service implementation is under the *service.actions* element.
+-   **type**: The service type specifies how the service is implemented. The default available options include: inline, entity-auto, script, java, interface, remote-json-rpc, remote-rest, and camel (camel is available when the Apache Camel component is installed). Additional types can be added by implementing the `org.moqui.impl.service.ServiceRunner` interface and adding a *service-facade.service-type* element in the Moqui Conf XML file. The default value is inline meaning the service implementation is under the *service.actions* element.
 -   **location**: The location of the service. For scripts this is the Resource Facade location of the file. For Java class methods this is the full class name. For remote services this is the URL of the remote service. Instead of an actual location can also refer to a pre-defined location from the *service-facade.service-location* element in the Moqui Conf XML file. This is especially useful for remote service URLs.
 -   **method**: The method within the location, if applicable to the service type.
--   **authenticate**: If not set to false (is true by default) a user much be logged in to run this service. If the service is running in an *ExecutionContext* with a user logged in that will qualify. If not then either a "authUserAccount" parameter or the "authUsername" and "authPassword" parameters must be specified and must contain valid values for a user of the system. An "authTenantId" parameter may also be specified to authenticate the user in a specific tenant instance. If specified will be used to run the service with that as the context tenant. Can also be set to anonymous-all or anonymous-view and not only will authentication not be required, but this service will run as if authorized (using the _NA_ UserAccount) for all actions or for view-only.
--   **allow-remote**: Defaults to false meaning this service cannot be called through remote interfaces such as JSON-RPC and XML-RPC. If set to true it can be. Before settings to true make sure the service is adequately secured (for authentication and authorization).
+-   **authenticate**: If not set to false (is true by default) a user must be logged in to run this service. If the service is running in an *ExecutionContext* with a user logged in that will qualify. If not then either a "authUserAccount" parameter or the "authUsername" and "authPassword" parameters must be specified and must contain valid values for a user of the system. If those authentication parameters are passed they are used for the service call even if a user is already logged in. Can also be set to anonymous-all or anonymous-view and not only will authentication not be required, but this service will run as if authorized (using the _NA_ UserAccount) for all actions or for view-only.
+-   **allow-remote**: Defaults to false meaning this service cannot be called through remote interfaces such as JSON-RPC. If set to true it can be. Before setting to true make sure the service is adequately secured (for authentication and authorization).
 -   **validate**: Defaults to true. Set to false to not validate input parameters, and not automatically remove unspecified parameters.
 -   **transaction**:
 
@@ -59,6 +59,8 @@ These are the attributes available on the service element:
 -   **semaphore-timeout**: When waiting how long before timing out, in seconds. Defaults to 120s.
 -   **semaphore-sleep**: When waiting how long to sleep between checking the semaphore, in seconds. Defaults to 5s.
 -   **semaphore-ignore**: Ignore existing semaphores after this time, in seconds. Defaults to 3600s (1 hour).
+
+A service may include one or more **implements** elements to inherit in- and out-parameters from an interface service (`type="interface"`). The **service** attribute is the name of the interface; if **required** is set, all inherited parameters get that required value.
 
 The input and output of a service are each a Map with name/value entries. Input parameters are specified with the in-parameters element, and output parameters with the out-parameters element. Under these elements use the parameter element to define a single parameter, and the auto-parameters element to automatically define parameters based on primary key (pk), non-primary key (nonpk) or all fields of an entity.
 
@@ -92,6 +94,6 @@ In addition to the **required** attribute, validations can be specified for each
 
 Validation elements can be combined using the *val-or* and *val-and* elements, or negated using the *val-not* element.
 
-When a XML Form field is based on a service parameter with validations certain validations are automatically validated in the browser with JavaScript, including **required**, *matches*, *number-integer*, *number-decimal*, *text-email*, *text-url*, and *text-digits*.
+When an XML Form field is based on a service parameter with validations certain validations are automatically validated in the browser with JavaScript, including **required**, *matches*, *number-integer*, *number-decimal*, *text-email*, *text-url*, and *text-digits*.
 
-Now that your service is defined, essentially configuring the behavior of the Service Facade when the service is called, it is time to implement it.
+Now that your service is defined, essentially configuring the behavior of the Service Facade when the service is called, it is time to implement it. See [Service Implementation](/docs/framework/Logic+and+Services/Service+Implementation).

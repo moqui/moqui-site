@@ -4,7 +4,7 @@
 
 ## Overview and Definitions
 
-Product prices are determined by looking up the relevant price for a given product and may be modified by a price modify service. The result is the price to be charged to the customer or paid to a supplier. In accounting terms this is the gross revenue per quantity for the sale of a given product to a customer. Different prices may be confiured for different stores, vendors, customers, currencies, date/time ranges, and quantity breaks. These may then be modified by a rule or service that has logic such as calculating a discounted price for certain customer classifications like charging 50% of the List price (MSRP) when selling to distributors. Product price calculation can be done before adding an item to an order (or shopping cart) and is always done when a product item is added to an order unless a manual price is specified by a user allowed to do so (such as a Sales Person or Customer Service Rep).
+Product prices are determined by looking up the relevant price for a given product and may be modified by a price modify service. The result is the price to be charged to the customer or paid to a supplier. In accounting terms this is the gross revenue per quantity for the sale of a given product to a customer. Different prices may be configured for different stores, vendors, customers, currencies, date/time ranges, and quantity breaks. These may then be modified by a rule or service that has logic such as calculating a discounted price for certain customer classifications like charging 50% of the List price (MSRP) when selling to distributors. Product price calculation can be done before adding an item to an order (or shopping cart) and is always done when a product item is added to an order unless a manual price is specified by a user allowed to do so (such as a Sales Person or Customer Service Rep).
 
 Promotions are applied to sales orders after the price to charge has been looked up and calculated, and generally based on the price charged for the related product item. A single promotion may apply to multiple items in an order whereas pricing is per order item. Promotions are calculated for and applied to an entire order and promotion discounts will generally vary based on how much of different product items are in a given order. In accounting terms promotion discounts are subtracted from gross revenue to calculate net revenue. While humans can come up with a huge variety of promotions the most common form is buy X quantity get Y quantity at Z% discount. For example a buy 3 get 1 free (100% discount) promotion would have X = 3, Y = 1, Z = 100 for this type of promotion. When a promotion like this runs a Discount type order item is added automatically as a child item of the product item.
 
@@ -22,7 +22,7 @@ TODO
 
 ### How Promotions Work
 
-Each time an Order is modified in a way that might effect promotions (add items, edit item quantities and prices, change shipping information, etc) the system removes promotion discount items from the order and re-runs promotions. When running promotions the system will:
+Each time an Order is modified in a way that might affect promotions (add items, edit item quantities and prices, change shipping information, etc) the system removes promotion discount items from the order and re-runs promotions. When running promotions the system will:
 
 1. find all promotions configured for the Store selected for the Order where the Order Placed date (or current date if order not yet placed) is after the From Date and before the Thru Date on the promotion
 2. run each promotion in order based on the Sequence Number (sorted ascending, ie lower numbers run first)
@@ -34,7 +34,7 @@ If any promotion is applied that has **Free Ground Ship** set to 'Y' and the Shi
 
 ### Finding and Creating Promotions
 
-Promotions are configured for a Product Store in the Promotions tab of the Store screen ([demo](https://demo.moqui.org/vapps/PopcAdmin/ProductStore/Promotion/FindPromotion?productStoreId=POPC_DEFAULT)).
+Promotions are configured for a Product Store in the Promotions tab of the Store screen ([demo](https://demo.moqui.org/qapps/marble/ProductStore/Promotion/FindPromotion?productStoreId=POPC_DEFAULT)).
 
 Each promotion has an **Item Description** that is used as the Order Item Description when the promotion is applied. Each promotion also has a **Service** which defines the behavior of the promotion. Each promotion Service has parameters you can use to adjust behavior. There are a few standard promotion services to choose from and your system may have additional custom promotion services available.
 

@@ -34,7 +34,7 @@ party who the product is shipped to from the company (and who will pass it on to
 
 ### Bill-To Customer
 
-party to receives and who is responsible to pay the invoice for the order
+party who receives the invoice and is responsible for paying it
 
 ## Customer Service Representative
 

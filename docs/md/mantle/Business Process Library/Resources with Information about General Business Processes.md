@@ -6,9 +6,9 @@
 
 ### General Info
 
-Site: http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=ubl
+Site: https://www.oasis-open.org/committees/ubl/
 
-Detailed info archive: http://docs.oasis-open.org/ubl/os-UBL-2.0.zip
+Detailed info archive: https://docs.oasis-open.org/ubl/os-UBL-2.0.zip
 
 ### Parts of the Standard to Implement
 
@@ -20,7 +20,7 @@ Detailed info archive: http://docs.oasis-open.org/ubl/os-UBL-2.0.zip
 
 OAGIS is a standard created by the Open Applications Group.
 
-Site: http://www.oagi.org/
+Site: https://oagi.org/
 
 ### Parts of the Standard to Implement
 
@@ -30,12 +30,12 @@ Site: http://www.oagi.org/
 
 ### General Info
 
-The general idea here is that instead of creating PDF or other reports (or in addition to the basic PDF reports) we can use these as a standardized structure for financial reporting. I've read about XBRL over the years and from what I can tell in the last couple of years it has really become commonly used among companies large and small for internal reporting as well as reporting to government agencies in many parts of the world, and for sharing financials informations with partners (more accounting firms and such than suppliers or customers, just to clarify).
+The general idea here is that instead of creating PDF or other reports (or in addition to the basic PDF reports) we can use these as a standardized structure for financial reporting. I've read about XBRL over the years and from what I can tell in the last couple of years it has really become commonly used among companies large and small for internal reporting as well as reporting to government agencies in many parts of the world, and for sharing financial information with partners (more accounting firms and such than suppliers or customers, just to clarify).
 
 This would be a great thing, and leaning on such standards will lend some clout to our accounting component. I figure that the numbers coming out of the accounting package are the most important thing about it, so basing those on a standard like this gives us a huge step forward for prospective user organizations both large and small.
 
 Technical information about the XML document structures and such is here (look at the first section, for XBRL 2.1):
-http://www.xbrl.org/SpecRecommendations/
+https://www.xbrl.org/SpecRecommendations/
 
 ### Parts of the Standard to Implement
 
@@ -47,18 +47,18 @@ There are three that would be great to have done for our most likely near future
 
 http://xbrl.iasb.org/int/fr/ifrs/gp/2006-08-15/summary_page.html
 
-* US-GAAP-CI: United States Generally Accepted Accounting Practices for Commercial and Industrial
+* US-GAAP-CI: United States Generally Accepted Accounting Principles for Commercial and Industrial
 
 http://www.xbrl.org/us/fr/gaap/ci/2005-02-28/us-gaap-ci%20Summary%20Page.htm
 
 * XBRL GL: General Ledger Taxonomy
 
-http://www.xbrl.org/GLTaxonomy/
+https://www.xbrl.org/GLTaxonomy/
 
-The first two are more for reporting that can actually be delivered to government and other agencies, and used with tools internally for visualization and such. The third will allow us to export financial information in a standard way that can then be combined with financial information from other systems for reporting. For large organizations this could be the key to letting the system run everything it is responsible for and then export financial data in a standard way so the corporation can use XBRL compatible tools to combine it with information from other systems and such.
+The first two are more for reporting that can actually be delivered to government and other agencies, and used with tools internally for visualization and such. The third will allow us to export financial information in a standard way that can then be combined with financial information from other systems for reporting. For large organizations this could be the key to letting the system run everything it is responsible for and then export financial data in a standard way so the corporation can use XBRL-compatible tools to combine it with information from other systems and such.
 
 A more general list of financial reporting taxonomies is available here:
-http://www.xbrl.org/FRTaxonomies/
+https://www.xbrl.org/FRTaxonomies/
 
 ### Related Data Model Elements
 
@@ -66,15 +66,15 @@ http://www.xbrl.org/FRTaxonomies/
 
 ## UBL 2.0 Business Processes
 
-This is an important one because if we want to implement an integration standard this is a big one to consider (ie UBL 2.0), and OAGIS is another.
+This is an important one because if we want to implement an integration standard this is a big one to consider (i.e. UBL 2.0), and OAGIS is another.
 
 This document has quite a few diagrams and definitions which are very helpful.
 
-http://docs.oasis-open.org/ubl/os-UBL-2.0/UBL-2.0.html#BUSINESSPROCESSES
+https://docs.oasis-open.org/ubl/os-UBL-2.0/UBL-2.0.html#BUSINESSPROCESSES
 
 Also in the same document the list of schemas for process communication documents is helpful:
 
-http://docs.oasis-open.org/ubl/os-UBL-2.0/UBL-2.0.html#SCHEMAS
+https://docs.oasis-open.org/ubl/os-UBL-2.0/UBL-2.0.html#SCHEMAS
 
 ## ebXML Catalog of Common Business Processes
 
@@ -86,5 +86,5 @@ http://www.ebxml.org/specs/bpPROC.pdf
 
 This is more related to UBL 1.0, but is recent (from 2006) and useful. It is brief though.
 
-http://docs.oasis-open.org/ubl/cs-UBL-1.0-SBS-1.0/universal-business-process-1.0-ebBP/
+https://docs.oasis-open.org/ubl/cs-UBL-1.0-SBS-1.0/universal-business-process-1.0-ebBP/
 

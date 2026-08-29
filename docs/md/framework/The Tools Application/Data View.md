@@ -1,14 +1,18 @@
-## Data View
+# Data View
 
 The data view screens are used to define a simple view entity stored in the database (using the DbViewEntity and related entities) and then view the results and export them as a CSV file. These screens are a simple form of ad-hoc report and data export that leverage the concept of master and dependent entities and allow for easy aliasing of fields on a master entity and all directly related dependents with an optional function. More elaborate DB view entities can be defined and viewed/exported from these screens, but the Edit DB View screen only supports a master entity and the entities directly related to it.
 
-### Find DB View
+Open them at `http://localhost:8080/qapps/tools/DataView`.
 
-The find screen has a form at the top to create a DbViewEntity and then table with all existing DB view entities and links to Edit or View them.
+NOTE: For reports that need fields more than one relationship hop away, the Data Document screens in the System app (`http://localhost:8080/qapps/system/DataDocument`) are a more flexible replacement. Data View remains useful for simple master-and-direct-dependent views and CSV export.
+
+## Find DB View
+
+The find screen has a form at the top to create a DbViewEntity and then a table with all existing DB view entities and links to Edit or View them.
 
 <img src="/docs/attachment/100211/findDbView2.png"  width="880" height="260" />
 
-### Edit DB View
+## Edit DB View
 
 The screen to edit a DB view entity has a form at the top to change the package the entity is in. Note that view entities defined in DbViewEntity can be used in the Entity Facade just like any other entity or view entity.
 
@@ -18,7 +22,7 @@ The fields selected to include in the view are the Enumeration.**description** a
 
 <img src="/docs/attachment/100211/editDbView1.png" width="880" height="600" />
 
-### View DB View
+## View DB View
 
 This screen displays the results of querying the defined DB view entity, paginated if needed, and with a Filter button that pops up a form with filter options for the fields on the view entity (using the default auto fields in a form-single). There is a link to go back to the Edit DB View screen, and a link to get the results in a CSV file.
 

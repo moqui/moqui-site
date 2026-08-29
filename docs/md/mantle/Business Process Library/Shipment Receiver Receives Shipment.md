@@ -1,6 +1,6 @@
 # Shipment Receiver Receives Shipment
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 ## Dependencies
 
@@ -10,11 +10,11 @@
 
 Supplier ships items ordered via Carrier.
 
-When Carrier delivers shipment, Shipment Receiver briefly reviews incoming shipment and signs for receipt of the product from Carrier. If the quantity is not the quantity ordered or it is clearly a different product Shipment Receiver will contact Supplier and resolve issue before signing for receipt. If no resolution is come to Shipment Receiver will not sign for receipt and the shipment will be returned to Supplier.
+When Carrier delivers shipment, Shipment Receiver briefly reviews incoming shipment and signs for receipt of the product from Carrier. If the quantity is not the quantity ordered or it is clearly a different product Shipment Receiver will contact Supplier and resolve issue before signing for receipt. If no resolution is reached Shipment Receiver will not sign for receipt and the shipment will be returned to Supplier.
 
 If shipment received is clearly a return (has RMA# or Return ID), Shipment Receiver gives items to CSR for handling. If shipment received does not correspond to a known PO or Return, Shipment Receiver gives items to Buyer for handling.
 
-If shipment received is clearly for a purchase order (has PO#) Shipment Received processes incoming inventory. Shipment Receiver finds the PO corresponding to the items received and records PO receipt (inventory) information for it including quantity and cost, but no location yet.  If Shipment Receiver records a higher quantity received than was ordered, system automatically adjusts the PO being received against.
+If shipment received is clearly for a purchase order (has PO#) Shipment Receiver processes incoming inventory. Shipment Receiver finds the PO corresponding to the items received and records PO receipt (inventory) information for it including quantity and cost, but no location yet.  If Shipment Receiver records a higher quantity received than was ordered, system automatically adjusts the PO being received against.
 
 Shipment Receiver reviews incoming items. Shipment Receiver determines the Product ID. Shipment Receiver checks the item to make sure all features match what is currently in the system performs quality checks according to a checklist specific to that product (if one exists).
 
@@ -24,4 +24,4 @@ If product that arrives is not the product on the PO and has already been receiv
 
 Shipment Receiver sets the inventory aside for Inventory Mover to put away.
 
-If part of the PO is not yet received Buyer contacts Supplier and resolve any issues (not yet received inventory, wrong inventory, etc).
+If part of the PO is not yet received Buyer contacts Supplier and resolves any issues (not yet received inventory, wrong inventory, etc.).

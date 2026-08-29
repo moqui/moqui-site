@@ -15,9 +15,8 @@
     * Customization and enhancements
     * Maintenance, training, and support
 * References
-    * Open Source Definition: [https://opensource.org/docs/osd](https://opensource.org/docs/osd)
-    * Dell EMC Strategy: [https://blog.dellemc.com/en-us/open-source-first-strategy/](https://blog.dellemc.com/en-us/open-source-first-strategy/)
-    * Linux Foundation: [https://www.linuxfoundation.org/resources/open-source-guides/setting-an-open-source-strategy/](https://www.linuxfoundation.org/resources/open-source-guides/setting-an-open-source-strategy/)
+    * Open Source Definition: [https://opensource.org/osd](https://opensource.org/osd)
+    * Linux Foundation: [https://www.linuxfoundation.org/resources/open-source-guides/setting-an-open-source-strategy](https://www.linuxfoundation.org/resources/open-source-guides/setting-an-open-source-strategy)
 
 ## What is Open Source First?
 
@@ -81,7 +80,7 @@
     * target organizations unable to participate due to internal skill set and budget for external services
     * target market too small for likely third party participation
 * Competitive differentiation
-    * cost of design, implementation, maintenance, etc far less that differentiating market value
+    * cost of design, implementation, maintenance, etc. far less than differentiating market value
     * easy to overuse as a justification
     * balance against risk of opportunity cost as others choose to do the same as open source, often better with more collaboration
 
@@ -129,9 +128,9 @@
 * Establish an Open Source First policy
 * Review existing code
     * what can be open sourced?
-    * which repositories can be brought back in-line with the upstream open source repo?
+    * which repositories can be brought back in line with the upstream open source repo?
     * what can we move from modified open source repos to private repos?
 * For current and future projects and tasks
     * ask the open source question starting in the requirements phase
     * encourage developers to interact frequently with open source communities
-    * use open source project resources (mailing lists, etc) to replace internal collaboration
+    * use open source project resources (forums, mailing lists, etc.) to replace internal collaboration

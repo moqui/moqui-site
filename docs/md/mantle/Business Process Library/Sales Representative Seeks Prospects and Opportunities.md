@@ -1,6 +1,6 @@
 # Sales Representative Seeks Prospects and Opportunities
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * Contacts
 * Find and Contact Leads

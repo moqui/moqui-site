@@ -23,8 +23,8 @@ Other fields on the Payment will depend on what the payment is for. ACH payments
 
 To create a new outgoing Payment:
 
-1. start on the Accounting Dashboard screen [(demo)](https://demo.moqui.org/vapps/PopcAdmin/Accounting/dashboard)
-2. click on the **Payments** button under the Invoices and Payments section
+1. start on the Accounting Dashboard screen [(demo)](https://demo.moqui.org/qapps/marble/Accounting/dashboard)
+2. click on the **Payments** link under the Invoices and Payments section
 3. use the **New Outgoing Payment** dialog to create a Payment
     1. select the desired **From** and **To** parties
     2. select '**ACH Direct**' for the **Instrument**
@@ -36,12 +36,12 @@ To create a new outgoing Payment:
     3. submit the form with the **Update** button
     4. change the payment status to '**Authorized**' using the **Authorize (Authorized)** button in the status section of the screen
 
-There are other ways to create payments, including from orders and invoices. If a Payment already exists just go through the 6 point check list to above to make sure the fields required for ACH payments are set.
+There are other ways to create payments, including from orders and invoices. If a Payment already exists just go through the 6-point checklist above to make sure the fields required for ACH payments are set.
 
-Once there is at least one such Payment you can go to the 'Files' tab for the Bank Account and use the dialog there to create a NACHA file. If a transport is configured you can send it to your bank directly from the application, otherwise you can download the NACHA file and upload it to your bank through their web site or by whatever other means are available.
+Once there is at least one such Payment you can go to the **Files** tab for the Bank Account and use the dialog there to create a NACHA file. If a transport is configured you can send it to your bank directly from the application, otherwise you can download the NACHA file and upload it to your bank through their web site or by whatever other means are available.
 
-1. start on the Accounting Dashboard screen [(demo)](https://demo.moqui.org/vapps/PopcAdmin/Accounting/dashboard)
-2. click on the link for desired Bank Account in the list of Internal Organizations, then go to the 'Files' tab [(demo)](https://demo.moqui.org/vapps/PopcAdmin/Party/PaymentMethod/PaymentMethodFiles?paymentMethodId=ZIRET_BA&partyId=ORG_ZIZI_RETAIL)
+1. start on the Accounting Dashboard screen [(demo)](https://demo.moqui.org/qapps/marble/Accounting/dashboard)
+2. click on the link for the desired Bank Account in the list of Internal Organizations, then go to the **Files** tab [(demo)](https://demo.moqui.org/qapps/marble/Party/PaymentMethod/PaymentMethodFiles?paymentMethodId=ZIRET_BA&partyId=ORG_ZIZI_RETAIL)
 3. use the **Generate NACHA File** dialog to generate a NACHA file, you can use the default options (no From Date or Thru Date) to include all outstanding ACH payments setup with the guidelines above
 4. (optional) click on the **Payments** button for the NACHA file to see the payments included in the file
 5. (optional) if there are issues with the file click on the red **Cancel** button for the file, adjust Payment or other data as needed, and generate a new NACHA file
@@ -70,7 +70,7 @@ On a technical note an automatic import service is supported using the System Me
 
 ## Reconcile Transactions
 
-Bank account transactions imported from OFX/QFX or BAI 2 files, or added manually, may be matched and reconciled with **Payment** and **GL Transaction** records on the Transactions tab of the Payment Method screens. To get to that tab start from the Accounting Dashboard and click on the link for the desired bank account.
+Bank account transactions imported from OFX/QFX or BAI 2 files, or added manually, may be matched and reconciled with **Payment** and **GL Transaction** records on the Transactions tab of the Payment Method screens. To get to that tab start from the Accounting Dashboard and click the link for the desired bank account.
 
 Many transactions can be automatically matched using the **Auto Match and Reconcile** dialog on the Transactions tab. After this has run you can scan down the transaction list to check the results, making sure amounts and check or reference numbers match. For transactions that are not automatically matched you have a few options:
 

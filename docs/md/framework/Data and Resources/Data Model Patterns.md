@@ -1,10 +1,10 @@
 # Data Model Patterns
 There are various useful data model patterns that Moqui Framework has conventions and functionality to help support. These data model patterns are also used extensively in the Moqui and Mantle data models.
-[TOC levels=2-3]      
+[TOC levels=2-3]
 
 ## Master Entities
 
-A Master Entity is one whose records exist independent of other entities, and generally has a single field primary key. Examples of this include the `moqui.example.Example`, `moqui.security.UserAccount`, `mantle.party.Party`, mantle.product.Product, and `mantle.order.OrderHeader` entities.
+A Master Entity is one whose records exist independent of other entities, and generally has a single field primary key. Examples of this include the `moqui.example.Example`, `moqui.security.UserAccount`, `mantle.party.Party`, `mantle.product.Product`, and `mantle.order.OrderHeader` entities.
 
 To set a primary sequenced ID, which is the sequenced value for the primary key of a master entity, use the *EntityValue*.**setSequencedIdPrimary**() method. You can also manually set the primary key field to any value, as long as it is unique.
 
@@ -28,7 +28,7 @@ The join entity may have a single generated primary key, or a natural composite 
 
 One example of this is the *ExampleFeatureAppl* entity which joins the *Example* and *ExampleFeature* master entities. The *ExampleFeatureAppl* entity has three primary key fields: **exampleId** (the PK of the *Example* entity), **exampleFeatureId** (the PK of the *ExampleFeature* entity), and a **fromDate**. It also has a **thruDate** field that is not a primary key field to accompany the **fromDate** PK field.
 
-To better describe the relationship between an *Example* and an *ExampleFeature*, the *ExampleFeatureAppl* entity also has a **sequenceNum** field for ordering features within and example, and a **exampleFeatureApplEnumId** field to describe how the feature applies to the example (Required, Desired, or Not Allowed).
+To better describe the relationship between an *Example* and an *ExampleFeature*, the *ExampleFeatureAppl* entity also has a **sequenceNum** field for ordering features within an example, and an **exampleFeatureApplEnumId** field to describe how the feature applies to the example (Required, Desired, or Not Allowed).
 
 To see the actual entity definition and seed data for the *ExampleFeatureAppl* entity see the *ExampleEntities.xml* file (in the **example** component).
 
@@ -41,7 +41,7 @@ If the Effective Date pattern is used (with fromDate and thruDate fields) then i
 * **fromDate** <= anchor timestamp OR **fromDate** is null (when not a primary key field)
 * **thruDate** >= anchor timestamp OR **thruDate** is null
 
-In some cases the configuration and logic calls for a single join record to honor. An example of this is that multiple price records may be configured for a product but only one is valid at any point in time. The standard query pattern for this is to use the applicable join entity record with the **most recent fromDate** after applying all filters (including Effective Date conditions above). In the price example this allows for a long term price with a fromDate far in the past and no thruDate along with a temporary override that has a more recent fromDate along with a thruDate when the temporary price is no longer active. To get this effect in a query simple apply the Effective Date conditions above and order the results by fromDate descending (**-fromDate**).
+In some cases the configuration and logic calls for a single join record to honor. An example of this is that multiple price records may be configured for a product but only one is valid at any point in time. The standard query pattern for this is to use the applicable join entity record with the **most recent fromDate** after applying all filters (including Effective Date conditions above). In the price example this allows for a long term price with a fromDate far in the past and no thruDate along with a temporary override that has a more recent fromDate along with a thruDate when the temporary price is no longer active. To get this effect in a query simply apply the Effective Date conditions above and order the results by fromDate descending (**-fromDate**).
 
 ## Dependent Entities
 
@@ -55,11 +55,11 @@ When getting dependents for an entity the method (which is part of the internal 
 
 ## Enumerations
 
-An *Enumeration* is simply a pre-configured set of possible values. Enumerations are used to describe single records or relationships between records. An entity may have multiple fields enumerated values.
+An *Enumeration* is simply a pre-configured set of possible values. Enumerations are used to describe single records or relationships between records. An entity may have multiple fields with enumerated values.
 
 The entity in Moqui where all enumerations are stored is named *Enumeration*, and values in it are split by type with a record in the *EnumerationType* entity.
 
-When a field is to have a constrained set of possible enumerated values it should have the suffix "EnumId", like the **exampleTypeEnumId** field on the Example entity. For each field there should also be a relationship element to describe the relationship from the current entity to the Enumeration entity. The **title** attribute on the relationship element should have the same value as the **enumTypeId** that is used for the* Enumeration* records that are possible values for that field. Generally the **title** attribute should be the same as the enum field’s name up to the "EnumId" suffix. For example the relationship title for the **exampleTypeEnumId** field is *ExampleType*.
+When a field is to have a constrained set of possible enumerated values it should have the suffix "EnumId", like the **exampleTypeEnumId** field on the Example entity. For each field there should also be a relationship element to describe the relationship from the current entity to the Enumeration entity. The **title** attribute on the relationship element should have the same value as the **enumTypeId** that is used for the *Enumeration* records that are possible values for that field. Generally the **title** attribute should be the same as the enum field’s name up to the "EnumId" suffix. For example the relationship title for the **exampleTypeEnumId** field is *ExampleType*.
 
 ## Status, Flow, Transition and History
 
@@ -73,14 +73,14 @@ If an entity has only a single status associated with it the field to track the 
 
 There should be a relationship defined for each status field to tie the current entity to the *StatusItem* entity. Similar to the pattern with the *Enumeration* entity, the **title** attribute on the relationship element should match the **statusTypeId** on each *StatusItem* record.
 
-The audit log feature of the Entity Facade is the easiest way to keep a history of status changes including who made the change, when it was made, and the old and new status values. To turn this on just use set the **enable-audit-log** attribute to true on the *entity.field* element. With this the field definition would look something like:
+The audit log feature of the Entity Facade is the easiest way to keep a history of status changes including who made the change, when it was made, and the old and new status values. To turn this on just set the **enable-audit-log** attribute to true on the *entity.field* element. With this the field definition would look something like:
 ```
 <field name="statusId" type="id" enable-audit-log="true"/>
 ```
 
 ## Units of Measure
 
-A unit of measure is a standardized or custom unit for measures such as length, weight, temperature, data size, and even currency. These are the types of UOM. A `moqui.basic.Uom` record, identified by **uomId**, has type (**uomTypeEnumId**), **description**, and **abbreviation** fields. The OOTB data for units of measure is in the UnitData.xml file.
+A unit of measure is a standardized or custom unit for measures such as length, weight, temperature, data size, and even currency. These are the types of UOM. A `moqui.basic.Uom` record, identified by **uomId**, has type (**uomTypeEnumId**), **description**, and **abbreviation** fields. The out-of-the-box data for units of measure is in the UnitData.xml file.
 
 Most UOM types have a conversion between different units of the same type. These conversions are modeled in the *UomConversion* entity. For example there are 1000 meters in a kilometer, and that is recorded this way:
 ```
@@ -99,7 +99,7 @@ A geographic boundary can be a political division, business region, or any other
 
 The *Geo* entity also has a **wellKnownText** field for machine-readable detail about the geometry of the geographic boundary. It is meant to contain text following the ISO/IEC 13249-3:2011 specification which is supported by various databases and tools (including Java libraries). For a good introduction to WKT see:
 
-[**http://en.wikipedia.org/wiki/Well-known\_text**](http://en.wikipedia.org/wiki/Well-known_text)
+[https://en.wikipedia.org/wiki/Well-known_text](https://en.wikipedia.org/wiki/Well-known_text)
 
 Use the *GeoAssoc* entity to associate *Geo* records. This has different types (**geoAssocTypeEnumId**) and can be used for regions of larger geographic boundaries (GAT_REGIONS; like cities within states, states within countries), for *Geo* records that are more general groups to associate them with the *Geo* records in the group (GAT_GROUP_MEMBER; like the lower 48 states in the USA), or other types you might define. The **geoId** field should point to the group or larger area, and the **toGeoId** to the group member or region within the area. See the *GeoUsaData.xml* file for examples of both.
 

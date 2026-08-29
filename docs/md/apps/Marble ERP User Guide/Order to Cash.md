@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The **Order to Cash** process manages the process of sales to your customers. In this process customers order something from you that you deliver to them. The order can be received via different ways (e.g. internet, phone, fax or sales representative). To the customer the process appears the same - they order and pay, then they receive the product. As the company managing the internal process, there may be different subprocesses involved in processing, sourcing or delivering the order that is hidden from the customer.
+The **Order to Cash** process manages sales to your customers. In this process customers order something from you that you deliver to them. The order can be received in different ways (for example internet, phone, fax, or sales representative). To the customer the process appears the same - they order and pay, then they receive the product. As the company managing the internal process, there may be different subprocesses involved in processing, sourcing, or delivering the order that are hidden from the customer.
 
 * Add Customer
 * Customer Submits Sales Order

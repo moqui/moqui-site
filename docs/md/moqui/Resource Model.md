@@ -1,13 +1,13 @@
 # Moqui Resource Model
 
-To maintain a high level of quality and provide for long-term sustainable maintenance Moqui is operated using a professionally moderated code base model. This model is based on free-market principles and takes in account the motivations and needs of all parties involved:
+To maintain a high level of quality and provide for long-term sustainable maintenance, Moqui is operated using a professionally moderated code base model. This model is based on free-market principles and takes into account the motivations and needs of all parties involved:
 
 * **user**: any user of the software (developer, end-user, etc)
 * **sponsor**: anyone who backs new features and changes to the software
 * **contributor**: developer who contributes code and then collaborates with (or hires) a moderator to make it part of a project
 * **moderator**: developer with commit (push) access to the official code repositories and who personally works on the design, development, and maintenance of the software (intentionally small group)
 
-No changes go into the official code repository without detailed personal review by one of the moderators. It is common for users of software to want certain things to be different, or new things to be added. Under this model the normal way to get this done is to work with a moderator to either implement the desired changes, or review a patch from the contributor, make revisions as needed, and then commit the changes.
+No changes go into the official code repository without detailed personal review by one of the moderators. It is common for users of software to want certain things to be different, or new things to be added. Under this model the normal way to get this done is to work with a moderator to either implement the desired changes, or review a pull request from the contributor, make revisions as needed, and then commit the changes.
 
 Under this model:
 

@@ -1,10 +1,10 @@
 # Placing Customer Adds Product to Cart
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * Add Variant to Cart
 * Add Configurable Product to Cart
-* Input Addition Information about Purchase (survey; product personalization, etc)
+* Input Additional Information about Purchase (survey; product personalization, etc.)
 
 ## Story
 

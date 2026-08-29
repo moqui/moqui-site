@@ -5,9 +5,9 @@
 
 The Shipment and related entities may be used for both Incoming and Outgoing shipments (**shipmentTypeEnumId**), and more specifically for Sales Return, Sales Shipment, Purchase Shipment, Purchase Return, Drop Shipment, and Transfer shipments. A Shipment is generally from one Party (**fromPartyId**) and to another (**toPartyId**). If needed put special instructions in the **handlingInstructions** field.
 
-For planning purposes a shipment may have **estimatedReadyDate**, **estimatedShipDate**, **estimatedArrivalDate**, and **latestCancelDate** values. For further detail or to get the shipment in a calendar as an event use the **shipWorkEffortId** and **arrivalWorkEffortId** fields to point for WorkEffort records. There is typically some sort of estimated cost for the shipment, track that in **estimatedShipCost** with its currency in **costUomId**. If the cost is adjusted use the **addtlShippingCharge** field along with a description of the additional charge in **addtlShippingChargeDesc**.
+For planning purposes a shipment may have **estimatedReadyDate**, **estimatedShipDate**, **estimatedArrivalDate**, and **latestCancelDate** values. For further detail or to get the shipment in a calendar as an event use the **shipWorkEffortId** and **receiveWorkEffortId** fields to point to WorkEffort records. There is typically some sort of estimated cost for the shipment, track that in **estimatedShipCost** with its currency in **costUomId**. If the cost is adjusted use the **addtlShippingCharge** field along with a description of the additional charge in **addtlShippingChargeDesc**.
 
-For the entire Shipment there is a **statusId** that may be Input, Scheduled, Picked, Packed, Shipped, Delivered, and Cancelled. This field is audit logged for a status history. The **Packed** status is one of the more important as it is the point where the shipment is generally considered fulfilled for billing purposes. The change to the Packed status is used to trigger Invoice creation for the order(s) on the shipment, and if applicable automated payment processing.
+For the entire Shipment there is a **statusId** that may be Input, Scheduled, Picked, Packed, Shipped, Delivered, Rejected, and Cancelled. This field is audit logged for a status history. The **Packed** status is one of the more important as it is the point where the shipment is generally considered fulfilled for billing purposes. The change to the Packed status is used to trigger Invoice creation for the order(s) on the shipment, and if applicable automated payment processing.
 
 Each shipment has ShipmentItem records with a **quantity** for each Product (**productId**) in the shipment.
 
@@ -27,7 +27,7 @@ A Shipment is generally based on one or more orders or returns, and generally re
 
 There is a ShipmentItemSource.**quantity** field to specify how much of the ShipmentItem.**quantity** comes from the specified order or return item. There is also a quantityNotHandled field on the source to specify how much of the quantity should have been shipped but was not.
 
-Shipment has **picklistId** and **binLocationNumber** fields, and ShipmentItemSource has **binLocationNumber** and **statusId** fields to use for picking and packing in a warehouse. See the **Picklist (mantle.shipment.picklist)** section below for details.
+Shipment has **binLocationNumber** (and **shipWorkEffortId** for the picklist WorkEffort), and ShipmentItemSource has **binLocationNumber** and **statusId** fields to use for picking and packing in a warehouse. See the **Picklist (mantle.shipment.picklist)** section below for details.
 
 ### Picklist
 

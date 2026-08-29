@@ -1,5 +1,5 @@
 # Procure to Pay
-The “Procure to Pay” process is the one you use when you purchase goods or services from your suppliers. In this process you are “the customer” and the order can be made to your supplier in different ways (e.g. internet, phone, fax or sales representative). To your business the process appears the same, you order and pay for the products, and the products are delivered.
+The **Procure to Pay** process is the one you use when you purchase goods or services from your suppliers. In this process you are "the customer" and the order can be made to your supplier in different ways (for example internet, phone, fax, or sales representative). To your business the process appears the same: you order and pay for the products, and the products are delivered.
 
 NOTE: You may have minor variations to this, where the product is delivered before the supplier payment.
 
@@ -15,13 +15,13 @@ NOTE: You may have minor variations to this, where the product is delivered befo
 ## Receive Shipment
 
 1. sometime later supplier ships product and a carrier drops it off at the warehouse
-1. receiver looks up the PO and creates a shipment from it then records the receipt of each product (settings shipment quantities to quantity actually received, recorded received vs rejected quantities)
+1. receiver looks up the PO and creates a shipment from it then records the receipt of each product (setting shipment quantities to quantity actually received, recording received vs rejected quantities)
 1. receiver marks the shipment as Delivered, system automatically generates an invoice for the product actually received and connected to the PO and incoming shipment
 
 ## Receive Payable Invoice
 
 1. supplier sends an invoice, with the shipment or separately
-1. AP clerks looks up the PO, sees the invoice(s) associated with it, and goes to the system generated invoice for the received shipment
+1. AP clerk looks up the PO, sees the invoice(s) associated with it, and goes to the system generated invoice for the received shipment
 1. AP clerk updates invoice for info from supplier invoice (date, their order and invoice numbers, etc)
 1. AP clerk reviews generated invoice items against the supplier invoice; if there are any differences contact shipping, purchasing, etc to find out what to do
 1. AP clerk adds any shipping or other charges from the supplier on their invoice; after this the invoice totals should match (between supplier invoice and invoice in system)
@@ -39,11 +39,11 @@ NOTE: You may have minor variations to this, where the product is delivered befo
 
 ## General Notes
 
-Both the receiver and the AP clerk start by looking up a PO when something (shipment or invoice) is received from a supplier. That is intended to be the first step and can be done most quickly by using the 'Lookup by ID' form on the main POPC ERP Dashboard screen (the one with the various icons), or if the PO number/ID is not known then using the Find Order screen and search for orders by Vendor (the supplier is the Vendor for purchase orders).
+Both the receiver and the AP clerk start by looking up a PO when something (shipment or invoice) is received from a supplier. That is intended to be the first step and can be done most quickly by using the Quick Search field at the top of the Marble ERP dashboard (it includes lookup by ID), or if the PO number/ID is not known then using the Find Order screen and searching for orders by Vendor (the supplier is the Vendor for purchase orders).
 
 The reasons for system-generated Payable invoices include:
 
 1. reduce data entry effort
-1. when reviewing a system generated invoice against the actual invoice from the customer you can compare your record of what was received to their record of what they are billing you for
+1. when reviewing a system generated invoice against the actual invoice from the supplier you can compare your record of what was received to their record of what they are billing you for
 1. ensure at least product items are posted to the correct GL accounts (and correct item type)
-1. automatically associate with related order and shipment (currently this can't be done manually, BTW)
+1. automatically associate with related order and shipment (currently this can't be done manually)

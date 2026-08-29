@@ -8,8 +8,6 @@ What follows is a summary of the various tools in the Moqui Framework and corres
 
 Any setting in this file can be overridden in the Moqui Conf XML file that is specified at runtime along with the runtime directory (and generally in the conf directory under the runtime directory). The two files are merged before any settings are used, with the runtime file overriding the default one. Because of this, one easy way to change settings is simply copy from the default conf file and paste into the runtime one, and then make changes as desired.
 
-**TODO: add framework tools diagram from old OmniGraffle file**
-
 ## Execution Context and Web Facade
 
 The Execution Context is the central object in the Moqui Framework API. This object maintains state within the context of a single server interaction such as a web screen request or remote service call. Through the ExecutionContext object you have access to a number of "facades" that are used to access the functionality of different parts of the framework. There is detail below about each of these facades.
@@ -33,19 +31,19 @@ For an ExecutionContext instance created as part of a web request (HttpServletRe
 
 The request parameters "map" (ec.web.requestParameters) is a special map that contains parameters from the URL parameter string, inline URL parameters (using the "/~name=value/" format), and multi-part form submission parameters (when applicable). There is also a special parameters map (ec.web.parameters) that combines all the other maps in the following order (with later overriding earlier): request parameters, application attributes, session attributes, and request attributes. That parameters map is a stack of maps just like the context so if you write to it the values will go in the top of the stack which is the request attributes.
 
-For security reasons the request parameters map is canonicalized and filtered. This and the Service Facade validation help to protect agains XSS and injection attacks.
+For security reasons the request parameters map is canonicalized and filtered. This and the Service Facade validation help to protect against XSS and injection attacks.
 
 ### Factory, Servlet & Listeners
 
 Execution Context instances are created by the Execution Context Factory. This can be done directly by your code when needed, but is usually done by a container that Moqui Framework is running in.
 
-The most common way to run Moqui Framework is as a webapp through either a WAR file deployed in a servlet container or app server, or by running the executable WAR file and using the embedded Jetty Servlet Container. In either case the Moqui root webapp is loaded and the WEB-INF/web.xml file tells the servlet container to load the MoquiServlet, the MoquiSessionListener, and the MoquiContextListener. These are default classes included in the framework, and you can certainly create your own if you want to change the lifecycle of the ExecutionContextFactory and ExecutionContext.
+The most common way to run Moqui Framework is as a webapp through either a WAR file deployed in a servlet container or app server, or by running the executable WAR file and using the embedded Jetty Servlet Container (Jakarta Servlet). In either case the Moqui root webapp is loaded and the WEB-INF/web.xml file tells the servlet container to load the MoquiServlet, the MoquiSessionListener, and the MoquiContextListener. These are default classes included in the framework, and you can certainly create your own if you want to change the lifecycle of the ExecutionContextFactory and ExecutionContext.
 
 With these default classes the ExecutionContextFactory is created by the MoquiContextListener on the **contextInitialized**() event, and is destroyed by the same class on the **contextDestroyed**() event. The ExecutionContext is created using the factory by the MoquiServlet for each request in the **doGet**() and **doPost**() methods, and is destroyed by the MoquiServlet at the end of each request by the same method.
 
 ## Resource and Cache Facades
 
-The Resource Facade is used to access and execute resource such as scripts, templates, and content. The Cache Facade is used to do general operations on caches, and to get a reference to a cache as an implementation of the Cache interface. Along with supporting basic get/put/remove/etc operations you can get statistics for each cache, and modify cache properties such as timeouts, size limit, and eviction algorithm. The default Cache Facade implementation is just a wrapper around ehcache, and beyond the cache-facade configuration in the Moqui Conf XML file you can configure additional options using the ehcache.xml file.
+The Resource Facade is used to access and execute resources such as scripts, templates, and content. The Cache Facade is used to do general operations on caches, and to get a reference to a cache as an implementation of the Cache interface (`javax.cache.Cache`, JSR-107). Along with supporting basic get/put/remove/etc operations you can get statistics for each cache, and modify cache properties such as timeouts, size limit, and eviction algorithm. The default implementation is **MCache** (`org.moqui.jcache.MCache`), configured with `cache-list.@local-factory="MCache"` in the Moqui Conf XML file. There is no ehcache.xml file.
 
 The Resource Facade uses the Cache Facade to cache plain text by its source location (for **getLocationText**() method), compiled Groovy and XML Actions scripts by their locations (for the runScriptInCurrentContext method), and compiled FreeMarker (FTL) templates also by location (for the **renderTemplateInCurrentContext**() method).
 
@@ -57,11 +55,11 @@ For more generic access to resources the **getLocationReference**() method retur
 
 The API of the Screen Facade is deceptively simple, mostly just acting as a factory for the ScreenRender interface implementation. Through the ScreenRender interface you can render screens in a variety of contexts, the most common being in a service with no dependence on a servlet container, or in response to a HttpServletRequest using the ScreenRender.**render**(request, response) convenience method.
 
-Generally when rendering and a screen you will specify the root screen location, and optionally a subscreen path to specify which subscreens should be rendered (if the root screen has subscreens, and instead of the default-item for each screen with subscreens). For web requests this sub-screen path is simply the request "pathInfo" (the remainder of the URL path after the location where the webapp/servlet are mounted).
+Generally when rendering a screen you will specify the root screen location, and optionally a subscreen path to specify which subscreens should be rendered (if the root screen has subscreens, and instead of the default-item for each screen with subscreens). For web requests this sub-screen path is simply the request "pathInfo" (the remainder of the URL path after the location where the webapp/servlet are mounted).
 
 ### Screen Definition
 
-The real magic of the Screen Facade is in the screen definition XML files. Each screen definition can specify web-settings, parameters, transitions with responses, subscreens, pre-render actions, render-time actions, and widgets. Widgets include subscreens menu/active/panel, sections, container, container-panel, render-mode-specific content (i.e. html, xml, csv, text, xsl-fo, etc), and forms.
+The real magic of the Screen Facade is in the screen definition XML files. Each screen definition can specify web-settings, parameters, transitions with responses, subscreens, pre-render actions, render-time actions, and widgets. Widgets include subscreens menu/active/panel, sections, container, container-panel, render-mode-specific content (html, vuet, qvt, xml, csv, text, xsl-fo, etc), and forms.
 
 There are two types of forms: form-single and form-list. They both have a variety of layout options and support a wide variety of field types. While Screen Forms are primarily defined in Screen XML files, they can also be extended for groups of users with the DbForm and related entities.
 
@@ -69,9 +67,9 @@ One important note about forms based on a service (using the auto-fields-service
 
 ### Screen/Form Render Templates
 
-The output of the ScreenRender is created by running a template with macros for the various XML elements in screen and form definitions. If a template is specified through the ScreenRender.**macroTemplate**() method then it will be used, otherwise a template will be determined with the **renderMode** and the configuration in the screen-facade.screen-text-output element of the Moqui Conf XML file. You can create your own templates that override the default macros, or simply ignore them altogether, and configure them in the Moqui Conf XML file to get any output you want. There is an example of one such template in the runtime/template/screen-macro/ScreenHtmlMacros.ftl file, with the override configuration in the runtime/conf/development/MoquiDevConf.xml file.
+The output of the ScreenRender is created by running a template with macros for the various XML elements in screen and form definitions. If a template is specified through the ScreenRender.**macroTemplate**() method then it will be used, otherwise a template will be determined with the **renderMode** and the configuration in the screen-facade.screen-text-output element of the Moqui Conf XML file. You can create your own templates that override the default macros, or simply ignore them altogether, and configure them in the Moqui Conf XML file to get any output you want. There is an example of one such template in the `runtime/template/screen-macro/ScreenHtmlMacros.ftl` file, with the override configuration in the `runtime/conf/MoquiDevConf.xml` file.
 
-The default HTML screen and form template uses jQuery Core and UI for dynamic client-side interactions. Other JS libraries could be used by modifying the screen HTML macros as described above, and by changing the theme data (defaults in runtime/component/webroot/data/WebrootThemeData.xml file) to point to the desired JavaScript and CSS files.
+The default HTML screen and form template (`DefaultScreenMacros.html.ftl`, used for `/apps`) uses jQuery Core and UI for dynamic client-side interactions. Other JS libraries could be used by modifying the screen HTML macros as described above, and by changing the theme data (defaults in `runtime/base-component/webroot/data/WebrootThemeData.xml`) to point to the desired JavaScript and CSS files. The default application UI is Quasar under `/qapps` using `DefaultScreenMacros.qvt.ftl`.
 
 ## Service Facade
 
@@ -105,17 +103,17 @@ The Service Facade has a job scheduler configured using the `ServiceJob` entity.
 
 ### Web Services
 
-#### JSON-RPC and XML-RPC
+#### JSON-RPC
 
-For RPC web services the Service Facade uses Apache XML-RPC for incoming and outgoing XML-RPC service calls, and custom code using Moqui JSON and web request tools for incoming and outgoing JSON-RPC 2.0 calls. The outgoing calls are handled by the RemoteXmlRpcServiceRunner and RemoteJsonRpcServiceRunner classes, which are configured in the service-facade.service-type element in the Moqui Conf XML file. To add support for other outgoing service calls through the Service Facade implement the ServiceRunner interface (as those two classes do) and add a service-facade.service-type element for it.
+For RPC web services the Service Facade uses custom code with Moqui JSON and web request tools for incoming and outgoing JSON-RPC 2.0 calls. Outgoing JSON-RPC calls are handled by RemoteJsonRpcServiceRunner, configured in the `service-facade.service-type` element in the Moqui Conf XML file. Remote REST calls use RemoteRestServiceRunner. To add support for other outgoing service calls through the Service Facade implement the ServiceRunner interface and add a `service-facade.service-type` element for it.
 
-Incoming web services are handled using default transitions defined in the runtime/component/webroot/screen/webroot/rpc.xml screen. The remote URL for these, if webroot.xml is mounted on the root ("/") of the server, would be something like: "http://hostname/rpc/xml" or "http://hostname/rpc/json". To handle other types of incoming services similar screen transitions can be added to the rpc.xml screen, or to any other screen.
+Incoming JSON-RPC is handled using a default transition defined in `runtime/base-component/webroot/screen/webroot/rpc.xml`. The remote URL, if webroot.xml is mounted on the root ("/") of the server, is `http://hostname/rpc/json`. To handle other types of incoming services similar screen transitions can be added to the rpc.xml screen, or to any other screen.
 
 #### REST API
 
 The main tool for building a REST API based on internal services and entity operations is to define resource paths in a *Service REST API* XML file such as the `moqui.rest.xml` file in **moqui-framework** and the `mantle.rest.xml` file in **mantle-usl**. With your own Service REST API XML files you can define sets of web services to match the structure of the applications you are building, and grant authorization to different paths for different sets of users just like with XML Screens. In the Tools app you can view Service REST API details using automatic Swagger output produced by the framework based on the REST XML file and the entities and services used within it.
 
-Another alternative for REST style services a screen transition can be declared with a HTTP request method (get, put, etc) as well as a name to match against the incoming URL. For more flexible support of parameters in the URL beyond the transition’s place in the URL path values following the transition can be configured to be treated the same as named parameters. To make things easier for JSON payloads they are also automatically mapped to parameters and can be treated just like parameters from any other source, allowing for easily reusable server-side code. To handle these REST service transitions an internal service can be called with very little configuration, providing for an efficient mapping between exposed REST services and internal services.
+Another alternative for REST style services: a screen transition can be declared with an HTTP request method (get, put, etc) as well as a name to match against the incoming URL. For more flexible support of parameters in the URL beyond the transition’s place in the URL path values following the transition can be configured to be treated the same as named parameters. To make things easier for JSON payloads they are also automatically mapped to parameters and can be treated just like parameters from any other source, allowing for easily reusable server-side code. To handle these REST service transitions an internal service can be called with very little configuration, providing for an efficient mapping between exposed REST services and internal services.
 
 ## Entity Facade
 
@@ -129,9 +127,9 @@ To find entity records use the EntityFind interface. To get an instance of this 
 
 ### Connection Pool and Database
 
-The Entity Facade uses Atomikos TransactionsEssentials or Bitronix BTM (default) for XA-aware database connection pooling. To configure Atomikos use the jta.properties file. To configure Bitronix use the bitronix-default-config.properties file. With configuration in the entity-facade element of the Moqui Conf XML file you can change this to use any DataSource or XADataSource in JNDI instead.
+The Entity Facade uses the [Bitronix](https://github.com/moqui/bitronix) transaction manager fork for XA-aware database connection pooling. To configure Bitronix use the `bitronix-default-config.properties` file. With configuration in the entity-facade element of the Moqui Conf XML file you can change this to use any DataSource or XADataSource in JNDI instead. The community Atomikos transaction manager is deprecated and is not a bundled option.
 
-The default database included with Moqui Framework is Apache Derby. This is easy to change with configuration in the entity-facade element of the Moqui Conf XML file. To add a database not yet supported in the MoquiDefaultConf.xml file, add a new database-list.database element. Currently databases supported by default include Apache Derby, DB2, HSQL, MySQL, Postgres, Oracle, and MS SQL Server.
+The default database included with Moqui Framework is **H2**. This is easy to change with configuration in the entity-facade element of the Moqui Conf XML file or with `entity_ds_*` environment variables. To add a database not yet supported in the MoquiDefaultConf.xml file, add a new `database-list.database` element. Databases supported by default include H2, Apache Derby, DB2, HSQL, MySQL (including `mysql8`), Postgres, Oracle, and MS SQL Server.
 
 ### Database Meta-Data
 
@@ -147,9 +145,9 @@ When debugging transaction problems, such as tracking down where a rollback-only
 
 ### Transaction Manager (JTA)
 
-By default the Transaction Facade uses the Bitronix TM library (also used for a connection pool by the Entity Facade). To configure Bitronix use the bitronix-default-config.properties file. Moqui also supports Atomikos OOTB. To configure Atomikos use the jta.properties file.
+By default the Transaction Facade uses the Bitronix TM library (also used for a connection pool by the Entity Facade), class `org.moqui.impl.context.TransactionInternalBitronix`. To configure Bitronix use the `bitronix-default-config.properties` file.
 
-Any JTA transaction manager, such as one from an application server, can be used instead through JNDI by configuring the locations of the UserTransaction and TransactionManager implementations in the entity-facade element of the Moqui Conf XML file.
+Any JTA transaction manager, such as one from an application server, can be used instead through JNDI by configuring the locations of the UserTransaction and TransactionManager implementations in the `transaction-facade.transaction-jndi` element of the Moqui Conf XML file.
 
 ## Artifact Execution Facade
 
@@ -188,7 +186,7 @@ A Moqui Framework component is a set of artifacts that make up an application bu
 The structure of a component is driven by convention as opposed to configuration. This means that you must use these particular directory names, and that all Moqui components you look at will be structured in the same way.
 
 -   **classes** - files under this directory will be added to the Java classpath
--   **data** - Entity XML data files with root element entity-facade-xml, loaded by **type** attribute matching types specified on command line (executable WAR with -load), or all types if no type specified
+-   **data** - Entity XML data files with root element entity-facade-xml, loaded by **type** attribute matching types specified on the command line (`java -jar moqui.war load types=...`), or all types if no type specified
 -   **entity** - All Entity Definition and Entity ECA XML files in this directory will be loaded; Entity ECA files must be in this directory and have the dual extension ".eecas.xml"
 -   **lib** - JAR files in this directory will be added to the Java classpath
 -   **screen** - Screens are referenced explicitly (usually by "component://\*" URL), so this is a convention
@@ -209,19 +207,19 @@ There are two ways to tell Moqui about a component:
 
 #### Mounting Screen(s)
 
-Each webapp in Moqui (including the default webroot webapp) must have a root screen specified in the moqui-conf.webapp-list.webapp.**root-screen-location** attribute. The default root screen is called webroot which is located at runtime/component/webroot/screen/webroot.xml.
+Each webapp in Moqui (including the default webroot webapp) must have a root screen specified in the moqui-conf.webapp-list.webapp.**root-screen-location** attribute. The default root screen is called webroot which is located at `runtime/base-component/webroot/screen/webroot.xml` (default subscreen: `qapps`).
 
-For screens from your component to be available in a screen path under the webroot screen you need to make each top-level screen in your component (i.e. each screen in the component’s screen directory) a subscreen of another screen that is an ancestor of the webroot screen. There are three ways to do this (this does not include putting it in the webroot directory as an implicit subscreen since that is not an option for screens defined elsewhere):
+For screens from your component to be available in a screen path under the webroot screen you need to make each top-level screen in your component (i.e. each screen in the component’s screen directory) a subscreen of another screen already under webroot. There are three ways to do this (this does not include putting it in the webroot directory as an implicit subscreen since that is not an option for screens defined elsewhere):
 
 - add a `screen.subscreens.subscreen-item` element to the parent screen (what the subscreen will be under)
 - add `screen-facade.screen` and `subscreens-item` elements in the Moqui Conf XML file (including MoquiConf.xml in a component); this subscreens-item element is much like the subscreens.subscreens-item element within a XML Screen
 - add a record in the `SubscreensItem` entity, specifying the parent screen in the **screenLocation** field, the subscreen in the **subscreenLocation** field, the "mount point" in the **subscreenName** field (equivalent to the subscreens-item.**name** attribute), and either ALL_USERS in the **userGroupId** field for it to apply to all users, or an actual userGroupId for it to apply to just that user group
 
-If you want your screen to use its own decoration and be independent from other screens, put it under the webroot screen directly. To have your screen part of the default apps menu structure and be decorated with the default apps decoration, put it under the apps screen.
+If you want your screen to use its own decoration and be independent from other screens, put it under the webroot screen directly. To have your screen part of the default apps menu structure and be decorated with the default apps decoration, put it under the apps screen (reachable as `/qapps/...` by default, and also as `/vapps/...` and `/apps/...`).
 
 #### Moqui Conf XML File Settings
 
-You may want have things in your component add to or modify various things that come by default with Moqui Framework, including:
+You may want to have things in your component add to or modify various things that come by default with Moqui Framework, including:
 
 -   **Resource Reference**: see the moqui-conf.resource-facade.resource-reference element
 -   **Template Renderer**: see the moqui-conf.resource-facade.template-renderer element

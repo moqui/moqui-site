@@ -1,4 +1,4 @@
-# Moqui Framework Features (through 2.0.0)
+# Moqui Framework Features
 
 Moqui Framework gives you flexible tools to quickly create functional and secure applications.
 
@@ -18,20 +18,20 @@ Moqui Framework helps you build applications quickly and scale complex applicati
 
 ## Flexible deployment
 
-- Tested to run in Java on Windows, OS X, Linux, etc
+- Tested to run in Java on Windows, macOS, Linux, etc (Java 21 required)
 - Multi-instance management (separate app server in container or VM, separate databases)
 - Database
   - Uses embedded H2 database by default
   - Comes with configuration for H2, Derby, PostgreSQL, MySQL, HSQL, Oracle, DB2, and SQL Server
   - Support for other databases usually with configuration only
 - Other data sources
-  - Plugin in NoSQL and other data sources
-  - OrientDB graph and document database supported OOTB (runs embedded by default)
+  - Plug in NoSQL and other data sources
+  - OrientDB graph and document database available through the optional `moqui-orientdb` component
 - Application Server
-  - Uses embedded Bitronix BTM or Atomikos TransactionsEssentials for JTA and connection pool
-  - JTA factory interface to plugin other transaction managers without a full J2EE container
+  - Uses the [Bitronix](https://github.com/moqui/bitronix) transaction manager fork for JTA and connection pooling
+  - JTA factory interface to plug in other transaction managers without a full Jakarta EE container
   - Support for JTA transaction manager and XA-aware connection pool from application server through JNDI
-  - Executable WAR file for command-line data loading and embedded Jetty servlet container
+  - Executable WAR file for command-line data loading and embedded Jetty servlet container (Jetty 12 / Jakarta EE)
   - The same WAR file can be dropped in a servlet container like Tomcat or Jetty, or a more general app server like JBoss or Weblogic
 - Custom deployment (embedded, etc)
   - Use the supplied MoquiServlet, or write your own based on that example, or use something other than a servlet for non-web apps
@@ -44,7 +44,7 @@ Moqui Framework helps you build applications quickly and scale complex applicati
 
 ## Clustering Support
 
-- Various interfaces to plugin distributed system tools
+- Various interfaces to plug in distributed system tools
 - Default implementation using Hazelcast (in moqui-hazelcast tool component) with single configuration for all cluster coordination made easy with secure auto-discovery and cluster joining
 - Distributed Entity (database) Cache Invalidation
 - Distributed background service executor
@@ -58,22 +58,22 @@ Moqui Framework helps you build applications quickly and scale complex applicati
 - To help you get started Moqui comes with a sample runtime directory
 - Sample configurations for development, staging, and production
 - Configurable "root" screen with sample HTML wrappers, login, menus, etc
-- Separate screens under root screen to support undecorated subscreens and the apps decorated with with header/footer/menus/etc
+- Separate screens under the root screen: undecorated subscreens, plus `/qapps` (Quasar, default), `/vapps` (Vue + Bootstrap), and `/apps` (server-rendered HTML) wrappers with header/footer/menus
 - Various configuration options and examples for flexible deployment and overriding templates for screen macros, xml-actions, etc
 - Easy to include the runtime directory inside the deployed war file
 - Support <component>/lib and runtime/lib jar loading in a cached and extended/extensible ClassLoader
 
 ## Technical Features
 
-- Uses Groovy for scripting and Freemarker for templates, plus other options and easy plugin for any you want
-- Uses JTA transaction management and JDBC connection pool from JNDI, or internally managed with Atomikos TransactionsEssentials, Bitronix BTM, or plug in any other
-- WebSocket support through JSR-356 API or Moqui notification framework
+- Uses Groovy for scripting and FreeMarker for templates, plus other options and easy plug-in for any you want
+- Uses JTA transaction management and JDBC connection pool from JNDI, or internally managed with the Bitronix fork, or plug in any other
+- WebSocket support through the Jakarta WebSocket API or Moqui notification framework
 - Manage incoming and outgoing email
-- Network push printing through CUPS print servers
+- Network push printing through CUPS print servers (optional `moqui-cups` component)
 - Flexible resource access from files, JCR repository, and many others
-- JCR 2.0 (JSR-283) based content and artifact management for Apache JackRabbit or other JCR implementations
+- JCR 2.0 (JSR-283) based content and artifact management for Apache Jackrabbit or other JCR implementations
 - Implicit internationalization and easy database-driven localization
-- Cache management for framework and application resources with pluggable local or distributed javax.cache (JSR-107) implementations
+- Cache management for framework and application resources with pluggable local or distributed `javax.cache` (JSR-107) implementations; the default is MCache
 - Write-through per-transaction cache available for complex services to minimize database round-trips
 - Built-in profiling tools for framework artifacts including screens, services, and entities
 - Multi-instance management (one container or VM and one database per instance) with automation support for Docker, MySQL, etc
@@ -92,7 +92,7 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - L10nFacade for localization of text
   - Resource Facade for access to classpath, file, JCR, etc resources, and for running scripts and rendering templates (with caching for all)
   - LoggerFacade for general logging, especially for non-class code
-  - CacheFacade for general caching, backed by ehcache
+  - CacheFacade for general caching, backed by MCache / JCache (`javax.cache`)
   - TransactionFacade for general JTA-type operations and tracking what is currently going on with transactions, where errors originated, etc
   - ScreenFacade for rendering screens using the ScreenRender interface
   - Service Facade for running local and remote services by definition
@@ -105,8 +105,8 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Define run-time inheritable permissions for any artifact in the system
   - Both record level and implementation artifact level security
 - Protection from XSS and XSRF threats (uses JSoup HTML parser/cleaner)
-- Incorporates Apache Shiro, which is now used for all authentication in Moqui, by default through the MoquiShiroRealm
-- Other realms such as for LDAP or ActiveDirectory can be configured with shiro.ini
+- Incorporates Apache Shiro 2, which is used for all authentication in Moqui, by default through the MoquiShiroRealm
+- Other realms such as for LDAP or Active Directory can be configured with `shiro.ini`
 - Permission model and checking for simple/flat permissions (to be used as an alternative to artifact authz)
 - Runs permission and role (UserGroup) checks through Shiro realm
 - User account and flexible password constraints and management
@@ -153,9 +153,9 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - JCR Content (content://) - JCR 2.0 (JSR-283) based content and artifact management with Apache JackRabbit
   - Java URL (http, https, file, ftp, jar)
 - Templates supported OOTB include:
-  - FreeMarker (.ftl) templates (www.freemarker.org)
-  - GString (.gstring) templates (groovy.codehaus.org/Groovy+Templates)
-  - WikiText for rendering of wiki markups including:
+  - FreeMarker (.ftl) templates (https://freemarker.apache.org)
+  - GString (.gstring) templates (https://groovy-lang.org/templating.html)
+  - Wiki markup via the optional `moqui-wikitext` component, including:
     - Confluence (.cwiki, .confluence)
     - MediaWiki (.mediawiki)
     - Textile (.textile)
@@ -163,7 +163,7 @@ Moqui Framework helps you build applications quickly and scale complex applicati
     - TWiki (.twiki)
 - Scripting languages supported OOTB include:
   - Groovy script (.groovy)
-  - JavaScript (with Rhino) (.js)
+  - JavaScript (.js) via `javax.script` if a javascript engine is on the classpath
   - Moqui XML Actions (.xml)
     - Converts to Groovy code then compiles for good runtime performance
     - Embeddable in service definitions, screens, etc
@@ -211,11 +211,11 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Data import and export tools, including for seed and other setup data
   - Configuration data documents based on database data available as nested maps or JSON
   - Automatic data feed to send data documents to services on data changes for search indexing, sending notifications, etc
-  - Data search built on ElasticSearch for any database, resource, or other custom data
+  - Data search built on OpenSearch (ElasticSearch 7.x compatible) via ElasticFacade for any database, resource, or other custom data
   - Support OOTB for H2, Derby, HSQL, PostgreSQL, MySQL (and Percona, MariaDB, etc), SQL Server, DB2, and Oracle
   - Easy to add support for other databases, usually just through configuration
   - Support for plugging in other data sources
-  - Built-in support for the OrientDB graph and document database
+  - Optional OrientDB graph and document database support via the `moqui-orientdb` component
   - Time-based data synchronization support between Moqui systems
 - Entity Definition
   - Extension of other entities
@@ -254,12 +254,12 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Easy to setup data document indexing by sending to OOTB service
 - Data Search
   - Search Data Documents by search string and/or named fields in the document
-  - Based on ElasticSearch (which is based on Apache Lucene)
+  - Based on OpenSearch or ElasticSearch 7.x (Apache Lucene) through ElasticFacade (`ec.elastic`)
 
 ## Services
 
 - Service Facade
-  - Call services synchronously, async, or scheduled
+  - Call services synchronously, asynchronously, or scheduled
   - Local async service run with java.util.concurrent.ThreadPoolExecutor
   - Distributed async services run with pluggable java.util.concurrent.ExecutorService implementation
   - Scheduled service jobs run with java.util.concurrent.ScheduledThreadPoolExecutor, configured with extended Cron strings
@@ -267,7 +267,7 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Flexible XML service definitions
   - Validation of data type, required or not, regexp, and other constraints; validation runs on server and in client with JavaScript library
   - Event-Condition-Action (ECA) rules to orchestrate high level processes, externally change or augment behavior of existing services, and much more
-  - Native integration with Apache Camel for flexible and powerful integration with other systems and applications
+  - Apache Camel integration via the optional `moqui-camel` component
   - System-to-System Message management for producing/sending and receiving/consuming
 - Service Definition
   - Service parameter type/subtype checking
@@ -277,24 +277,22 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Service expand auto-parameters, get parameters from implements
   - Automatic (with no definition) entity-based services for create, update, delete and store (create or update)
 - Service running
-  - Call services synchronously in thread with minimal overhead
-  - Call services async or scheduled (uses Quartz Scheduler)
-  - Support of pre-configured scheduled job exists, see: http://www.quartz-scheduler.org/docs/cookbook/JobInitPlugin.html
+  - Call services synchronously in-thread with minimal overhead
+  - Call services asynchronously or scheduled (java.util.concurrent worker and scheduled pools, configured with ServiceJob)
   - Service run on commit or rollback of current tx
   - Service Event-Condition-Action (ECA) rules to trigger other services before validation, auth, service run, or after service run or commit, or when the tx is actually committed or rolled back
   - Service runners for Java, XML Actions, inline actions, Scripts
   - Interface for adding your own service runners
 - Write-through per-transaction cache available for complex services to minimize database round-trips
 - Email handling
-  - Incoming email handling with Email ECA Rules (emeca) with the org.moqui.impl.EmailServices.pollEmailServer service, configured with the EmailServer entity
-  - Service (org.moqui.impl.EmailServices.sendEmailTemplate) to send email based on settings in the EmailTemplate entity
+  - Incoming email handling with Email ECA Rules (emeca) with the `org.moqui.impl.EmailServices.poll#EmailServer` service, configured with the EmailServer entity
+  - Service (`org.moqui.impl.EmailServices.send#EmailTemplate`) to send email based on settings in the EmailTemplate entity
 - Web Services
   - REST web services with minimal configuration for internal service mapping
   - Generic RESTful data interface based on entity definitions, secure with authc and authz
   - JSON-RPC 2.0 incoming service handler and outgoing service runner
-  - XML-RPC incoming service handler and outgoing service runner (with Apache XML-RPC)
-- Apache Camel endpoint for receiving messages to call Moqui services, or defining services that call into Camel
-- JBoss Drools KIE Support
+- Apache Camel endpoint (in `moqui-camel`) for receiving messages to call Moqui services, or defining services that call into Camel
+- JBoss Drools KIE Support (optional `moqui-kie` component)
   - Easily use Drools rules in your business logic
   - Use jBPM workflows for easier control and monitoring of business processes
 
@@ -336,7 +334,7 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Can specify macro template in screen def to override default in moqui-conf
   - Supports URL parameters for renderMode and pageNoLimit which along with the lastStandalone parameter make it easy to reuse screens and forms meant for user interaction as definitions for CSV output
   - Screen subscreen menu dynamic tabs (last level only) that loads content as a standalone screen from the server with an ajax call
-  - Default runtime includes jquery and jquery-ui and the smoothness and dot-luv themes (easy to add others or make your own)
+  - Server-rendered HTML mode (`/apps`) uses jQuery; the default user-facing UI is Quasar under `/qapps` (qvt render mode), with Vue + Bootstrap under `/vapps` (vuet)
   - Automatic I18n (with L10nFacade) for labels and titles in screens, forms, menus
 - Screen Forms
   - Single forms (form-single)
@@ -363,6 +361,8 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Includes datetimepicker, which is the standard jquery datepicker plus the timepicker add-on, combined using some code from Apache OFBiz
 
 ## Tools Application
+
+The Tools app (`/qapps/tools`) is for developer and data tools. System administration screens (instance management, jobs, users, caches) live in the System app (`/qapps/system`). The list below still mixes some of both; see those apps for the current screen tree.
 
 - Auto Screen
   - Screens generated automatically based on the data model with a find screen and a screen for each "master" entity (an entity with dependents) with tabs for each dependent entity

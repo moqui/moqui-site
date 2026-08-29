@@ -19,6 +19,6 @@ The sections below are a summary of the structure and the entities in each part.
 
 The data model diagrams have only selected entities to illustrate important structures, and only selected fields on those entities. They are not a complete reference of all entities and fields. In the diagrams the master entities have a blue border, the detail entities a purple border, and the join entities a green border.
 
-The Tools application, included with moqui-runtime, has an Entity Reference with detailed information on each entity including descriptions, fields, relationships, etc from the entity definition files active in the system. This is best to review on customized or local instances but is available here on the Moqui Demo server:
+The Tools application, included with moqui-runtime, has an Entity Reference with detailed information on each entity including descriptions, fields, relationships, etc. from the entity definition files active in the system. This is best to review on customized or local instances but is available here on the Moqui Demo server:
 
-[https://demo.moqui.org/vapps/tools/Entity/DataEdit/EntityList](https://demo.moqui.org/vapps/tools/Entity/DataEdit/EntityList)
+[https://demo.moqui.org/qapps/tools/Entity/DataEdit/EntityList](https://demo.moqui.org/qapps/tools/Entity/DataEdit/EntityList)

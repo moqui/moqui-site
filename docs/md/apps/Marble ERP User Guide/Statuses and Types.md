@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Before reading this read the [Concepts and Definitions](/docs/apps/POPC%20ERP%20User%20Guide#concepts-and-definitions) section of the main wiki page for the POPC ERP User Guide.
+Before reading this read the [Concepts and Definitions](/docs/apps/Marble+ERP+User+Guide#concepts-and-definitions) section of the Marble ERP User Guide.
 
 Many records have a Status to manage their current state and track their lifecycle over time. In some cases statuses have meaning only to users of the system and there is no automation (code) that behaves differently based on status. In other cases the system treats records differently based on their status and there is sometimes significant automation that behaves differently for different statuses. A set of statuses also has a status flow with valid transitions between statuses defined, a sort of work flow for the record. The statuses documented here are out-of-the-box statuses for the open source applications based on Mantle UDM (where default statuses are defined) and may be modified or extended in the Moqui-based system you are using.
 
@@ -50,6 +50,7 @@ A type is used to distinguish records that are mostly similar but have different
 | Status | Description |
 | -------- | --------- |
 | **Open (Tentative)** | The initial status for most orders; Orders in this status may be changed by Customer or by Vendor |
+| Being Changed | Temporary status while an order is being edited after it has already been proposed or otherwise locked; returns to Open or another status when changes are complete |
 | Quote Requested | Quote requested by **Customer** instead of going directly from Open to Placed, followed by Proposed By Vendor before being Placed by Customer |
 | Proposed By Vendor | Quote proposed by **Vendor**, but not yet accepted (placed) by Customer |
 | **Placed** | Placed by **Customer** agreeing to terms and details in the Order |
@@ -62,6 +63,7 @@ A type is used to distinguish records that are mostly similar but have different
 | *Cancelled* | Cancelled by **Customer** |
 | Wish List | A special status for orders that represent a wish list. Orders in this status do not typically change status |
 | Gift Registry | A special status for orders that represent a gift registry list. Orders in this status do not typically change status |
+| Auto Reorder | A special status for orders that represent an automatic reorder. Orders in this status do not typically change status until they are placed |
 
 ## Shipment
 
@@ -98,8 +100,7 @@ To be received an incoming shipment must be in the Scheduled or later status. A 
 - Shipped (optional)
 - Delivered (optional)
 
-To be packed an outgoing shipment must be in the Scheduled or later status. Note that as item quantities are packed (independent of the packed status) they are issued to the shipment and accounting transactions are posted. The most important status for an outgoing shipment is Packed. In this status the shipment is considered final and maybe invoiced. For outgoing shipments with items associated with order items and an outgoing (receivable/sales) invoice will be generated and
-authorized payments captured when a shipment changes to the Packed status.
+To be packed an outgoing shipment must be in the Scheduled or later status. Note that as item quantities are packed (independent of the packed status) they are issued to the shipment and accounting transactions are posted. The most important status for an outgoing shipment is Packed. In this status the shipment is considered final and may be invoiced. For outgoing shipments with items associated with order items, an outgoing (receivable/sales) invoice will be generated and authorized payments captured when a shipment changes to the Packed status.
 
 ## Invoice
 
@@ -124,7 +125,7 @@ authorized payments captured when a shipment changes to the Packed status.
 | Incoming | The initial status for incoming invoices to use when recording invoice details |
 | Received | Fully entered and awaiting approval for payment |
 | Approved | Approved for payment, invoice may not be changed and triggers GL posting |
-| Payment Sent | Payment has been sent to the invoice From party, set automatically when sufficient payments applied; if status changed to Finalized all applied payments will be unapplied (and application GL postings reversed) |
+| Payment Sent | Payment has been sent to the invoice From party, set automatically when sufficient payments applied; if status is changed back to Approved all applied payments will be unapplied (and application GL postings reversed) |
 | Billed Through | Receivable (outgoing) invoice has been created to bill the invoice through to a third party |
 | Cancelled | Cancelled by From or To Party, if Cancelled after Approved status unapplies all applied payments and credit memos and reverses related GL transactions |
 

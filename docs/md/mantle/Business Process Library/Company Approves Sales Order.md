@@ -1,6 +1,6 @@
 # Company Approves Sales Order
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * Special case statuses and manual approval
 
@@ -8,7 +8,7 @@
 
 Sales Orders are approved automatically when paid by credit card and CC authorization is successful.
 
-Sales Orders are placed in Pending status approval after checkout then auto-approve once third-party payment processor (PayPal, GoogleCheckout, etc) sends notification.
+Sales Orders are placed in Pending approval status after checkout then auto-approve once a third-party payment processor (PayPal, etc.) sends notification.
 
 Sales Orders are placed in Rejected status when authorization fails.
 

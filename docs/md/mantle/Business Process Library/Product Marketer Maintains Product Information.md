@@ -1,6 +1,6 @@
 # Product Marketer Maintains Product Information
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * new products
 * pricing

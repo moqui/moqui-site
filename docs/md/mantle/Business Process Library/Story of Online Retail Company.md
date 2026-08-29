@@ -9,7 +9,7 @@ When shipments arrive [Shipment Receiver Receives Shipment](Shipment Receiver Re
 [Customer Finds Product](Customer Finds Product). [Placing Customer Adds Product to Cart](Placing Customer Adds Product to Cart) 
 and [Placing Customer Places a Sales Order - Online Checkout](Placing Customer Places a Sales Order - Online Checkout). 
 Alternatively [Placing Customer Places a Sales Order - Through CSR](Placing Customer Places a Sales Order - Through CSR) 
-or [Placing Customer Places a Sales Order - Through EBay](Placing Customer Places a Sales Order - Through EBay).
+or [Placing Customer Places a Sales Order - Through eBay](Placing Customer Places a Sales Order - Through EBay).
 If Customer decides to, [Customer Cancels Order](Customer Cancels Order).
 
 If desired during checkout or for other reasons, [Customer Creates and Edits Account](Customer Creates and Edits Account). 

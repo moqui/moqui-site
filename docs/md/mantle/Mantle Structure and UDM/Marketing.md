@@ -3,7 +3,7 @@
 
 ## Campaign (mantle.marketing.campaign)
 
-A MarketingCampaign is used for general tracking of marketing efforts and may be used for efforts that tracked in the system, or may be used to group other things like ContactList, TrackingCode, and SalesOpportunity.
+A MarketingCampaign is used for general tracking of marketing efforts and may be used for efforts that are tracked in the system, or may be used to group other things like ContactList, TrackingCode, and SalesOpportunity.
 
 A campaign has various budget/cost fields including **budgetedCost**, **actualCost**, and **estimatedCost**. It is valid within an optional date range (**fromDate**, **thruDate**). For campaign results there are fields like **convertedLeads**, **expectedResponsePercent**, and **expectedRevenue**.
 
@@ -33,4 +33,4 @@ A TrackingCode can be used for internal path tracking for critical web pages or 
 
 Once a tracking code is in the system it can be associated with a Moqui web Visit using TrackingCodeVisit, with an order (for conversion tracking and affiliate commissions) using TrackingCodeOrder and with returns using TrackingCodeOrderReturn.
 
-For affiliate commissions that follow browser cookie preservation rules the tracking code is generally put in a cookie and then pulled from the cookie when an order is placed as opposed to remembering it through more means. The tracking codes associated with a Visit are different, they are generally all tracking codes used during a Visit and orders can then be tied to these through the **visitId** field on OrderHeader.
+For affiliate commissions that follow browser cookie preservation rules the tracking code is generally put in a cookie and then pulled from the cookie when an order is placed as opposed to remembering it through other means. The tracking codes associated with a Visit are different, they are generally all tracking codes used during a Visit and orders can then be tied to these through the **visitId** field on OrderHeader.

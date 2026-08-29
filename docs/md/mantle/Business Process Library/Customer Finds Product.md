@@ -1,6 +1,6 @@
 # Customer Finds Product
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * Product Selection Wizards
 * Compare Similar Products

@@ -17,16 +17,20 @@ Because each component is in its own git repository your local working directory
 
 Note that Gradle matches task names by partial strings as long as they match a single task so the table below includes the full task name plus some recommended shortcuts.
 
-To see a list of all available Gradle tasks: `gradle tasks --all`
+To see a list of all available Gradle tasks: `./gradlew tasks --all`
 
-Most of the Moqui tasks have descriptions with usage information including required properties. Passing properties to a Gradle task is somewhat cumbersome, done with `-P<name>=<value>` parameters.
+Most of the Moqui tasks have descriptions with usage information including required properties. Passing properties to a Gradle task is somewhat cumbersome, done with `-P<name>=<value>` parameters. Prefer the Gradle wrapper (`./gradlew`, Gradle 9.2) so the version matches the project.
 
 Gradle Task | Short | Example | Description
 ------------|-------|---------|------------
-getComponent | | `gradle getComponent -Pcomponent=PopCommerce` | Get the specified component, matching a name in the addons.xml or myaddons.xml files, plus all its dependencies
-gitStatusAll | gits | `gradle gits` | Do a git **status** on framework, runtime, and all component repositories
-gitPullAll | gitp | `gradle gitp` | Do a git **pull** on framework, runtime, and all components
-gitUpstreamAll | gitu | `gradle gitu` | Do a git **upstream pull** on all repositories that have a remote called 'upstream', generally set to the original moqui repository to do upstream mergers into your forked repositories
+getComponent | | `./gradlew getComponent -Pcomponent=PopCommerce` | Get the specified component, matching a name in the addons.xml or myaddons.xml files, plus all its dependencies
+getDepends | | `./gradlew getDepends` | Get dependencies for all installed components
+getRuntime | | `./gradlew getRuntime` | Get the runtime directory if missing, plus default components from `myaddons.xml` (`addons.@default`)
+createComponent | | `./gradlew createComponent -Pcomponent=MyComponent` | Create a new component from the `start` template
+gitStatusAll | gits | `./gradlew gits` | Do a git **status** on framework, runtime, and all component repositories
+gitPullAll | gitp | `./gradlew gitp` | Do a git **pull** on framework, runtime, and all components
+gitUpstreamAll | gitu | `./gradlew gitu` | Do a git **upstream pull** on all repositories that have a remote called 'upstream', generally set to the original moqui repository to do upstream mergers into your forked repositories
+gitCheckoutAll | | `./gradlew gitCheckoutAll -Pbranch=master` | Check out a branch (or tag) on framework, runtime, and all components
 
 The `settings.gradle` file in moqui-framework has a script to find all components with a `build.gradle` file and automatically adds them to the top level module. Because of this all common tasks such as **build**, **test**, etc will run on components automatically.
 
@@ -39,7 +43,6 @@ Each component should declare other components it depends on using a `component.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="MyComponent" version="1.0.0">
-    <depends-on name="moqui-elasticsearch" version=""/>
     <depends-on name="mantle-udm" version=""/>
     <depends-on name="mantle-usl" version=""/>
     <depends-on name="SimpleScreens" version=""/>
@@ -101,9 +104,9 @@ $ cd moqui
 # optionally copy in your myaddons.xml file, such as the example above
 $ cp ~/myaddons.xml .
 # get MyComponent and its dependencies
-$ gradle getComponent -Pcomponent=MyComponent
+$ ./gradlew getComponent -Pcomponent=MyComponent
 # build, load seed/install/demo/etc data, run tests
-$ gradle load test
+$ ./gradlew load test
 # run Moqui
 $ java -jar moqui.war
 ```
@@ -118,5 +121,5 @@ $ git remote -v
 $ git remote add upstream https://github.com/moqui/mantle-usl.git
 # use the Gradle task to merge (pull) from upstream
 $ cd ../../..
-$ gradle gitu
+$ ./gradlew gitu
 ```

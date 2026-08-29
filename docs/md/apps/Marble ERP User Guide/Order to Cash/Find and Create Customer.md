@@ -1,11 +1,10 @@
-
 # Find and Create Customer
 
 [TOC levels=2]
 
 ## Introduction and Definitions
 
-A customer is a **Party** (*Person or Organization*) with the **'Customer'** role. While a customer Party may also be in other roles it must have the **Customer** role to show up in searches on the Find Customer screen and the Customer drop-down in the Create Sales Order form.
+A customer is a **Party** (*Person or Organization*) with the **Customer** role. While a customer Party may also be in other roles it must have the **Customer** role to show up in searches on the Find Customer screen and the Customer drop-down in the Create Sales Order form.
 
 Sales Account and Sales Contact are special types of customer to handle customers who are organizations with individuals who do purchasing, billing, and other activities on behalf of that organization. A Sales Account is a Party with the **Customer** and **Sales Account** roles. A Sales Contact does not need the **Customer** role if they won't be the direct customer on a sales order, but they will have the **Sales Contact** role. A Sales Contact is associated with a Sales Account with a 'Contact' type relationship record that can be used to specify a role for the Contact such as Buyer, Accountant, Inventory Manager, etc. A Sales Account may have a parent Sales Account to manage larger organizations with different divisions or departments that purchase directly.
 

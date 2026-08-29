@@ -1,5 +1,7 @@
 # Manufacturing Screens
 
+NOTE: Production run screens described here are implemented in SimpleScreens Manufacturing (`/qapps/marble/Manufacturing`). Quotes and Orders, Costing, and Planning and Reports tabs were planned and are not in the current screen tree.
+
 ### Production Runs
 
 - Find Production Run
@@ -14,8 +16,8 @@
     - for planning products to produce and viewing bill of materials break down
     - add product dialog
     - products to produce list/edit form
-    - BOM break down and product/quantity to consume comparison, add
-    - multi-level BOM break down with option to consume sub-assemblies vs raw materials
+    - BOM breakdown and product/quantity to consume comparison, add
+    - multi-level BOM breakdown with option to consume sub-assemblies vs raw materials
     - products to consume list form
 - Inventory Consumed tab
     - record consumed inventory dialog (AssetServices.issue#AssetToWorkEffort)

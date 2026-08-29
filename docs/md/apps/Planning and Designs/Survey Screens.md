@@ -1,5 +1,7 @@
 # Survey Screens
 
+NOTE: These screens are implemented in SimpleScreens Survey (`/qapps/marble/Survey`).
+
 - Find Survey
     - create dialog with simple form
     - survey list (DbForm with purposeEnumId=DbfpSurvey)

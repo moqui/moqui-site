@@ -1,6 +1,8 @@
 # Welcome to Moqui
 
-This space is for all projects within the Moqui Ecosystem including community, infrastructure, and licensing related documents.
+This space is for community, infrastructure, and licensing documents that apply across the Moqui Ecosystem.
 
-See the Community Guide for details about project infrastructure for community collaboration, support, etc.
+See the [Community Guide](/docs/moqui/Community+Guide) for where to find documentation, discussion, code, issues, and the public demo.
 
+- **Forum**: [https://forum.moqui.org](https://forum.moqui.org)
+- **Code, issues, and pull requests**: [https://github.com/moqui](https://github.com/moqui)

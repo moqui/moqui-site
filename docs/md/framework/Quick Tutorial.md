@@ -22,7 +22,7 @@ If you haven't already downloaded Moqui Framework, do that now.
 
 Run Moqui using the [Running and Deployment Instructions](/docs/framework/Run+and+Deploy).
 
-In your browser go to `http://localhost:8080/`, log in as John Doe, and look around a bit.
+In your browser go to `http://localhost:8080/` (the default UI is Quasar under `/qapps`), log in as John Doe, and look around a bit.
 
 Now quit (<ctrl>-c in the command line) and you're ready to go...
 
@@ -53,7 +53,7 @@ For now let this be a super simple screen with just a "Hello world!" label in it
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
         require-authentication="anonymous-all">
     <widgets>
         <label type="h1" text="Hello world!"/>
@@ -79,7 +79,7 @@ On a side note, the root screen is specified in the Moqui Conf XML file using th
 
 To make the screen hierarchy more flexible this root screen only has a basic HTML head and body, with no header and footer content, so let's put our screen under the **apps** screen which adds a header menu and will give our screen some context.
 
-There are 4 ways to make a screen a subscreen of another screen described in the [User Interface => XML Screen](/docs/framework/User+Interface/XML+Screen) document. For this tutorial we'll use the component MoquiConf.xml file approach which is merged into the MoquiDefaultConf.xml file included in the framework when Moqui starts along with MoquiConf.xml files in other components and the runtime Moqui Conf XML file optionally specified in a startup command line argument. This is the recommended approach for adding a new 'app' to Moqui and is used in PopCommerce, HiveMind, etc.
+There are 4 ways to make a screen a subscreen of another screen described in the [User Interface => XML Screen](/docs/framework/User+Interface/XML+Screen) document. For this tutorial we'll use the component MoquiConf.xml file approach which is merged into the MoquiDefaultConf.xml file included in the framework when Moqui starts along with MoquiConf.xml files in other components and the runtime Moqui Conf XML file optionally specified in a startup command line argument. This is the recommended approach for adding a new 'app' to Moqui and is used in Marble ERP, PopCommerce, HiveMind, etc.
 
 Add a MoquiConf.xml file to the root directory of your component:
 
@@ -90,7 +90,7 @@ While you can include anything supported in the Moqui Conf XML file to mount a s
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <moqui-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-3.xsd">
     <screen-facade>
         <screen location="component://webroot/screen/webroot/apps.xml">
             <subscreens-item name="tutorial" menu-title="Tutorial" menu-index="99"
@@ -102,11 +102,13 @@ While you can include anything supported in the Moqui Conf XML file to mount a s
 
 With your component in place just start up Moqui (with `java -jar moqui.war` or the like).
 
-The `subscreens-item.name` attribute specifies the value for the path in the URL to the screen, so your screen is now available in your browser at:
+The `subscreens-item.name` attribute specifies the value for the path in the URL to the screen. Screens mounted under `/apps` are also available through the default Quasar UI (`/qapps`) and the Vue + Bootstrap UI (`/vapps`). Try the default first:
+
+`http://localhost:8080/qapps/tutorial`
+
+The same screen is available as server-rendered HTML and as the Vue + Bootstrap SPA:
 
 `http://localhost:8080/apps/tutorial`
-
-It is also available in the new Vue JS based hybrid server + client application wrapper under `/vapps` which uses the screens mounted under `/apps`:
 
 `http://localhost:8080/vapps/tutorial`
 
@@ -129,12 +131,12 @@ Now just explicitly include the HTML file in the `tutorial.xml` screen definitio
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
         require-authentication="anonymous-all">
     <widgets>
         <label type="h1" text="Hello world!"/>
         <render-mode>
-            <text type="html,vuet" location="component://tutorial/screen/tutorial/hello.html"/>
+            <text type="html,vuet,qvt" location="component://tutorial/screen/tutorial/hello.html"/>
         </render-mode>
     </widgets>
 </screen>
@@ -142,7 +144,7 @@ Now just explicitly include the HTML file in the `tutorial.xml` screen definitio
 
 So what is this `render-mode` thingy? Moqui XML Screens are meant to platform agnostic and may be rendered in various environments. Because of this we don't want anything in the screen that is specific to a certain mode of rendering the screen without making it clear that it is. Under the `render-mode` element you can have various sub-elements for different render modes, even for different text modes such as HTML, XML, XSL-FO, CSV, and so on so that a single screen definition can be rendered in different modes and produce output as needed for each mode.
 
-Since Moqui 2.1.0 the Vue JS based hybrid client/server rendering functionality is available. This uses the render mode 'vuet' instead of 'html' because the output is actually a Vue template and not standard HTML. The `text.@type` attribute is "html,vuet" so that the HTML from the file is included for both render modes.
+The default UI under `/qapps` uses the `qvt` render mode (Quasar + Vue). `/vapps` uses `vuet` (Vue templates, not plain HTML), and `/apps` uses `html`. The example component includes HTML for all three (`html,vuet,qvt`) so the same include works in every wrapper. If you omit `qvt`, the include will not appear in the default UI.
 
 The screen is available at the same URL, but now includes the content from the HTML file instead of just having it inline as a `label` in the screen definition.
 
@@ -154,7 +156,7 @@ One side effect of putting the `hello.html` file under a mounted screen using th
 
 When you go to this URL you won't see the header from the `apps.xml` screen because it is directly accessing the file. This is can be used for other static (not server rendered) text files like CSS, JavaScript, and even binary files like images. Typically it's best to use a separate parent screen for static content as the SimpleScreens and HiveMind do, but it can be mixed with screens in any screen hierarchy.
 
-What if you don't want the raw HTML from `hello.html` to be available through an HTTP request? What if you only want it to be usable as an include in a screen? To do that just don't put it in a directory that isn't under a mounted screen. A common approach to this is to add a `template` directory to your component and put the templates and files there. For example:
+What if you don't want the raw HTML from `hello.html` to be available through an HTTP request? What if you only want it to be usable as an include in a screen? To do that, don't put it in a directory under a mounted screen. A common approach to this is to add a `template` directory to your component and put the templates and files there. For example:
 
 `runtime/component/tutorial/template/tutorial/hello.html`
 
@@ -162,7 +164,7 @@ With `hello.html` in that directory the location you specify to include it in th
 
 ```xml
         <render-mode>
-            <text type="html,vuet" location="component://tutorial/template/tutorial/hello.html"/>
+            <text type="html,vuet,qvt" location="component://tutorial/template/tutorial/hello.html"/>
         </render-mode>
 ```
 
@@ -181,7 +183,7 @@ Add an entity definition to that file like:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
     <entity entity-name="Tutorial" package="tutorial">
         <field name="tutorialId" type="id" is-pk="true"/>
         <field name="description" type="text-medium"/>
@@ -191,7 +193,7 @@ Add an entity definition to that file like:
 
 If you're running Moqui in dev mode the entity definition cache clears automatically so you don't have to restart, and for production mode or if you don't want to wait (since Moqui does start very fast) you can just stop and start the JVM.
 
-How do you create the table in the database? When running with the embedded H2 database Moqui can create tables on the fly and will do so the first time to use the new entity. This used to also work with MySQL but due to transactional handling of create table it no longer does. Creating a table and other DB meta data operations are usually not allowed in the middle of an active transaction so it must be done in advance and for most databases Moqui Framework does adds missing tables, columns, foreign keys, and indexes only on startup (which can also be turned off by configuration or env var).
+How do you create the table in the database? When running with the embedded H2 database Moqui can create tables on the fly and will do so the first time you use the new entity. This used to also work with MySQL but due to transactional handling of create table it no longer does. Creating a table and other DB meta data operations are usually not allowed in the middle of an active transaction so it must be done in advance and for most databases Moqui Framework adds missing tables, columns, foreign keys, and indexes only on startup (which can also be turned off by configuration or env var).
 
 ### Add Some Data
 
@@ -215,13 +217,13 @@ In the file add an `entity-facade-xml` element with sub-elements for the full en
 
 Note that the `type` attribute is set to "demo". This is used when running a general data load (`java -jar moqui.war load`) where limited data file types may be specified to load. You can use any simple text for the data file type but there are a few standard types used in the framework such as seed, seed-initial, install, demo, and test.
 
-The standard set of types to load on production instances is **seed**, **seed-initial**, and **install**. The **demo** type is used for demo data used during development and testing. The **test** type is for file that overwrite production settings stored in the database so that clones of a production database are safer to use for end user experimenting or developer testing and gets loaded automatically when Moqui starts if the **instance_purpose** is set to "test".
+The standard set of types to load on production instances is **seed**, **seed-initial**, and **install**. The **demo** type is used for demo data used during development and testing. The **test** type is for files that overwrite production settings stored in the database so that clones of a production database are safer to use for end-user experimenting or developer testing. Those files are loaded automatically when Moqui starts if **instance_purpose** is set to "test".
 
 For more information on data loading see the [Data and Resources => Entity Data Import and Export](/docs/framework/Data+and+Resources/Entity+Data+Import+and+Export) document.
 
 The easiest way to load this is from the **Data Import** screen in the Tools app:
 
-`http://localhost:8080/vapps/tools/Entity/DataImport`
+`http://localhost:8080/qapps/tools/Entity/DataImport`
 
 Click on the **XML Text** section of the form, paste in the XML above, then click on the **Import Data - Create Only** button. You can also click on the **Import Data - Create or Update** button but because we know these records aren't already there we can use the Create Only variation which is intended for loading data on production servers where you don't want to replace existing records that may have been modified.
 
@@ -240,12 +242,12 @@ With those changes our `tutorial.xml` screen should now look like:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd">
     <subscreens default-item="FindTutorial"/>
     <widgets>
         <label type="h1" text="Hello world!"/>
         <render-mode>
-            <text type="html,vuet" location="component://tutorial/screen/tutorial/hello.html"/>
+            <text type="html,vuet,qvt" location="component://tutorial/screen/tutorial/hello.html"/>
         </render-mode>
         <subscreens-active/>
     </widgets>
@@ -280,7 +282,7 @@ Note that we're using the **ALL_USERS** group in this example. This group is a s
 </entity-facade-xml>
 ```
 
-Load this data now thought the Data Import screen in the Tools app so that it is in place when we try our new find screen below.
+Load this data now through the Data Import screen in the Tools app so that it is in place when we try our new find screen below.
 
 ### Find Screen with Automatic Find Form
 
@@ -295,7 +297,7 @@ This uses the Directory Structure approach for adding sub-screens described in t
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd">
     <actions>
         <entity-find entity-name="tutorial.Tutorial" list="tutorialList">
             <search-form-inputs/></entity-find>
@@ -324,7 +326,7 @@ This screen has a couple of key parts:
 
 To view this screen use this URL:
 
-`http://localhost:8080/vapps/tutorial/FindTutorial`
+`http://localhost:8080/qapps/tutorial/FindTutorial`
 
 ### An Explicit Field
 
@@ -391,7 +393,7 @@ First lets define a service and use the automatic entity CrUD implementation:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
     <service verb="create" noun="Tutorial" type="entity-auto">
         <in-parameters>
             <auto-parameters include="all"/>
@@ -403,16 +405,16 @@ First lets define a service and use the automatic entity CrUD implementation:
 </services>
 ```
 
-This will allow all fields of the Tutorial entity to be passed in, including an optional `tutorialId` which is the primary key field and a sequenced ID will be generated no value is specified. It will always return the PK field (tutorialId). Note that with the `auto-parameters` element we are defining the service based on the entity, and if we added fields to the entity they would be automatically represented in the service.
+This will allow all fields of the Tutorial entity to be passed in, including an optional `tutorialId` which is the primary key field; a sequenced ID will be generated if no value is specified. It will always return the PK field (tutorialId). Note that with the `auto-parameters` element we are defining the service based on the entity, and if we added fields to the entity they would be automatically represented in the service.
 
-One quirk with `service.@type` set to "entity-auto" is that it uses the `service.@noun` for the entity name. It works like this without the entity package included in the name because the framework allows using entity names without a package, though you may be inconsistent results if there are multiple entities with the same name in different packages.
+One quirk with `service.@type` set to "entity-auto" is that it uses the `service.@noun` for the entity name. It works like this without the entity package included in the name because the framework allows using entity names without a package, though you may get inconsistent results if there are multiple entities with the same name in different packages.
 
 Now change that service definition to add an inline implementation as well. Notice that the `service.@type` attribute has changed, and the `actions` element has been added.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
     <service verb="create" noun="Tutorial" type="inline">
         <in-parameters>
             <auto-parameters include="all"/>
@@ -461,9 +463,9 @@ What if you want to implement the service in Groovy (or some other supported scr
 
 Notice that the `service.@type` attribute has changed to **script**, and there is now a `service.@location` attribute which specifies the location of the script.
 
-Because we've change the `service.@noun` attribute to "TutorialGroovy" which is not a valid entity name we must specify the `entity-name` on the two `auto-parameters` elements. In other words by default it you don't specify `auto-parameters.@entity-name` the framework will try the `service.@noun` and in this case that will result in an error.
+Because we've changed the `service.@noun` attribute to "TutorialGroovy" which is not a valid entity name we must specify the `entity-name` on the two `auto-parameters` elements. In other words by default if you don't specify `auto-parameters.@entity-name` the framework will try the `service.@noun` and in this case that will result in an error.
 
-The script can be located anywhere in the component as we refer to it's location explicitly. For convenience we're adding it to the existing `service/tutorial` directory. Here is what the script would look like in that location:
+The script can be located anywhere in the component as we refer to its location explicitly. For convenience we're adding it to the existing `service/tutorial` directory. Here is what the script would look like in that location:
 
 ```groovy
 def tutorial = ec.entity.makeValue("tutorial.Tutorial")
@@ -476,10 +478,10 @@ When in Groovy, or other languages, you'll be using the Moqui Java API which is 
 
 ## What's Next?
 
-Now that you have soiled your hands with the details of Moqui Framework you're ready to explore the other documentation here in the Moqui Framework wiki space on moqui.org. Most of the content from the "Making Apps with Moqui" book has been migrated here and updated for changes and new functionality in the framework.
+Now that you have soiled your hands with the details of Moqui Framework you're ready to explore the other documentation in this Framework space. Most of the content from the "Making Apps with Moqui" book has been migrated here and updated for changes and new functionality in the framework.
 
-There is also documentation for [Mantle Business Artifacts](/docs/mantle), including the UDM data model, available here on moqui.org.
+There is also documentation for [Mantle Business Artifacts](/docs/mantle), including the UDM data model.
 
-If you will be doing any ERP related development the [documentation for the POPC ERP app](/docs/apps/POPC+ERP+User+Guide) is highly recommended for both reading and reference to better understand business concepts and how end users go about doing various business activities in the app. This is also useful to find services to use by looking at how things are meant to be done in the ERP app and then looking at the transitions in the screens to see which services are used.
+If you will be doing any ERP related development the [Marble ERP User Guide](/docs/apps/Marble+ERP+User+Guide) is highly recommended for both reading and reference to better understand business concepts and how end users go about doing various business activities in the app. This is also useful to find services to use by looking at how things are meant to be done in the ERP app and then looking at the transitions in the screens to see which services are used.
 
 You may also enjoy reading through the [Framework Features](/docs/framework/Framework+Features) document.

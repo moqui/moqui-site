@@ -5,7 +5,7 @@
 ## Initial Setup
 
 ### Start with base install data (no demo, etc)
-- easiest: start Moqui with an empty database (ie don't do a `gradle load` or `java -jar moqui.war load`)
+- easiest: start Moqui with an empty database (ie don't do a `./gradlew load` or `java -jar moqui.war load`)
 - default empty DB data types: **seed,seed-initial,install**
 - env var `entity_empty_db_load` OR Moqui Conf XML `moqui-conf.tools.@empty-db-load` attribute
 - warning: **MoquiDevConf.xml** (default when starting with `java -jar moqui.war`) loads all data files found; don't do this!
@@ -66,7 +66,7 @@
   - ID is optional, generated numeric ID will be used if none specified
   - select the created Internal Organization as *Employer/Branch*, this will add a Party Relationship of type Employee (see under *Internal Organization Relationships* section of the **Parties > Party** screen)
   - if a *User Group* is selected the employee will have authorization and permissions for that User Group
-  - one created set a password for the employee's User Account with the **Reset Password** button (send email with reset password), or use the **Account Detail** button to go to the System App (if current user has authorization) where a password can be set directly
+  - once created set a password for the employee's User Account with the **Reset Password** button (send email with reset password), or use the **Account Detail** button to go to the System App (if current user has authorization) where a password can be set directly
 - to use the Person party from the Initial Admin account, find it on Find Party and add the *Employee* role
 #### Create a Project
 - **Marble ERP Dashboard** ==> **Projects** (*marble/Project/FindProject*)
@@ -76,7 +76,7 @@
   - for *Vendor* select the Company (Internal Organization) created above
 #### Create a Work Task
 - **Marble ERP Dashboard** ==> **Tasks** (*marble/Task/FindTask*)
-- use **New Task** dialog (right side of screen)\
+- use **New Task** dialog (right side of screen)
   - select the Project created above
   - for convenience, *Assign To* the current user (initial admin user)
   - specify a *Task Name*
@@ -90,14 +90,14 @@
   - specify a *Rate Amount*, different *Currency* if needed
 #### Record a Time Entry
 - can be done on Task > Time, Party > Time, or My Account > Time screens
-- in upper right open user dialog, click on any of the 4 my account icons to get to the My Account app OR under the **Applications** menu in the top left select the **My Accounts** app
+- in upper right open user dialog, click on any of the 4 my account icons to get to the My Account app OR under the **Applications** menu in the top left select the **My Account** app
 - click on the **Time** tab
 - can use **Clock In** and **Clock Out** dialogs for recording time on the fly
 - use the **Record Time** dialog
   - for *Employer* use the Company (Internal Org) created above
   - for *Task* select the task created above, and assigned to the current user (initial admin user)
   - while different combinations are available, select a *From Date* and enter a number of *Hours* (can be decimal)
-  - add *Comments* to describe work done (will show on receivable invoice is item per time entry is selected)
+  - add *Comments* to describe work done (will show on the receivable invoice if item per time entry is selected)
 - after adding a time entry click on the open dialog button to the left of the time entry to open the edit dialog, verify *Client Hour Calc* shows the desired rate (the rate added above)
 #### Create Project Client Invoice (receivable)
 - **Marble ERP Dashboard** ==> **Projects** (*marble/Project/FindProject*)
@@ -187,7 +187,7 @@
   - use the **Create Shipment** button, see it disappear replaced by a **Shipment {ID}** button
   - use the **Shipment {ID}** button
 #### Ship the Order
-- on the **Marble ERP > Shipments > Shipment** screen (from button on **Order Detail** screen
+- on the **Marble ERP > Shipments > Shipment** screen (from the button on the **Order Detail** screen)
 - in the **Shipment Items** section use the **Issue & Pack** button to submit that inline form with defaults
 - verify the *Issuance* under **Shipment Items**
 - verify the **Packages**, use **Update Package** as needed to specify box type, weight, etc
@@ -196,7 +196,7 @@
 - use the **Set Shipped** dialog to finalize the Shipment, send notice emails, etc
   - note the warnings there for real world use
   - if Shippo or other shipping integrations are in place there will be options here to generate and print labels, and that is done before using the **Set Shipped** dialog
-- note the **Pack Screen** button which goes to a screen optimized for in warehouse use, in the **Shipping** are of Marble ERP
+- note the **Pack Screen** button which goes to a screen optimized for in warehouse use, in the **Shipping** area of Marble ERP
 #### Review Invoice
 - from the **Shipments > Shipment** screen use the **Invoice {ID}** button
 - note that the Status defaults to *Finalized* when created from a Shipment with a Sales Order
@@ -225,7 +225,7 @@
   - under the **Accounting** menu select **Time Period**
   - select any current time period, easiest is current year
   - go to the **Accounts** tab
-  - click on **Recalc All*
+  - click on **Recalc All**
   - go back to the Accounting Reports screen (Accounting menu ==> Reports)
 - try the **Income Statement** dialog
   - make sure the *Organization* selected is the Company (internal org) created above

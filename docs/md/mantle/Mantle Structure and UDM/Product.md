@@ -9,11 +9,11 @@ An instance of a Product is tracked in different places depending on what type o
 
 The Product entity has a **statusId**, but this is mostly there for special cases and is not used for certain things that might seem like statuses but are modeled as dates, including **salesIntroductionDate**, **salesDiscontinuationDate**, and **supportDiscontinuationDate**. If you want to know whether a product is available for sale, you check the current date/time against the sales date fields instead of looking at an indicator or status.
 
-For content about the product it has **productName** and **description** fields, and the everything else such as more localized name/description, detailed descriptions, images, instructions, warnings, button/link labels, etc are all recorded with the ProductContent entity. The **contentLocation** points to a Resource Facade location so the content can be in a database (with the DbResource/File entities), a JCR (Java Content Repository, such as Apache JackRabbit), in the local filesystem, or any other location configured OOTB or that you add. See the **Resource Locations** section for more details.
+For content about the product it has **productName** and **description** fields, and everything else such as more localized name/description, detailed descriptions, images, instructions, warnings, button/link labels, etc. is recorded with the ProductContent entity. The **contentLocation** points to a Resource Facade location so the content can be in a database (with the DbResource/File entities), a JCR (Java Content Repository, such as Apache Jackrabbit), in the local filesystem, or any other location configured OOTB or that you add. See the **Resource Locations** section for more details.
 
-Product has inventory (**requireInventory**, **requirementMethodEnumId**), shipping (**chargeShipping**, **inShippingBox**, **defaultShipmentBoxTypeId**, **returnable**), and tax (**taxable**, **taxCode**) settings. Some products have an amount associated with them, such as a number of cans in a case, or allow the user to enter an amount when purchasing it. Use the **amountUomId**, **amountFixed**, and **amountRequire** fields for this.
+Product has inventory (**requireInventory**), shipping (**chargeShipping**, **inShippingBox**, **defaultShipmentBoxTypeId**, **returnable**), and tax (**taxable**, **taxCode**) settings. Some products have an amount associated with them, such as a number of cans in a case, or allow the user to enter an amount when purchasing it. Use the **amountUomId**, **amountFixed**, and **amountRequire** fields for this.
 
-The various possible dimensions for a product are recorded with the ProductDimension entity. This would include weight, lengths dimensions, shipping dimensions, quantity and pieces included, and any other dimension you might want to define. To add other dimension types add Enumeration records of type ProductDimensionType. There is a similar structure for identifiers such as UPC, ISBN, EAN, etc: ProductIdentification.
+The various possible dimensions for a product are recorded with the ProductUomDimension entity (weight, length, shipping dimensions, quantity and pieces included, and so on). Dimension types come from the framework UomDimensionType entity. The older ProductDimension and ProductDimensionType entities are deprecated; use ProductUomDimension instead. There is a similar structure for identifiers such as UPC, ISBN, EAN, etc: ProductIdentification.
 
 Product has an **originGeoId** field to specify where the product comes from for import/export restrictions or for pure curiosity. For more specific Geo details like shipping and purchase restrictions use the ProductGeo entity.
 
@@ -47,7 +47,7 @@ To help clarify here is the path between the **configurable** product and the **
 
 The ProductConfigOption entity has a **description** field, and for localized description and other content associated with an option use the ProductConfigItemContent entity to reference Resource Facade content locations.
 
-When a configurable product is configured, usually when added to an order, we need a place to save the configuration and that starts with the ProductConfigSaved entity. This is referenced on an order item using the OrderItem**.productConfigSavedId** field. Within the saved configuration the option selected for each item is recorded with the ProductConfigSavedOption entity.
+When a configurable product is configured, usually when added to an order, we need a place to save the configuration and that starts with the ProductConfigSaved entity. Within the saved configuration the option selected for each item is recorded with the ProductConfigSavedOption entity.
 
 ## Definition - Cost (mantle.product.cost)
 
@@ -59,7 +59,7 @@ The ProductAverageCost entity is used to keep track of the average cost of a Pro
 
 ## Definition - Feature (mantle.product.feature)
 
-A ProductFeature describes a Product in a structured way. There are quite a few feature types (**productFeatureTypeEnumId**) defined OOTB, like Brand, Color, Fabric, License, and Size. It is common to add customer feature types using Enumeration records of type ProductFeatureType.
+A ProductFeature describes a Product in a structured way. There are quite a few feature types (**productFeatureTypeEnumId**) defined OOTB, like Brand, Color, Fabric, License, and Size. It is common to add custom feature types using Enumeration records of type ProductFeatureType.
 
 A feature is applied to a product using the ProductFeatureAppl with a **applTypeEnumId** to specify what the feature is to the product (Selectable for optional features, Standard for inherent aspects of a product, or Distinguishing to describe variants or a virtual product), and within an effective date range (**fromDate**, **thruDate**).
 
@@ -81,7 +81,7 @@ Use the SubscriptionDelivery entity to keep track of CommunicationEvent instance
 
 The Asset entity is used for inventory, equipment, and anything to be financially tracked as a fixed asset (**assetTypeEnumId**). Assets are identified by an **assetId**. An asset also has a class (**classEnumId**) such as forklift, tractor, laptop computer, or even software that can be used to categorize assets especially for manufacturing purposes to find the equipment needed for specific routes (manufacturing tasks). Add your own asset classes with Enumeration records of type AssetClass.
 
-An Asset commonly represents an instance of a Product, or in other words the physical item that the Product record describes. The **productId** field specified which. An asset will also generally have an **assetName** and has a **comments** field to track general comments/notes.
+An Asset commonly represents an instance of a Product, or in other words the physical item that the Product record describes. The **productId** field specifies which. An asset will also generally have an **assetName** and has a **comments** field to track general comments/notes.
 
 Assets have a status (**statusId**) with various OOTB statuses for serialized inventory and equipment. A serialized inventory asset represents a single physical item and commonly has a **serialNumber**, hence the name.
 
@@ -91,19 +91,19 @@ The quantity fields have the Total suffix because they are derived from the **qu
 
 When a physical inventory count is done it is tracked with a PhysicalInventory record, and the details for each inventory variance are recorded in AssetDetail records as described above.
 
-An asset may have a number of dates recorded as applicable for the type of asset: **receivedDate**, **acquiredDate**, **manufacturedDate**, **expectedEndOfLife**, and **actualEndOfLife**. To track purchased assets and actual cost data Asset has **acquireOrderId**, **acquireOrderItemSeqId**, **acquireCost**, and **acquireCostUomId** fields. For fixed asset depreciation tracking, in adding to the corresponding AcctgTrans records, it has **depreciation**, **depreciationTypeEnumId**, and **salvageValue** fields.
+An asset may have a number of dates recorded as applicable for the type of asset: **receivedDate**, **acquiredDate**, **manufacturedDate**, **expectedEndOfLife**, and **actualEndOfLife**. To track purchased assets and actual cost data Asset has **acquireOrderId**, **acquireOrderItemSeqId**, **acquireCost**, and **acquireCostUomId** fields. For fixed asset depreciation tracking, in addition to the corresponding AcctgTrans records, it has **depreciation**, **depreciationTypeEnumId**, and **salvageValue** fields.
 
-Use AssetGeoPoint to record where an asset is, and a history of where it has been (with from/thru date fields). Use AssetIdentification to ID values for an asset such as a tracking label number, manufacturer serial number, VIN, etc. An Asset can be assigned to a Party using AssetPartyAssignment in a particular role and with an effective date range (**fromDate**, **thruDate**) for purposes such as use, management, maintenance, etc.
+Use Asset.**geoPointId** to record where an asset is (that field is audit logged for a history of changes). Use AssetIdentification for ID values for an asset such as a tracking label number, manufacturer serial number, VIN, etc. An Asset can be assigned to a Party using AssetPartyAssignment in a particular role and with an effective date range (**fromDate**, **thruDate**) for purposes such as use, management, maintenance, etc.
 
 While an Asset is an instance of a Product, additional products may be associated with the asset to represent things such as rental or sale of the asset. Use the AssetProduct entity to keep track of these associated products.
 
-While an inventory Asset, and sometimes other types of asset, are generally located in a FacilityLocation with the **facilityId** and **locationSeqId** fields it can also be located in a Container to more easily track movement of a set of assets that are in the container. In this case the **facilityId** and **locationSeqId** fields will be null and the Asset.**containerId** field will be populated. In that case the actual location will be found using the **facilityId**, **locationSeqId**, and **geoPointId** fields as applicable. These fields are audit logged to keep a history of their changes as a container moves.
+While an inventory Asset, and sometimes other types of asset, are generally located in a FacilityLocation with the **facilityId** and **locationSeqId** fields it can also be located in a Container to more easily track movement of a set of assets that are in the container. In that case Asset.**containerId** is populated and **facilityId**, **locationSeqId**, and **geoPointId** are maintained from the Container (those fields are audit logged as the container moves).
 
 ![MantleDataModel-product.asset](/docs/attachment/100468/MantleDataModel-product.asset.svg)
 
 ## Asset - Issuance (mantle.product.issuance)
 
-Because competition for specific inventory items is common, such as when sales orders are placed for products with limited inventory, it is necessary to track reservations with AssetReservation records that are created when an item is promised. Later on when the physical item is fulfilled a AssetIssuance is created and the AssetReservation is deleted as it is no longer valid.
+Because competition for specific inventory items is common, such as when sales orders are placed for products with limited inventory, it is necessary to track reservations with AssetReservation records that are created when an item is promised. Later on when the physical item is fulfilled an AssetIssuance is created and the AssetReservation is deleted as it is no longer valid.
 
 A reservation is associated with the Asset (**assetId**), Product (**productId**) for convenience, and OrderItem (**orderId**, **orderItemSeqId**). It has the **quantity** reserved, and for when the reservation goes beyond on hand inventory the quantity reserved that was not available to promise is tracked with the **quantityNotAvailable** field.
 
@@ -145,12 +145,12 @@ For sales order processing on an eCommerce site or in a POS (point of sale) syst
 
 A store has a name (**storeName**) and is owned/run by an internal organization (**organizationPartyId**). While a store may support various languages and currencies each store is typically best focused on a single country/area with a single language (**defaultLocale**) and currency (**defaultCurrencyUomId**).
 
- including:
+Settings configured on a store include:
 
 -   **Products available**: The ProductStoreCategory entity associates ProductCategory records with a store for browse root, default search, purchase allow, etc and the products in those categories or their sub-categories make up the products available in the store.
--   **Notification emails**: Use ProductStoreEmail to associated Moqui EmailTemplate records with the store for notification emails such as registration, order confirmation, order change, return completion, password update, and so on.
--   **Inventory reservation**: The most common case is to have a single inventory Facility for a store, and this is specified in the ProductStore.**inventoryFacilityId** field. When more than one is needed use the ProductStoreFacility entity. Inventory is reserved in the order specified with the ProductStore.**reservationOrderEnumId**, such as FIFO or LIFO by received date or expiration date. For automatic replenishment requirements set the ProductStore.**requirementMethodEnumId** field.
--   **Payment processing**: Use ProductStorePaymentGateway to configure the PaymentGatewayConfig to use for each **paymentMethodTypeEnumId**.
+-   **Notification emails**: Use ProductStoreEmail to associate Moqui EmailTemplate records with the store for notification emails such as registration, order confirmation, order change, return completion, password update, and so on.
+-   **Inventory reservation**: The most common case is to have a single inventory Facility for a store, and this is specified in the ProductStore.**inventoryFacilityId** field. When more than one is needed use the ProductStoreFacility entity. Inventory is reserved in the order specified with the ProductStore.**reservationOrderEnumId**, such as FIFO or LIFO by received date or expiration date. Replenishment quantities are configured on ProductFacility (**minimumStock**, **reorderQuantity**).
+-   **Payment processing**: Use ProductStorePaymentGateway to configure the PaymentGatewayConfig to use for each **paymentInstrumentEnumId**.
 -   **Shipping options and rate calculation**: The ProductStoreShippingGateway entity is used to configure the ShippingGatewayConfig to use for each **carrierPartyId**.
 -   **Tax calculation**: The ProductStore.**taxGatewayConfigId** points to the TaxGatewayConfig record to use for this store for sales/VAT tax calculation.
 

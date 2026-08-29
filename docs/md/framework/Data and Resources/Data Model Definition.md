@@ -15,7 +15,7 @@ Let’s start with a simple entity definition that shows the most common element
      </relationship>
      <seed-data>
          <moqui.basic.EnumerationType description="Data Source Type" enumTypeId="DataSourceType"/>
-         <moqui.basic.Enumeration description="Purchased Data" enumId="DST_PURCHASED_DATA" enumTypeId="DataSourceType"/>;
+         <moqui.basic.Enumeration description="Purchased Data" enumId="DST_PURCHASED_DATA" enumTypeId="DataSourceType"/>
      </seed-data>
 </entity>
 ```
@@ -37,7 +37,7 @@ The field.**type** attribute is used to specify the data type for the field. The
 
 You can use these elements to add your own types in the data type dictionary. Those custom types won’t appear in autocomplete for the field.**type** attribute in your XML editor unless you change the XSD file to add them there as well, but they will still function just fine.
 
-The second field (**dataSourceTypeEnumId**) is a foreign key to the Enumeration entity, as denoted by the relationship element in this entity definition. The two records in under the seed-data element define the EnumerationType to group the Enumeration options, and one of the Enumeration options for the **dataSourceTypeEnumId** field. The records under the seed-data element are loaded with the command-line -load option (or the corresponding API call) along with the seed type.
+The second field (**dataSourceTypeEnumId**) is a foreign key to the Enumeration entity, as denoted by the relationship element in this entity definition. The two records under the seed-data element define the EnumerationType to group the Enumeration options, and one of the Enumeration options for the **dataSourceTypeEnumId** field. The records under the seed-data element are loaded with the command-line load option (or the corresponding API call) along with the seed type.
 
 There is an important pattern here that allows the framework to know which **enumTypeId** to use to filter Enumeration options for a field in automatically generated form fields and such. Notice that the value in the relationship.**title** attribute matches the enumTypeId. In other words, for enumerations anyway, there is a convention that the relationship.**title** value is the type ID to use to filter the list.
 
@@ -52,15 +52,16 @@ In most cases you can use something more simple without key-map elements like:
 
 The seed-data element allows you to define basic data that is necessary for the use of the entity and that is an aspect of defining the data model. These records get loaded into the database along with the entity-facade-xml files where the **type** attribute is set to seed.
 
-With this introduction to the most common elements of an entity definition, lets now look at some of the other elements and attributes available in an entity definition.
+With this introduction to the most common elements of an entity definition, let’s now look at some of the other elements and attributes available in an entity definition.
 
 -   Other entity attributes
-    -   **group-name**: Each datasource available through the Entity Facade is used by putting an entity in the group for that datasource. The value here should match a value on the moqui-conf.entity-facade.datasource.**group-name** attribute in the Moqui Conf XML file. If no value is specified will default to the value of the moqui-conf.entity-facade.**default-group-name** attribute. By default configuration the valid values include transactional (default), analytical, tenantcommon, and nosql.
+    -   **group**: Each datasource available through the Entity Facade is used by putting an entity in the group for that datasource. The value here should match a value on the moqui-conf.entity-facade.datasource.**group-name** attribute in the Moqui Conf XML file. If no value is specified it defaults to the value of the moqui-conf.entity-facade.**default-group-name** attribute (transactional). Other groups in the default configuration include logging (OpenSearch via ElasticFacade) and optional clone datasources. (This attribute was previously named **group-name**.)
     -   **sequence-bank-size**: The size of the sequence bank to keep in memory. Each time the in-memory bank runs out the **seqNum** in the SequenceValueItem record will be incremented by this amount.
     -   **sequence-primary-stagger**: The maximum amount to stagger the sequenced ID. If 1 the sequence will be incremented by 1, otherwise the current sequence ID will be incremented by a random value between 1 and staggerMax.
+    -   **sequence-primary-prefix**: Prefix to apply to primary sequenced ID values for this entity. Can be a string expansion with the current value in the context.
     -   **sequence-secondary-padded-length**: If specified front-pads the secondary sequenced value with zeroes until it is this length. Defaults to 2.
     -   **optimistic-lock**: Set to true to have the Entity Facade compare the **lastUpdatedStamp** field in memory to the one in the database before doing an update on the record. If the timestamps don’t match an error will be generated. Defaults to "false" (no timestamp locking).
-    -   **no-update-stamp**: By default the Entity Facade adds a single field (**lastUpdatedStamp**) to each entity for use in optimistic locking and data synchronization. If you do not want it to create that stamp field for this entity then set this to "false".
+    -   **no-update-stamp**: By default the Entity Facade adds a single field (**lastUpdatedStamp**) to each entity for use in optimistic locking and data synchronization. Set this to **true** if you do not want that stamp field on this entity.
     -   **cache**: can be set to these values (defaults to false):
         -   true: use cache for finds (code may override this)
         -   false: no cache for finds (code may override this)
@@ -71,24 +72,31 @@ With this introduction to the most common elements of an entity definition, lets
         -   create: skip authz checks for create operations
         -   view: skip authz checks for finds or read-only operations
         -   view-create: skip authz checks for find and create ops
+    -   **create-only**: If true, values are immutable (create, but not update or delete). Defaults to false.
+    -   **short-alias**: A unique short name for the entity (mainly for REST URLs). Should start with a lowercase letter and be plural.
+    -   **enable-audit-log**: If set, used as the default **enable-audit-log** value for all fields that do not set it (including **lastUpdatedStamp**). Field-level values override this.
 -   Other field attributes
     -   **encrypt**: Set to true to encrypt this field in the database. Defaults to false (not encrypted).
-    -   **enable-audit-log**: Set to *true* to log all changes to the field along with when it was changed and the user who changes. Set to *update* to log all changes but not the initial value (lighter weight when a field value does not change). The data is stored using the `EntityAuditLog` entity. Defaults to *false* (no audit logging).
-    -   **enable-localization**: If set to true gets on this field will be looked up with the `LocalizedEntityField` entity and if there is a matching record the localized value will be returned instead of the original record's value. Defaults to false for performance reasons, only set to true for fields that will have translations.
+    -   **enable-audit-log**: Set to *true* to log all changes to the field along with when it was changed and the user who changed it. Set to *update* to log all changes but not the initial value (lighter weight when a field value does not change). The data is stored using the `EntityAuditLog` entity. Defaults to *false* (no audit logging).
+    -   **enable-localization**: If set to true, gets on this field will be looked up with the `LocalizedEntityField` entity and if there is a matching record the localized value will be returned instead of the original record's value. Defaults to false for performance reasons, only set to true for fields that will have translations.
+    -   **default**: A Groovy expression for the default value, applied on create and update after EECA before rules if the field is null or empty.
+    -   **create-only**: If true, the field can be set on create but not update. Overrides entity.**create-only**; set to false to allow update of certain fields on a create-only entity.
+    -   **not-null**: If true, the database column is not null. Defaults to false.
 
 While some database optimizations must be done in the database itself because so many such features vary between databases, you can declare indexes along with the entity definition using the index element. As an element under the entity element it would look something like this:
 ```
 <index name="EX_NAME_IDX1" unique="true">
     <index-field name="exampleName"/>
 </index>
- ```
- ## Entity Extension - XML
+```
+
+## Entity Extension - XML
 
 An entity can be extended without modifying the XML file where the original is defined. This is especially useful when you want to extend an entity that is part of a different component such as the Mantle Universal Data Model (mantle-udm) or even part of the Moqui Framework and you want to keep your extensions separate.
 
-This is done with the extend-entity element which can mixed in with the entity elements in an entity definition XML file. This element has most of the same attributes and sub-elements as the entity element used to define the original entity. Simply make sure the **entity-name** and **package** match the same attributes on the original entity element and anything else you specify will add to or override the original entity.
+This is done with the extend-entity element which can be mixed in with the entity elements in an entity definition XML file. This element has most of the same attributes and sub-elements as the entity element used to define the original entity. Simply make sure the **entity-name** and **package** match the same attributes on the original entity element and anything else you specify will add to or override the original entity.
 
-Here is an example if a XML snippet to extend the moqui.example.Example entity:
+Here is an example of an XML snippet to extend the moqui.example.Example entity:
 ```
 <extend-entity entity-name="Example" package="moqui.example">
     <field name="auditedField" type="text-medium" enable-audit-log="true"/>

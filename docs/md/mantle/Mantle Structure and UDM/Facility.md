@@ -8,7 +8,7 @@ Facilities are hierarchical to model things like units within a building and roo
 
 A Product may be associated with a FacilityLocation using the ProductFacilityLocation entity to record which products go in which locations, and to set **minimumStock** and **moveQuantity** values to use for recommended stock moves (when replenishing pick/primary locations from bulk locations). If you need to track more data about a particular product in a particular location extend this entity.
 
-Similarly a Product may be associated with a Facility to using the ProductFacility entity to specify **minimumStock** and **reorderQuantity** values for use in simple automated (recommended) replenishment. Other fields related to a particular product in a particular facility can be added to this entity as needed.
+Similarly a Product may be associated with a Facility using the ProductFacility entity to specify **minimumStock** and **reorderQuantity** values for use in simple automated (recommended) replenishment. Other fields related to a particular product in a particular facility can be added to this entity as needed.
 
 The physical location of a facility can be recorded in two ways: through a GeoPoint record referenced by the Facility.**geoPointId** field, or in a PostalAddress type of ContactMech with the FacilityContactMech. FacilityContactMech can also be used for more general contact information for the facility including phone/fax/etc (telecom) numbers, email and web addresses, and even multiple postal addresses when there are different ones for things like receiving correspondence, receiving shipments, shipping return address, etc.
 

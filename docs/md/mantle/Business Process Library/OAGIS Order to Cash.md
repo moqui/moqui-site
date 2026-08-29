@@ -2,6 +2,8 @@
 
 [TOC levels=2-3]
 
+NOTE: These pages describe OAGIS document-exchange scenarios. The `mantle-oagis` component is listed in addons.xml with no releases and is not required to run Moqui, Mantle USL, or Marble ERP.
+
 ## Introduction
 
 This process covers Customer and Supplier processes from Order through Cash plus Quotes and GL.

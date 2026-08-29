@@ -1,1 +1,5 @@
-See pages under this page for how to do various things using the Data Model and Service Library in Mantle Business Artifacts.
+# Technical How To
+
+See pages under this heading for how to do various things using the data model and Universal Service Library in Mantle Business Artifacts.
+
+- [Transactional Emails](/docs/mantle/Technical+How+To/Transactional+Emails)

@@ -12,7 +12,7 @@ PLC specifies general profile information including:
 * preferred payment method, with billing address where applicable (optionally multiple payment method; includes credit cards, EFT accounts, etc)
 * general preferences
 
-If PLC wants to create an account to access order status and other information later on in an automated way, PLC selects as username and password that will be used for future authentication.
+If PLC wants to create an account to access order status and other information later on in an automated way, PLC selects a username and password that will be used for future authentication.
 
 If PLC wants to split the order into multiple ship-groups for shipping to different destinations and/or shipping by different carriers or shipment methods, then PLC specifies ship groups desired and which quantity units of each item is associated with which ship-group.
 
@@ -21,8 +21,8 @@ PLC specifies order-specific information including:
 * which shipping address to use for each ship-group (if more than one is on file)
 * the shipment method and carrier (if PLC allowed to select the carrier) to use for each ship-group
 * whether to ship the order all at once or as inventory is available
-* the payment preference(s) for how to pay for the order, including payment methods associated with the PLC, financial accounts, or other payment method options not setup in advance (COD, offline pre-payment, etc)
-* if PLC has a billing account setup they can use whatever is left on the credit limit of that billing account to defer payment until the order if fulfilled (more specifically until each package related to the order is packed)
+* the payment preference(s) for how to pay for the order, including payment methods associated with the PLC, financial accounts, or other payment method options not set up in advance (COD, offline pre-payment, etc.)
+* if PLC has a billing account set up they can use whatever is left on the credit limit of that billing account to defer payment until the order is fulfilled (more specifically until each package related to the order is packed)
 
 Company calculates additional adjustments such as a shipping cost estimate to be charged to Customer and the applicable taxes based on the items in the order and the shipping destination for each.
 

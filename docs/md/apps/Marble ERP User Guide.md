@@ -1,11 +1,10 @@
-
 # Moqui Marble ERP User Guide
 
 [TOC levels=2-4]
 
 ## Introduction
 
-Marble is an ERP applications for retailers and wholesalers with comprehensive operational and managerial functionality including:
+Marble is an ERP application for businesses that produce goods and services, and sell to individuals (B2C) and organizations (B2B). It includes comprehensive operational and managerial functionality including:
 
 * Customer and Supplier Management
 * Product Information, Content, and Pricing Management
@@ -25,11 +24,11 @@ This guide is organized in sub-pages (see page tree to the left) by business act
 1. **Order to Cash**: general sales operations
 1. **Procure to Pay**: general purchasing operations
 
-There are also sections for **Configuration**, **Accounting**, **Warehouse**, etc that are for internal management and tracking and are not part of these two primary business processes.
+There are also sections for **Configuration**, **Accounting**, **Warehouse**, and so on that are for internal management and tracking and are not part of these two primary business processes.
 
 ## Supplier and Customer Diagram
 
-While many business acitivties are internal to an organization most involve an interaction with an **external** Party. This diagram shows common interactions with the two primary external *Party Roles*:
+While many business activities are internal to an organization most involve an interaction with an **external** Party. This diagram shows common interactions with the two primary external *Party Roles*:
 
 1. **Supplier** for **Procure to Pay**
 2. **Customer** for **Order to Cash**
@@ -42,7 +41,7 @@ While many business acitivties are internal to an organization most involve an i
 
 A **Party** is a *Person* or *Organization*. A **Role** describes how a Party is related to, or involved with, something in the system.
 
-Many things in the system can be associated with many parties in different roles and many have certain parties that should always be specified. For example an Order always has a Vendor Party and a Customer Party, and an Invoice alway has a From Party and a To Party. A Role may also be *directly* assigned to a Party such as Customer, Supplier, and Employee to tell the system how to treat that Party. A Party may have multiple *direct* roles and may be associated in different roles with other records such as Orders, Payments, Work Efforts, etc.
+Many things in the system can be associated with many parties in different roles and many have certain parties that should always be specified. For example an Order always has a Vendor Party and a Customer Party, and an Invoice always has a From Party and a To Party. A Role may also be *directly* assigned to a Party such as Customer, Supplier, and Employee to tell the system how to treat that Party. A Party may have multiple *direct* roles and may be associated in different roles with other records such as Orders, Payments, Work Efforts, etc.
 
 An Organization using the system to manage and track operations is referred to as an **Internal Organization** (a Party with the *Internal* Role).
 
@@ -58,11 +57,11 @@ A **Facility** is a place where inventory or other Assets are stored and used, o
 
 ### Order & Return
 
-An **Order** is an agreement between two parties (a *Customer* and a *Vendor*) for the exchange of goods or services for Payment or like kind exchange. These agreements go through various phases dependending on circumstances and may optionally go through prelimary statuses such as *Quote Requested* and *Proposed by Vendor* for **Quoting**. Eventually an Order is *Placed* by the Customer, *Approved* by the Vendor, and once fulfilled is *Completed* by the Vendor.
+An **Order** is an agreement between two parties (a *Customer* and a *Vendor*) for the exchange of goods or services for Payment or like kind exchange. These agreements go through various phases depending on circumstances and may optionally go through preliminary statuses such as *Quote Requested* and *Proposed by Vendor* for **Quoting**. Eventually an Order is *Placed* by the Customer, *Approved* by the Vendor, and once fulfilled is *Completed* by the Vendor.
 
 For a **Sales Order** the *Vendor* is an Internal Organization, and for a **Purchase Order** the *Customer* is an Internal Organization. An Order may have multiple **Parts** to split it for fulfillment variations, multi-party agreements, and so on.
 
-A **Return** represents the reversal of invoiced order items including products, fees, discounts, etc. The results of a Return may include a Return Shipment, Refund Payment, Credit Memo Invoice, Replacement Order, and so on. These can all exist indepdent of a Return but a Return is useful to tie these back to the original Order to better track what happened and why.
+A **Return** represents the reversal of invoiced order items including products, fees, discounts, etc. The results of a Return may include a Return Shipment, Refund Payment, Credit Memo Invoice, Replacement Order, and so on. These can all exist independent of a Return but a Return is useful to tie these back to the original Order to better track what happened and why.
 
 ### Shipment
 
@@ -76,7 +75,7 @@ An Invoice is settled by applying a *Payment* or another *Invoice* (like a credi
 
 A **Payment** represents a transfer of funds *From* one Party and *To* another Party. An **Incoming Payment** is always *To* an Internal Organization and an **Outgoing Payment** is always *From* an Internal Organization. 
 
-Each Payment has an *Instrument* for how the transfer was, or will be, done. A Payment may also have From and/or To *Payment Methods* representing specific bank accounts, credit cards, etc that are used for the transfer of funds. A Payment only represents the transfer of funds, not the details of why funds were transfered.
+Each Payment has an *Instrument* for how the transfer was, or will be, done. A Payment may also have From and/or To *Payment Methods* representing specific bank accounts, credit cards, etc that are used for the transfer of funds. A Payment only represents the transfer of funds, not the details of why funds were transferred.
 
 A Payment may be applied to an *Invoice* to settle payables or receivables or to another *Payment* for refund of overpayment, etc.
 

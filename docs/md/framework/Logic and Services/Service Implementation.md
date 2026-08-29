@@ -1,22 +1,22 @@
 # Service Implementation
 
-Some service types have local implementations while others have no implementation (interface) or the service definition is a proxy for something else and the location refers to an external implementation (*remote-xml-rpc*,* remote-json-rpc*, and *camel*). The remote and *Apache Camel* types are described in detail in the System Interfaces section.
+Some service types have local implementations while others have no implementation (interface) or the service definition is a proxy for something else and the location refers to an external implementation (*remote-json-rpc*, *remote-rest*, and *camel*). The remote and *Apache Camel* types are described in detail in the [System Interfaces](/docs/framework/System+Interfaces) section.
 
 [TOC levels=2-3]
 ## Service Scripts
 
 A script is generally the best way to implement a service, unless an automatic implementation for entity CrUD operations will do. Scripts are reloaded automatically when their cache entry is clear, and in development mode these caches expire in a short time by default to get updates automatically.
 
-Scripts can run very efficiently, especially *Groovy* scripts which compile to Java classes at runtime and are cached in their compiled form so they can be run quickly. XML Actions scripts are transformed into a Groovy script (see the* XmlActions.groovy.ftl* file for details) and then compiled and cached, so have a performance profile just like a plain *Groovy* script.
+Scripts can run very efficiently, especially *Groovy* scripts which compile to Java classes at runtime and are cached in their compiled form so they can be run quickly. XML Actions scripts are transformed into a Groovy script (see the *XmlActions.groovy.ftl* file for details) and then compiled and cached, so have a performance profile just like a plain *Groovy* script.
 
-Any script that the Resource Facade can run can be used as a service implementation. See the **Rendering Templates and Running Scripts** section for details. In summary the scripts supported by default are Groovy, XML Actions, and JavaScript. Any scripting language can be supported through the *javax.script* or Moqui-specific interfaces. Here is an example of a service implemented with a Groovy script, defined in the *org.moqui.impl.EmailServices.xml* file:
+Any script that the Resource Facade can run can be used as a service implementation. See the **Rendering Templates and Running Scripts** section in [Resources and Content](/docs/framework/Data+and+Resources/Resources+and+Content) for details. In summary the scripts supported by default are Groovy and XML Actions. Other languages can be used through the *javax.script* API when a JSR-223 script engine is available on the classpath, or through Moqui-specific `ScriptRunner` interfaces. Here is an example of a service implemented with a Groovy script, defined in the *org.moqui.impl.EmailServices.xml* file:
 ```
 <service verb="send" noun="Email" type="script"
              location="classpath://org/moqui/impl/sendEmailTemplate.groovy" allow-remote="false">
         <implements service="org.moqui.EmailServices.send#EmailTemplate"/>
 </service>
 ```
-In this case the **location** is a classpath location, but any location supported by the Resource Facade can be used. See the **Resource Locations** section for details on how to refer to files within components, in the local file system, or even at general URLs.
+In this case the **location** is a classpath location, but any location supported by the Resource Facade can be used. See the **Resource Locations** section in [Resources and Content](/docs/framework/Data+and+Resources/Resources+and+Content) for details on how to refer to files within components, in the local file system, or even at general URLs.
 
 At the beginning of a script all of the input parameters passed into the service, or set through defaults in the service definition, will be in the context as fields available for use in the script. As with other artifacts in Moqui there is also an **ec** field with the current *ExecutionContext* object.
 
@@ -26,7 +26,7 @@ For convenience there is a result field in the context that is of type Map&lt;St
 
 ### Inline Actions
 
-The service definition example near the beginning of this section shows a service with the default service type, inline. In this case the implementation is in the *service.actions* element, which contains a XML Actions script. It is treated just like an external script referred to by the service location but for simplicity and to reduce the number of files to work with it can be inline in the service definition.
+The default service type is inline. In that case the implementation is in the *service.actions* element, which contains an XML Actions script. It is treated just like an external script referred to by the service location but for simplicity and to reduce the number of files to work with it can be inline in the service definition.
 
 ## Java Methods
 
@@ -45,14 +45,14 @@ With entity-auto type services you don’t have to implement the service, the im
 Entity Auto services can be implicitly (automatically) defined by just calling a service named like ${verb}#${noun} with no path (package or filename). For example:
 
 ```
-ec.service.sync().name("create", "moqui.example.Example").parameters([exampleName:’Test Example’]).call()
+ec.service.sync().name("create", "moqui.example.Example").parameters([exampleName:'Test Example']).call()
 ```
 
 When you define a service and use the entity-auto implementation you can specify which input parameters to use (must match fields on the entity), whether they are required, default values, etc. When you use an implicitly defined entity auto service it determines the behavior based on what is passed into the service call. In the example above there is no **exampleId** parameter passed in, and that is the primary key field of the `moqui.example.Example` entity, so it automatically generates a sequenced ID for the field, and returns it as an output parameter.
 
 For create operations in addition to automatically generating missing primary sequenced IDs it will also generate a secondary sequenced ID if the entity has a 2-part primary key and one is specified while the other is missing. There is also special behavior if there is a **fromDate** primary key field that is not passed in, it will use the now Timestamp to populate it.
 
-The pattern for is update to pass in all primary key fields (this is required) and any non-PK field desired. There is special behavior for update as well. If the entity has a **statusId** field and a statusId parameter is passed in that is different then it automatically returns the original (DB) value in the oldStatusId output parameter. Whenever the entity has a statusId field it also returns a *statusChanged* boolean parameter which is true if the parameter is different from the original (DB) value, false otherwise. Entity auto services also enforce valid status transitions by checking for the existing of a matching `moqui.basic.StatusFlowTransition` record. If no valid transition is found it will return an error.
+The pattern for an update is to pass in all primary key fields (this is required) and any non-PK field desired. There is special behavior for update as well. If the entity has a **statusId** field and a statusId parameter is passed in that is different then it automatically returns the original (DB) value in the oldStatusId output parameter. Whenever the entity has a statusId field it also returns a *statusChanged* boolean parameter which is true if the parameter is different from the original (DB) value, false otherwise. Entity auto services also enforce valid status transitions by checking for the existence of a matching `moqui.basic.StatusFlowTransition` record. If no valid transition is found it will return an error.
 
 ## Add Your Own Service Runner
 

@@ -32,7 +32,7 @@
     * [Placing Customer Adds Product to Cart](Placing Customer Adds Product to Cart)
     * [Placing Customer Places a Sales Order - Through CSR](Placing Customer Places a Sales Order - Through CSR)
     * [Placing Customer Places a Sales Order - Online Checkout](Placing Customer Places a Sales Order - Online Checkout)
-    * [Placing Customer Places a Sales Order - Through EBay](Placing Customer Places a Sales Order - Through EBay)
+    * [Placing Customer Places a Sales Order - Through eBay](Placing Customer Places a Sales Order - Through EBay)
     * [Customer Creates and Edits Account](Customer Creates and Edits Account)
     * [Customer Reviews Order History and Status](Customer Reviews Order History and Status)
     * [Customer Cancels Order](Customer Cancels Order)
@@ -72,6 +72,8 @@
 * Story of Service Provider Alliance
 
 ## OAGIS Scenarios
+
+These pages describe OAGIS document-exchange scenarios. The `mantle-oagis` component is listed in addons.xml with no releases and is not a required component.
 
 * [OAGIS Order to Cash](OAGIS Order to Cash)
 * [OAGIS Procure to Pay](OAGIS Procure to Pay)

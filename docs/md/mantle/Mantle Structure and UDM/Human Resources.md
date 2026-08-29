@@ -15,19 +15,19 @@ To track employer sponsored and other training use the TrainingClass entity for 
 
 ## Employment (mantle.humanres.employment)
 
-The Employment entity is used to track employment of an employee (**employeePartyId**) by an employer (**employerPartyId**) in a certain position (**emplPositionId**) within a date range (**fromDate**, **thruDate**). When employment is terminated it can track a reason (**terminationReasonEnumId**) and type (**terminationTypeEnumId**).
+The Employment entity is used to track employment of an employee by an employer in a certain position (**emplPositionId**). It shares its primary key (**partyRelationshipId**) with a PartyRelationship between the employee (**fromPartyId**) and the internal organization (**toPartyId**) with **relationshipTypeEnumId**=PrtEmployee; the employment date range (**fromDate**, **thruDate**) is on that relationship. When employment is terminated it can track a reason (**terminationReasonEnumId**) and type (**terminationTypeEnumId**).
 
-Benefits of BenefitType may be tracked with EmploymentBenefit, the relevant PayGrade with EmploymentPayGrade, and payroll preferences with PayrollPreference.
+Benefits of BenefitType may be tracked with EmploymentBenefit, and the relevant PayGrade with EmploymentSalary. Tax and payroll withholding defaults live on the Employee entity and may be overridden on Employment.
 
-Before employment there may be an application (EmploymentApplication) by an applicant (**applyingPartyId**) for a position (**emplPositionId**) and optionally associated with a JobRequisition (**jobRequisitionId**).
+Before employment there may be an application (EmploymentApplication) by an applicant (**applyingPartyId**) for a position (**emplPositionId**).
 
 After employment any unemployment claims would be tracked with UnemploymentClaim.
 
 ## Position (mantle.humanres.position)
 
-An EmplPosition is a specific position for a single Person (**filledByPartyId**) within an organization (**employerOrganizationPartyId**). For other parties associated with the position such as manager or department use the EmplPositionParty entity. EmplPosition has a pay grade (**payGradeId**), may be part of a budget (**budgetId**, **budgetItemSeqId**) and may be planned for a date range (**estimatedFromDate**, **estimatedThruDate**).
+An EmplPosition is a specific position within an organization (**organizationPartyId**). The employee in the position is tracked with Employment (and the related PartyRelationship); for other parties associated with the position such as manager or department use the EmplPositionParty entity. EmplPosition has a pay grade (**payGradeId**), may be part of a budget (**budgetId**, **budgetItemSeqId**) and may be planned for a date range (**fromDate**, **thruDate**).
 
-A position is associated with an employment position class (**emplPositionClassId** pointing to EmplPositionClass) like Programmer, Business Analyst, Project Manager, and so on. It is common to have multiple positions for a class, and a class can exist separately and be associated directly with parties (EmplPositionClassParty) for a simplified model for rate determination and such that does not require a EmplPosition record.
+A position is associated with an employment position class (**emplPositionClassId** pointing to EmplPositionClass) like Programmer, Business Analyst, Project Manager, and so on. It is common to have multiple positions for a class, and a class can exist separately and be associated directly with parties (EmplPositionClassParty) for a simplified model for rate determination and such that does not require an EmplPosition record.
 
 Responsibilities such as Finance Management, Inventory Management, and Purchase Management may be associated with a position using EmplPositionResponsibility or with a class using EmplClassResponsibility. A few responsibilities are defined OOTB and additional ones may be defined with Enumeration records of type EmploymentResponsibility.
 

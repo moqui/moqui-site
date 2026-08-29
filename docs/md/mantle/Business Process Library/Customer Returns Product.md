@@ -10,7 +10,7 @@
 
 If Ship-To Customer finds the product to be faulty or End-User Customer decides they do not want the product, Customer will contact Customer Service Representative (CSR) by phone or email and request return authorization, specifying reason for return (and for defective items notes about problem experienced) and desired return response (Refund, Partial Refund, Replacement). If appropriate, CSR handles issue directly with Customer in order to avoid the return and if a return has already been entered cancels the return. If item(s) are flagged as not returnable, CSR explains policy to Customer.
 
-Otherwise, CSR authorizes return specifies if other misc adjustments applied, and records it. CSR optionally emails electronic shipping label from Carrier to Customer. CSR ships-to Customer or End-User Customer ships the product via Carrier to the warehouse.
+Otherwise, CSR authorizes the return, specifies if other miscellaneous adjustments are applied, and records it. CSR optionally emails electronic shipping label from Carrier to Customer. CSR ships-to Customer or End-User Customer ships the product via Carrier to the warehouse.
 
 For Wait and Replace responses, Company creates a zero amount order for the replacement items configured on the return. The order is left in the "Held" status so that it is not shipped but inventory is reserved while waiting for the original item to be received by Company.
 

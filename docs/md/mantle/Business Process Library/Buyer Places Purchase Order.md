@@ -1,6 +1,6 @@
 # Buyer Places Purchase Order
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 ## Dependencies
 

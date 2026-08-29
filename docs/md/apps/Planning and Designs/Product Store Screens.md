@@ -1,5 +1,6 @@
-
 # Product Store Screens
+
+NOTE: Store, Promotions, Emails, Categories, Parties, Facilities, and Settings screens are implemented in SimpleScreens ProductStore (`/qapps/marble/ProductStore`). Gateway screens exist under the Gateway mount (hidden from the Marble menu). Promotion Stats was planned and is not present.
 
 - Find Store (default screen, not in menu/tabs; FindProductStore)
     - create dialog with simple form (productStoreId, storeName, organizationPartyId; leave rest for edit form)
@@ -42,7 +43,7 @@
 - Find Payment Gateway
 - Edit Payment Gateway
     - general edit form (mantle.account.method.PaymentGatewayConfig)
-    - depending on type, options form for Authorize.NET, Braintree (the 2 currently implemented)
+    - depending on type, options form for Authorize.NET, Braintree (the two currently implemented)
 - Find Shipping Gateway
 - Edit Shipping Gateway
     - general edit form (mantle.shipment.carrier.ShippingGatewayConfig)

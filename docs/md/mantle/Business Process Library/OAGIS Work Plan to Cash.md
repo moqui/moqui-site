@@ -2,9 +2,11 @@
 
 [TOC levels=2-3]
 
+NOTE: These pages describe OAGIS document-exchange scenarios. The `mantle-oagis` component is listed in addons.xml with no releases and is not required to run Moqui, Mantle USL, or Marble ERP.
+
 ## Introduction
 
-This process covers project work including billable time and expenses. OAGIS doesn't have many scenarios to cover this literally, so it is a mostly an adaptation of similar manufacturing scenarios.
+This process covers project work including billable time and expenses. OAGIS doesn't have many scenarios to cover this literally, so it is mostly an adaptation of similar manufacturing scenarios.
 
 ## OAGIS Scenarios
 

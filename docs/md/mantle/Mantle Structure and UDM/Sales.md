@@ -7,7 +7,7 @@ As part of sales force automation (SFA) use the SalesOpportunity to keep track o
 
 There may be many parties associated with an opportunity including the customer/prospect, sales representative, manager, etc. Record these with the SalesOpportunityParty entity. You could use this for competitors as well, but generally there is additional information for competitors so use the SalesOpportunityCompetitor entity for them.
 
-An opportunity will often be associated with a quote, which may turn into an order. Use SalesOpportunityQuote to keep track of these. There may be meetings, other calendar events, or tasks associated with an opportunity and use SalesOpportunityWorkEffort to associate it with those.
+An opportunity will often be associated with a quote, which may turn into an order. Use SalesOpportunityOrder to keep track of these (quotes are OrderHeader records, typically in a Proposed status). There may be meetings, other calendar events, or tasks associated with an opportunity and use SalesOpportunityWorkEffort to associate it with those.
 
 There are a couple of touch points to marketing records. One is to a MarketingCampaign using SalesOpportunity.**marketingCampaignId**. Another is marketing TrackingCode records which are associated using the SalesOpportunityTracking entity. See the **Marketing** section for more details about these.
 
@@ -19,4 +19,4 @@ Details about actual Product sold are recorded in SalesForecastDetail with a rec
 
 ## Need (mantle.sales.need)
 
-To record when a customer or other Party needs product (could be internal or external) use the PartyNeed entity. It can be for a Product and/or ProductCategory for needs that may be met by a variety or products, or when the exact product needed is not yet known. It often comes from a CommunicationEvent or through a web app with a Visit so there are fields for both.
+To record when a customer or other Party needs product (could be internal or external) use the PartyNeed entity. It can be for a Product and/or ProductCategory for needs that may be met by a variety of products, or when the exact product needed is not yet known. It often comes from a CommunicationEvent or through a web app with a Visit so there are fields for both.

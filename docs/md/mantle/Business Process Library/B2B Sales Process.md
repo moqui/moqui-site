@@ -22,7 +22,7 @@ SALES (LEAD EVALUATION/ROUTING TO ORDER PLACEMENT/APPROVAL)
   * Sales person records an opportunity
   * Sales person adds opportunity to sales pipeline
   * Sales person schedules meeting with customer
-  * Seles person prepares presentation
+  * Sales person prepares presentation
   * Sales person meets with customer
   * Sales person moves opportunity to next stage
   * Sales person prepares proposal and sends to customer

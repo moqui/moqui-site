@@ -1,6 +1,6 @@
 # Sales Representative Leads Prospects from RFQ to Sales Order
 
-## Ideas to incorporate
+## Ideas to Incorporate
 
 * Sales Representative Communicates Product Information
 * Prospect sends Request For Quote (RFQ) to Sales Representative

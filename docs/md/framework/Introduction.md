@@ -18,23 +18,24 @@ The ecosystem includes:
     - Universal Data Model (UDM)
     - Universal Service Library (USL)
 -   **Applications**: applications for different industries, company sizes, business areas, etc
+    - Marble ERP, a general ERP application built on SimpleScreens
     - POP Commerce ERP and eCommerce for Retailers and Wholesalers
     - HiveMind Project Management and ERP for Service Organizations
 -   **Add Ons**: themes, tool components, integration components
 
-The focus of this book is Moqui Framework, and the last chapter is a summary of Mantle Business Artifacts.
+These documents focus on Moqui Framework. For the shared data model and services, see the [Mantle Business Artifacts](/docs/mantle) documentation.
 
 ## What is Moqui Framework?
 
-Moqui Framework is an all-in-one, enterprise-ready application framework based on Groovy and Java. The framework includes tools for screens, services, entities, and advanced functionality based on them such as declarative artifact-aware security and multi-tenancy.
+Moqui Framework is an all-in-one, enterprise-ready application framework based on Groovy and Java. The framework includes tools for screens, services, entities, and advanced functionality based on them such as declarative artifact-aware security and multi-instance deployment (a separate runtime and database per instance).
 
-The Framework is well suited for a wide variety of applications from simple web sites (like moqui.org) and small form-based applications to complex ERP systems. Applications built with Moqui are easy to deploy on a wide variety of highly scalable infrastructure software such as Java Servlet containers (or app servers) and both traditional relational and more modern NoSQL databases.
+The Framework is well suited for a wide variety of applications from simple web sites (like moqui.org) and small form-based applications to complex ERP systems. Applications built with Moqui are easy to deploy on a wide variety of highly scalable infrastructure software such as Jakarta Servlet containers (or app servers) and both traditional relational and more modern NoSQL databases.
 
-Moqui Framework is based on a decade of experience with The Open For Business Project (now Apache OFBiz, see <http://ofbiz.apache.org>) and designed and written by the person who founded that project. Many of the ideas and approaches, including the pure relational data layer (no object-relational mapping) and the service-oriented logic layer, stem from this legacy and are present in Moqui in a more refined and organized form.
+Moqui Framework is based on a decade of experience with The Open For Business Project (now Apache OFBiz, see <https://ofbiz.apache.org>) and designed and written by the person who founded that project. Many of the ideas and approaches, including the pure relational data layer (no object-relational mapping) and the service-oriented logic layer, stem from this legacy and are present in Moqui in a more refined and organized form.
 
 With a cleaner design, more straightforward implementation, and better use of other excellent open source libraries that did not exist when OFBiz was started in 2001, the Moqui Framework code is about 20% of the size of the OFBiz Framework while offering significantly more functionality and more advanced tools.
 
-The result is a framework that helps you build applications that automatically handles many concerns that would otherwise require a significant percentage of overall effort for every application you build.
+The result is a framework that helps you build applications and automatically handles many concerns that would otherwise require a significant percentage of overall effort for every application you build.
 
 ## Moqui Concepts
 
@@ -60,8 +61,8 @@ Here is a table of common parts of an application and the artifact or part of an
 | menu                                    | automatic based on sub-screen hierarchy and configured menu title and order for each screen, or define explicitly                                                     |
 | internal service                        | XML service definition and various options for embedded or external service implementations                                                                           |
 | RESTful web services                    | internal service called through REST interface configured in a Service REST XML file                                                                                  |
-| XML-RPC and JSON-RPC services           | internal service with **allow-remote**=true and called through generic interfaces using the natural List and Map structure mappings                                   |
-| remote service calls                    | define an internal service as a proxy with automatic XML-RPC, JSON-RPC, and other mappings, or use simple tools for RESTful and other service types                   |
+| JSON-RPC services                       | internal service with **allow-remote**=true and called through generic interfaces using the natural List and Map structure mappings                                   |
+| remote service calls                    | define an internal service as a proxy with automatic JSON-RPC and other mappings, or use simple tools for RESTful and other service types                   |
 | send email                              | screen designed to be rendered directly as html and plain text and configured along with subject, etc in an EmailTemplate record                                      |
 | receive email                           | define an Email ECA rule to call an internal service that processes the email                                                                                         |
 | use scripts, templates, and JCR content | access and execute/render through the Resource Facade                                                                                                                 |
@@ -86,7 +87,7 @@ When working with Moqui Framework you’ll often be using higher-level artifacts
 
 While service and entity definitions are handled through code other artifacts like XML Actions and the XML Screens and Forms are just transformed into other text using macros in FreeMarker template files. XML Actions are converted into a plain old Groovy script and then compiled into a class which is cached and executed. The visual (widget) parts of XML Screens and Forms are also just transformed into the specified output type (html, xml, xsl-fo, csv, text, etc) using a template for each type.
 
-With this approach you can easily see the text that is generated along with the templates that produced the text, and through simple configuration you can even point to your own templates to modify or extent the OOTB functionality.
+With this approach you can easily see the text that is generated along with the templates that produced the text, and through simple configuration you can even point to your own templates to modify or extend the OOTB functionality.
 
 ### Development Process
 
@@ -104,7 +105,7 @@ The actual HTML generated from XML Screens and Forms can be customized by overri
 
 Web designers who work with HTML and CSS can look at the actual HTML generated and style using separate CSS and other static files. When more custom HTML is needed the web designers can produce the HTML that a developer can put in a template and parameterize as needed for dynamic elements.
 
-Another option that sometimes works well is to have more advanced web designers build the entire client side as custom HTML, CSS, and JavaScript that interacts with the server through a service interface using some form of JSON over HTTP. This approach also works well with client applications for mobile or desktop devices that will interact with the application server using web services. The web services can use the automatic JSON-RPC or XML-RPC or other custom automatic mappings, or can use custom wrapper services that call internal services to support any sort of web service architecture.
+Another option that sometimes works well is to have more advanced web designers build the entire client side as custom HTML, CSS, and JavaScript that interacts with the server through a service interface using some form of JSON over HTTP. This approach also works well with client applications for mobile or desktop devices that will interact with the application server using web services. The web services can use the automatic JSON-RPC or other custom automatic mappings, or can use custom wrapper services that call internal services to support any sort of web service architecture.
 
 However your team is structured and however work is to be divided on a given project, with artifacts designed to handle defined parts of applications it is easier to split up work and allow people to work in parallel based on defined interfaces.
 
@@ -148,7 +149,7 @@ The Moqui Framework itself is built using Gradle. While I prefer the command lin
 
 ### Web Browser Request
 
-A request from a Web Browser will find its way to the framework by way of the Servlet Container (the default is the embedded Jetty Servlet Container, also works well with Apache Tomcat and other Java Servlet implementations). The Servlet Container finds the requested path on the server in the standard way using the web.xml file and will find the MoquiServlet mounted there. The MoquiServlet is quite simple and just sets up an ExecutionContext, then renders the requested Screen.
+A request from a web browser will find its way to the framework by way of the Servlet Container (the default is the embedded Jetty Servlet Container; it also works well with Apache Tomcat and other Jakarta Servlet implementations). The Servlet Container finds the requested path on the server in the standard way using the web.xml file and will find the MoquiServlet mounted there. The MoquiServlet is quite simple and just sets up an ExecutionContext, then renders the requested Screen.
 
 The screen is rendered based on the configured "root" screen for the webapp, and the subscreens path to get down to the desired target screen. Beyond the path to the target screen there may be a transition name for a transition of that screen.
 
@@ -171,35 +172,43 @@ Incoming email is handled through Email ECA rules which are called by the `org.m
 Outgoing email is most easily done with a call to the `org.moqui.impl.EmailServices.send#EmailTemplate` service. This service uses the passed in emailTemplateId to lookup an EmailTemplate record that has settings for the email to render, including the subject, the from address, the XML Screen to render and use for the email body, screens or templates to render and attach, and various other options. This is meant to be used for all sorts of emails, especially notification messages and system-managed communication like customer service replies and such.
 
 ## High Level Overview of the Moqui Framework
-Moqui Framework is a [Server Side Web Framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks#overview) primarily written in the [Java](https://java.com/en/download/help/whatis_java.html) and the [groovy](http://www.groovy-lang.org/) programming language.
 
-### Webserver
-Under the hood, when running Moqui as an executable JAR file (ie treating the WAR file like an executable JAR file with java -jar moqui.war), Moqui Framework uses [Jetty](https://www.eclipse.org/jetty/documentation.php) as it's HTTP server, client, and [servlet container](https://en.wikipedia.org/wiki/Jakarta_Servlet). However, the embedded Jetty server is not used when the WAR file is dropped into an external Servlet Container (which could be Jetty, Tomcat, Websphere, etc.).
+Moqui Framework is a [server-side web framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks#overview) written primarily in [Java](https://java.com/en/download/help/whatis_java.html) and [Groovy](https://groovy-lang.org/).
 
-### Start (java -jar moqui.war)
-Moqui starts in the [file](https://github.com/moqui/moqui-framework/blob/master/framework/src/start/java/MoquiStart.java) called `MoquiStart.java`. This starts the [Webserver](https://github.com/moqui/moqui-framework/blob/f25a86ec0ae278c535ba9932e5b6afe7a4901bdb/framework/src/start/java/MoquiStart.java#L220). 
+### Web Server
 
-By default the Moqui server is hosted on [port 8080](https://github.com/moqui/moqui-framework/blob/f25a86ec0ae278c535ba9932e5b6afe7a4901bdb/framework/src/start/java/MoquiStart.java#L181), but can be configured using a *conf* file. See more about MoquiConf files [here](/docs/framework/Tool+and+Config+Overview#moqui-conf-xml-file-settings).
+When you run Moqui as an executable WAR file (`java -jar moqui.war`), Moqui Framework uses [Jetty](https://jetty.org/docs/) as its HTTP server, client, and [servlet container](https://en.wikipedia.org/wiki/Jakarta_Servlet). The embedded Jetty server is not used when the WAR file is dropped into an external Servlet Container (Jetty, Tomcat, or another Jakarta Servlet container).
+
+### Start (`java -jar moqui.war`)
+
+Moqui starts in [`MoquiStart.java`](https://github.com/moqui/moqui-framework/blob/master/framework/src/start/java/MoquiStart.java), which starts the embedded web server.
+
+By default the Moqui server listens on port 8080. You can change that with the `port=<port>` argument. See more about Moqui Conf XML files [here](/docs/framework/Tool+and+Config+Overview#moqui-conf-xml-file-settings).
 
 ### Component Bundling and MoquiConf.xml Configuration Files
-After the webserver has started, the Moqui Framework "bundles" all of different parts of the application called *components*. The first components that are added are the components in the `runtime/base-components` then the `runtime/components` components. They are then sorted based on dependency. For example, if A depends on B and C depends on A, then they would be sorted like B, A, then C. Then for each element / node in the files they override the default settings. So if B changed a property, and C changed the same property, because C is dependent on A which is dependant on B, C's setting would override B's setting. If you want to see where all the settings are, after running moqui, you can find them in `runtime/log/MoquiActualConf.xml` this houses the `MoquiConf.xml` file that is actually used for the [configuration of Moqui](/docs/framework/Tool+and+Config+Overview#moqui-conf-xml-file-settings).
+
+After the web server has started, Moqui Framework loads *components*. Components in `runtime/base-component` are added first, then those in `runtime/component`. They are then sorted by dependency. For example, if A depends on B and C depends on A, they would be sorted B, A, then C. For each configuration node, later components override earlier settings. If B changed a property and C changed the same property, C's setting would override B's. After running Moqui you can see the merged configuration in `runtime/log/MoquiActualConf.xml`. That is the configuration actually used; see [Moqui Conf XML file settings](/docs/framework/Tool+and+Config+Overview#moqui-conf-xml-file-settings).
 
 ### Pre Facade Init
-After the Conf files are built, the following happens:
-1. groovy scripts are added to `runtime/script-classes`
-2. java classes in jar files are added to the `runtime/classes` directory
-3. library jar files are added to the `runtime/lib` directory
+
+After the conf files are built, the following happens:
+
+1. Groovy scripts are added to `runtime/script-classes`
+2. Java classes in JAR files are added to the `runtime/classes` directory
+3. Library JAR files are added to the `runtime/lib` directory
 4. Tool Factories are added
 
 ### Finish Facade Init
-Note: the [Execution, Web](/docs/framework/Tool%20and%20Config%20Overview?ver=03#execution-context-and-web-facade), [Artifact Execution, L10N, Message, and User Facade](/docs/framework/Tool%20and%20Config%20Overview?ver=03#user-l10n-message-and-logger-facades) are not included in this and are used later in the process. 
-Then the facades will initialize in this order:
-1. [Cache Facade](/docs/framework/Tool%20and%20Config%20Overview?ver=03#resource-and-cache-facades): Key, Value pair data storage (see the MCache class)
-Perhaps in the future, the Cache Facade could use Redis or Memecache for caching frequently used data and files.
-2. [Logger Facade](/docs/framework/Tool%20and%20Config%20Overview?ver=03#user-l10n-message-and-logger-facades): For logging
-3. [Resource Facade](/docs/framework/Data%20and%20Resources/Resources%20and%20Content): Accessing resources by location string (http://, jar://, component://, content://, classpath://, etc).
-4. [Transaction Facade](/docs/framework/Tool%20and%20Config%20Overview?ver=03#transaction-facade): [Transaction Manager](https://en.wikipedia.org/wiki/Database_transaction) For accessing resources by location string (http://, jar://, component://, content://, classpath://, etc).) for Atomicity, Consistency, Isolution, and Durability ([ACID](https://en.wikipedia.org/wiki/Atomicity_(database_systems))) data
-5. [Entity Facade](/docs/framework/Data%20and%20Resources/The%20Entity%20Facade): Database Independant Interaction through a [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) Driver
-6. [Service Facade](/docs/framework/Tool%20and%20Config%20Overview#service-facade): Call Moqui, REST, and JSON RPC Services to perform logic
-7. [Screen Facade](/docs/framework/Tool%20and%20Config%20Overview#screen-facade): Rendering screens for general use (mostly for things other than web pages or web page snippets). 
-8. [Elastic Facade](/docs/framework/Data%20and%20Resources/Data%20Search): Facade for ElasticSearch operations i.e. with the one doc type per index constraint.
+
+Note: the [Execution and Web](/docs/framework/Tool+and+Config+Overview#execution-context-and-web-facade), [Artifact Execution, L10n, Message, and User](/docs/framework/Tool+and+Config+Overview#user-l10n-message-and-logger-facades) facades are not initialized here; they are used later in the process.
+
+Then the facades initialize in this order:
+
+1. [Cache Facade](/docs/framework/Tool+and+Config+Overview#resource-and-cache-facades): key/value data storage (see the MCache class)
+2. [Logger Facade](/docs/framework/Tool+and+Config+Overview#user-l10n-message-and-logger-facades): logging
+3. [Resource Facade](/docs/framework/Data+and+Resources/Resources+and+Content): accessing resources by location string (`http://`, `jar://`, `component://`, `content://`, `classpath://`, and so on)
+4. [Transaction Facade](/docs/framework/Tool+and+Config+Overview#transaction-facade): transaction manager for Atomicity, Consistency, Isolation, and Durability ([ACID](https://en.wikipedia.org/wiki/Atomicity_(database_systems)))
+5. [Entity Facade](/docs/framework/Data+and+Resources/The+Entity+Facade): database-independent interaction through a [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) driver
+6. [Service Facade](/docs/framework/Tool+and+Config+Overview#service-facade): call Moqui, REST, and JSON-RPC services to perform logic
+7. [Screen Facade](/docs/framework/Tool+and+Config+Overview#screen-facade): rendering screens for general use (including output other than web pages)
+8. [Elastic Facade](/docs/framework/Data+and+Resources/Data+Search): OpenSearch and ElasticSearch client via ElasticFacade (`ec.elastic`)

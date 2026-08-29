@@ -1,4 +1,6 @@
-# Placing Customer Places a Sales Order - Through EBay
+# Placing Customer Places a Sales Order - Through eBay
+
+NOTE: This story is historical. There is no eBay integration component in the current Moqui add-ons, and this process is not implemented as a Moqui add-on.
 
 ## Ideas to Incorporate
 

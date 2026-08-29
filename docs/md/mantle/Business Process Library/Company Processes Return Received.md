@@ -10,7 +10,7 @@
 
 ## Story
 
-Carrier delivers return shipment. Shipment Receiver receives the return shipment. If the original packaging is unopened Shipment Receiver sends it to Inventory Mover for put away. Otherwise Shipment Received sends it to Repairer for review/testing, refurbishment, return to manufacturer, or disposal of damaged inventory. If Repairer finds the product to be in good condition or is able to repair the item to pass all tests Repairer changes inventory item to point to refurbished version of the product, and sends it to Inventory Mover for put away. In all cases Repairer (or Inventory Mover if Repairer does not touch the item) records information about action taken for the return shipment.
+Carrier delivers return shipment. Shipment Receiver receives the return shipment. If the original packaging is unopened Shipment Receiver sends it to Inventory Mover for put away. Otherwise Shipment Receiver sends it to Repairer for review/testing, refurbishment, return to manufacturer, or disposal of damaged inventory. If Repairer finds the product to be in good condition or is able to repair the item to pass all tests Repairer changes inventory item to point to refurbished version of the product, and sends it to Inventory Mover for put away. In all cases Repairer (or Inventory Mover if Repairer does not touch the item) records information about action taken for the return shipment.
 
 If Customer ships the wrong item CSR contacts Customer and asks if they want to have the item shipped back to them (and pay for shipping), or if they want to create a new return for that item (and cancel the original return), or other resolution.
 
@@ -18,7 +18,7 @@ Company responds to return according to response type desired by customer and ap
 
 *(Refund Payment)* If payment was by credit card then Company automatically refunds to the credit card as a refund against the original transaction. There may be multiple transactions if the return includes items from multiple orders. If the total refund amount is greater than 110% (or whatever value the payment gateway, CC company, and merchant bank support), then a new transaction to send funds to the card will be created (NOTE: if this is not possible with payment gateway or CC company or merchant bank then look into store credit as an alternative).
 
-If payment was by PayPal then Company automatically refunds to via PayPal against the original transaction. If refund amount is greater than the original transaction amount the amount above the original transaction amount will be sent in a new transfer.
+If payment was by PayPal then Company automatically refunds via PayPal against the original transaction. If refund amount is greater than the original transaction amount the amount above the original transaction amount will be sent in a new transfer.
 
 If payment was by Money Order or Business Check then Company puts refunded amount into store credit (in a Financial Account unless Customer has a Billing Account with negative balance). In special cases VP may choose to send a check to Customer for refund.
 
@@ -49,7 +49,7 @@ the replacement items configured on the return. Customer may send the original i
 
 ### Cross-Ship Replacement and Refund
 
-The status for the return will be approved. Customer sends proof of shipping for orignal item(s) in the form of a tracking number or a scanned receipt or something by email. Customer Service Representative receives the email and sets the return item status to "proof of shipping received". For item(s) to replace Company creates a zero amount order for the replacement items configured on the return. For item(s) to refund Company refunds the amount configured on the return. Customer sends the original item(s) back. Company receives the items and processes them. Company sees that the replacement has already been sent and sets the return status to complete.
+The status for the return will be approved. Customer sends proof of shipping for original item(s) in the form of a tracking number or a scanned receipt or something by email. Customer Service Representative receives the email and sets the return item status to "proof of shipping received". For item(s) to replace Company creates a zero amount order for the replacement items configured on the return. For item(s) to refund Company refunds the amount configured on the return. Customer sends the original item(s) back. Company receives the items and processes them. Company sees that the replacement has already been sent and sets the return status to complete.
 
 If X days have passed and the original item(s) have not been received for the return Customer Service Representative contacts customer once to try to find more information and resolve the issue.
 

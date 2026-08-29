@@ -5,8 +5,7 @@
 ## General Screens
 
 * Dashboard
-* Quick Lookup
-* Search
+* Quick Search
 * Custom Reports
 * Report Builder
   * Find Report
@@ -35,6 +34,9 @@ A **Party** is a *Person* or *Organization* and may have one or more *Roles* suc
     * Thread
   * Related
   * Time
+  * Projects
+  * Requests
+  * Tasks
   * Agreements
     * Edit Agreement
     * Find Agreement
@@ -62,11 +64,43 @@ A **Party** is a *Person* or *Organization* and may have one or more *Roles* suc
 
 * Find Request
 * Request
-* Items
+  * Items
+  * Assignments
+  * Tasks
+  * Wiki Pages
+
+## Projects
+
+* Find Project
+* Project
+  * Project Summary
+  * Project
+  * Milestones
+  * Parties
+  * Time Entries
+  * Wiki Pages
+  * Progress
+
+## Tasks
+
+* Find Task
+* Task
+  * Task Summary
+  * Task
+  * Time
+  * Assignments
+  * Related
+  * Requests
+  * Wiki Pages
+
+## Human Resources
+
+* HR Dashboard
+* Labor Rates
 
 ## Orders
 
-An **Order** is an agreement between two parties (a *Customer* and a *Vendor*) for the exchange of goods or services for Payment or like kind exchange. These agreements go through various phases dependending on circumstances and may optionally go through prelimary statuses such as *Quote Requested* and *Proposed by Vendor* for **Quoting**. Eventually an Order is *Placed* by the Customer, *Approved* by the Vendor, and once fulfilled is *Completed* by the Vendor. For a **Sales Order** the *Vendor* is an Internal Organization, and for a **Purchase Order** the *Customer* is an Internal Organization. An Order may have multiple **Parts** to split it for fulfillment variations, multi-party agreements, and so on.
+An **Order** is an agreement between two parties (a *Customer* and a *Vendor*) for the exchange of goods or services for Payment or like kind exchange. These agreements go through various phases depending on circumstances and may optionally go through preliminary statuses such as *Quote Requested* and *Proposed by Vendor* for **Quoting**. Eventually an Order is *Placed* by the Customer, *Approved* by the Vendor, and once fulfilled is *Completed* by the Vendor. For a **Sales Order** the *Vendor* is an Internal Organization, and for a **Purchase Order** the *Customer* is an Internal Organization. An Order may have multiple **Parts** to split it for fulfillment variations, multi-party agreements, and so on.
 
 * Find Order
 * Order Detail
@@ -116,7 +150,7 @@ A **Shipment** represents a transfer of physical assets between locations. An **
 
 ## Returns
 
-A **Return** represents the reversal of invoiced order items including products, fees, discounts, etc. The results of a Return may include a Return Shipment, Refund Payment, Credit Memo Invoice, Replacement Order, and so on. These can all exist indepdent of a Return but a Return is useful to tie these back to the original Order to better track what happened and why.
+A **Return** represents the reversal of invoiced order items including products, fees, discounts, etc. The results of a Return may include a Return Shipment, Refund Payment, Credit Memo Invoice, Replacement Order, and so on. These can all exist independent of a Return but a Return is useful to tie these back to the original Order to better track what happened and why.
 
 * Returns
 * Return
@@ -182,6 +216,11 @@ A **Product** is a model of anything you might buy, sell, use, store, etc. There
 
 ### Lots
 
+### Physical Inventory
+
+* Find Physical Inventory
+* Edit Physical Inventory
+
 ### Containers
 
 * Containers
@@ -246,6 +285,8 @@ A **Product** is a model of anything you might buy, sell, use, store, etc. There
   * Facilities
   * Settings
 
+Payment and shipping gateways are mounted in Marble (`Gateway`) but hidden from the main menu; they are reached from Product Store screens.
+
 ## Wiki/Content
 
 * Edit Wiki Page
@@ -289,7 +330,7 @@ An **Invoice** represents a financial claim between two Parties and has details 
 
 ### Payments
 
-A **Payment** represents a transfer of funds *From* one Party and *To* another Party. An **Incoming Payment** is always *To* an Internal Organization and an **Outgoing Payment** is always *From* an Internal Organization.  Each Payment has an *Instrument* for how the transfer was, or will be, done. A Payment may also have From and/or To *Payment Methods* representing specific bank accounts, credit cards, etc that are used for the transfer of funds. A Payment only represents the transfer of funds, not the details of why funds were transfered. A Payment may be applied to an *Invoice* to settle payables or receivables or to another *Payment* for refund of overpayment, etc.
+A **Payment** represents a transfer of funds *From* one Party and *To* another Party. An **Incoming Payment** is always *To* an Internal Organization and an **Outgoing Payment** is always *From* an Internal Organization.  Each Payment has an *Instrument* for how the transfer was, or will be, done. A Payment may also have From and/or To *Payment Methods* representing specific bank accounts, credit cards, etc that are used for the transfer of funds. A Payment only represents the transfer of funds, not the details of why funds were transferred. A Payment may be applied to an *Invoice* to settle payables or receivables or to another *Payment* for refund of overpayment, etc.
 
 * Find Payment
 * Payment
