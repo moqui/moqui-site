@@ -106,6 +106,8 @@ Moqui Framework helps you build applications quickly and scale complex applicati
   - Both record level and implementation artifact level security
 - Protection from XSS and XSRF threats (uses JSoup HTML parser/cleaner)
 - Incorporates Apache Shiro 2, which is used for all authentication in Moqui, by default through the MoquiShiroRealm
+- Built-in second-factor authentication (TOTP, email, SMS, backup codes); optional SSO via the `moqui-sso` component (OIDC, OAuth, SAML)
+- Designed to run behind a WAF and reverse proxy; artifact tarpit and login lockout are application controls, not a WAF
 - Other realms such as for LDAP or Active Directory can be configured with `shiro.ini`
 - Permission model and checking for simple/flat permissions (to be used as an alternative to artifact authz)
 - Runs permission and role (UserGroup) checks through Shiro realm

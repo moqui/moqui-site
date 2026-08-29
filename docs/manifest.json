@@ -222,6 +222,10 @@
         "title": "Security"
       },
       {
+        "path": "Single Sign-On",
+        "title": "Single Sign-On"
+      },
+      {
         "path": "Performance",
         "title": "Performance"
       },

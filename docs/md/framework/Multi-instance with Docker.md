@@ -4,6 +4,8 @@
 
 This walkthrough uses Docker Compose for nginx-proxy, MySQL, and OpenSearch, then a Moqui process on the host for Instance Management. Compose files, helper scripts, and image versions live in `moqui/docker/` (see `docker/README.md`).
 
+nginx-proxy here is TLS and HTTP routing, not a web application firewall. Moqui is designed to run **behind** a WAF (and a reverse proxy). In production put a WAF in front, or use a proxy that includes WAF features. See [Run and Deploy](/docs/framework/Run+and+Deploy) (Production security) and [Security](/docs/framework/Security).
+
 ## Step 1: Configure Docker to listen to HTTP/TCP on localhost
 
 The Instance Management services talk to the Docker daemon over HTTP on port 2375 (see the default `InstanceHost` seed data). The Docker daemon needs an additional `-H` argument such as this one for TCP:

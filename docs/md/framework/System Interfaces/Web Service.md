@@ -93,7 +93,9 @@ Incoming web requests (including `/rest` and `/rpc`) authenticate through the Us
 
 A login key is a hashed value stored on `UserLoginKey`, configured with *user-facade.login-key* in the Moqui Conf XML file. Get a key for the currently authenticated user with *ec.user*.**getLoginKey**(). There is no `/rest/api_key` transition; that was removed because handing out keys over HTTP without an already-authenticated user is a poor security tradeoff. The `/rest/moquiSessionToken` transition was also removed (it was a CSRF vector).
 
-For session-oriented clients, POST `/rest/login` with `username` and `password` (and `code` when a second factor is required). If a second factor is required and no code is sent, the response includes the user's authentication factors; complete login with POST `/rest/sendOtp` and `/rest/verifyOtp`. POST `/rest/logout` ends the session. See [Security](/docs/framework/Security) for second-factor types.
+For session-oriented clients, POST `/rest/login` with `username` and `password` (and `code` when a second factor is required). If a second factor is required and no code is sent, the response includes the user's authentication factors; complete login with POST `/rest/sendOtp` and `/rest/verifyOtp`. POST `/rest/logout` ends the session. See [Security](/docs/framework/Security) for second-factor types. Optional [SSO](/docs/framework/Single+Sign-On) is browser-oriented (`/sso/login`); API clients generally use a login key or Basic after a local user exists.
+
+Do not put `/rest` or `/rpc` on the public internet as the only edge. Moqui is designed to run **behind** a WAF and reverse proxy; see [Run and Deploy](/docs/framework/Run+and+Deploy) (Production security).
 
 ### Screen Transitions
 

@@ -15,4 +15,6 @@ Before you begin a larger project or do more significant development, these docu
 * [Source Management Guide](/docs/framework/Source+Management)
 * [IDE Setup](/docs/framework/IDE+Setup)
 * [Multi-instance Moqui with Docker](/docs/framework/Multi-instance+with+Docker)
+* [Security](/docs/framework/Security)
+* [Single Sign-On](/docs/framework/Single+Sign-On)
 

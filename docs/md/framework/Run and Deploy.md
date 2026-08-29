@@ -378,6 +378,24 @@ Another set of common environment variables to use is for URL writing, locale, t
 | database_time_zone | US/Pacific | The time zone to use in the database, defaults to default_time_zone |
 | scheduled_job_check_time | 60 | How often (in seconds) to check for scheduled jobs to run, set to 0 to not run scheduled jobs |
 
+### Production security
+
+Moqui Framework is designed to run **behind** a web application firewall and typically a reverse proxy or load balancer. It is not a WAF and is not the right place in the stack for WAF functionality.
+
+The framework has some overlapping knobs (artifact tarpit / velocity limits, login failure lockout, HTML allow-lists, CSRF session tokens, default response headers). Those are for **application and business-risk mitigation** inside the app. They are not intended to cover volumetric and protocol attacks, bot scoring, geo/IP reputation, TLS/HTTP normalization, virtual patching, or similar **edge** concerns. Put a WAF (or a proxy that includes WAF features) in front of Moqui. The Docker nginx-proxy and ACME compose files under `moqui/docker/` are examples of **TLS at the proxy**, not a WAF.
+
+`webapp_https_enabled`, `webapp_https_port`, and `webapp_http_host` (table above) are for **URL generation** when Moqui is behind that edge. They are not the port the Servlet container listens on, and they do not terminate TLS or filter attacks.
+
+Checklist for a production instance:
+
+- **Edge**: TLS at the proxy; WAF in front of Moqui; do not expose the Servlet port as the public hostname.
+- **Secrets**: change every `CHANGEME` default, including `entity_ds_password` and `entity_ds_crypt_pass`. Treat the entity crypt pass like a password (encrypted entity fields).
+- **Data**: do not load demo data; do not leave `john.doe` / `moqui`. Set `instance_purpose=production`.
+- **Network**: the database and OpenSearch listen on a private network, not the public internet.
+- **Identity**: username/password is the default. Built-in [MFA](/docs/framework/Security#second-factor-mfa) can be required per user or UserGroup. Optional [SSO](/docs/framework/Single+Sign-On) (`moqui-sso`) for OIDC, OAuth, or SAML. MFA is not SSO; neither is a WAF.
+- **Admin surface**: Groovy Shell, SQL Runner, Auto Screens, and Entity Data Import are high privilege. Restrict them with artifact authz and do not put them on the public internet.
+- **Reporting**: see [Security](/docs/framework/Security) and the [Community Guide](/docs/moqui/Community+Guide). Send undisclosed issues to **moqui-board@googlegroups.com**.
+
 ### Moqui Conf XML File
 
 Database (or datasource) setup is done in the Moqui Conf XML file with `moqui-conf.entity-facade.datasource` elements. There is one element for each entity group and the `datasource.@group-name` attribute matches against `entity.@group-name` attribute in entity definitions. By default in Moqui there are 4 entity groups: `transactional, nontransactional, configuration, and analytical`. If you only configure a `datasource` for the `transactional` group it will also be used for the other groups.
