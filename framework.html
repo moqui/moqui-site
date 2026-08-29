@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moqui Framework</title>
+  <meta name="description" content="Moqui Framework: tools to build low-code modular enterprise applications with entities, services, screens, security, and integration.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body data-page="framework">
+  <div id="site-header"></div>
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Ecosystem</p>
+        <h1>Moqui Framework</h1>
+        <p>A seamlessly integrated, enterprise-ready framework for building automation applications on the JVM. Persistence, services, screens, security, search, and integration — designed to work together.</p>
+        <div class="chip-row">
+          <a class="chip" href="https://github.com/moqui/moqui-framework/releases/latest">Latest release</a>
+          <a class="chip" href="https://github.com/moqui/moqui-framework">Source</a>
+          <a class="chip" href="/docs/framework">Docs</a>
+          <a class="chip" href="/javadoc/">API Javadoc</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="grid grid-2">
+          <div class="grid grid-2">
+            <div class="card"><div class="icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div><h3>Efficient</h3><p>Simple. Reusable by design. Easy to read and write. Minimally error prone. Small. Get started immediately.</p></div>
+            <div class="card"><div class="icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div><h3>Comprehensive</h3><p>Relational and document data. Local and web services. Screens and forms. Search and analytics. Printing. Caching. L10n. Integration.</p></div>
+            <div class="card"><div class="icon"><i class="fa-solid fa-lock" aria-hidden="true"></i></div><h3>Secure</h3><p>Flexible authentication and authorization. Usage audit and velocity limits. Web-safe (XSS, CSRF, injection, and related).</p></div>
+            <div class="card"><div class="icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div><h3>Scalable</h3><p>Small instances with as little as 1GB RAM. Large clusters with dozens of nodes for millions of concurrent users.</p></div>
+            <div class="card"><div class="icon"><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i></div><h3>Modular</h3><p>Minimal core framework (~25MB). Extend with tool components. Interfaces and configuration to add tools or override defaults.</p></div>
+            <div class="card"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="true"></i></div><h3>Ecosystem</h3><p>Thousands of reusable business artifacts in modular components. Get enterprise application projects on track from day one.</p></div>
+          </div>
+          <div class="card">
+            <h3>Start here</h3>
+            <ul class="feature-list">
+              <li><i class="fa-solid fa-book" aria-hidden="true"></i> <a href="/docs/moqui">Community Guide</a></li>
+              <li><i class="fa-brands fa-github" aria-hidden="true"></i> <a href="https://github.com/moqui/moqui-framework">GitHub: Framework</a></li>
+              <li><i class="fa-brands fa-github" aria-hidden="true"></i> <a href="https://github.com/moqui/moqui-runtime">GitHub: Runtime</a></li>
+              <li><i class="fa-solid fa-cloud" aria-hidden="true"></i> <a href="/docs/framework/Run+and+Deploy">Running and Deployment</a></li>
+              <li><i class="fa-solid fa-user" aria-hidden="true"></i> <a href="/docs/framework/Quick+Tutorial">Tutorial</a></li>
+              <li><i class="fa-solid fa-list" aria-hidden="true"></i> <a href="/docs/framework/Framework+Features">Features</a></li>
+              <li><i class="fa-solid fa-code" aria-hidden="true"></i> <a href="/javadoc/">API Javadoc</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Core components</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Moqui Framework</h3>
+            <p>The core framework.</p>
+            <p class="meta-links"><a href="https://github.com/moqui/moqui-framework/releases">releases</a> · <a href="https://github.com/moqui/moqui-framework">code</a> · <a href="https://github.com/moqui/moqui-framework/issues">issues</a></p>
+          </div>
+          <div class="card">
+            <h3>Moqui Runtime</h3>
+            <p>Default runtime with browser libraries, nav bar, XML Screen macros, and system and tools apps.</p>
+            <p class="meta-links"><a href="https://github.com/moqui/moqui-runtime/releases">releases</a> · <a href="https://github.com/moqui/moqui-runtime">code</a> · <a href="https://github.com/moqui/moqui-runtime/issues">issues</a></p>
+          </div>
+          <div class="card">
+            <h3>Example</h3>
+            <p>Example entities, services, and screens with tests.</p>
+            <p class="meta-links"><a href="https://github.com/moqui/example/releases">releases</a> · <a href="https://github.com/moqui/example">code</a> · <a href="https://github.com/moqui/example/issues">issues</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Tool components</h2>
+        <div class="grid grid-4">
+          <div class="card"><h3>AWS</h3><p>Endpoint for service-level integration.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-aws/releases">releases</a> · <a href="https://github.com/moqui/moqui-aws">code</a></p></div>
+          <div class="card"><h3>Apache Camel</h3><p>Endpoint for service-level integration.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-camel/releases">releases</a> · <a href="https://github.com/moqui/moqui-camel">code</a></p></div>
+          <div class="card"><h3>Apache FOP</h3><p>Generate PDF, PS, SVG, and more from XSL-FO and HTML.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-fop/releases">releases</a> · <a href="https://github.com/moqui/moqui-fop">code</a></p></div>
+          <div class="card"><h3>Atomikos</h3><p>Alternative to the default Bitronix transaction manager.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-atomikos/releases">releases</a> · <a href="https://github.com/moqui/moqui-atomikos">code</a></p></div>
+          <div class="card"><h3>ElasticSearch</h3><p>Faceted full-text search and analytics.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-elasticsearch/releases">releases</a> · <a href="https://github.com/moqui/moqui-elasticsearch">code</a></p></div>
+          <div class="card"><h3>Hazelcast</h3><p>Clustering and distributed computing.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-hazelcast/releases">releases</a> · <a href="https://github.com/moqui/moqui-hazelcast">code</a></p></div>
+          <div class="card"><h3>JBoss KIE</h3><p>Drools rules, jBPM workflow, and related.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-kie/releases">releases</a> · <a href="https://github.com/moqui/moqui-kie">code</a></p></div>
+          <div class="card"><h3>OrientDB</h3><p>Document and graph database with Entity Facade integration.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-orientdb/releases">releases</a> · <a href="https://github.com/moqui/moqui-orientdb">code</a></p></div>
+          <div class="card"><h3>POI</h3><p>Spreadsheet and document integration.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-poi/releases">releases</a> · <a href="https://github.com/moqui/moqui-poi">code</a></p></div>
+          <div class="card"><h3>SFTP</h3><p>SFTP client using SSHJ for secure integration transport.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-sftp/releases">releases</a> · <a href="https://github.com/moqui/moqui-sftp">code</a></p></div>
+          <div class="card"><h3>WikiText</h3><p>Render a wide variety of wiki formats.</p><p class="meta-links"><a href="https://github.com/moqui/moqui-wikitext/releases">releases</a> · <a href="https://github.com/moqui/moqui-wikitext">code</a></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prose">
+      <div class="wrap">
+        <h2>What is Moqui Framework?</h2>
+        <p>Moqui Framework is a seamlessly integrated, enterprise-ready framework for building enterprise automation applications based on Java. It includes tools for database interaction (relational, graph, document), logic in local and web services, web and other UI with screens and forms, security, file/resource access, scripts, templates, localization, caching, logging, searching, business rules, workflow, multi-instance deployments, and integration.</p>
+        <p>It is designed so you work on what you care about and let the framework take care of the rest: efficient tools and consolidated files for small apps; a true 3-tier architecture and service-oriented design for very large applications; and you control your data, with Mantle UDM giving you a place to put what you need.</p>
+        <ul>
+          <li>Built-in support for advanced tools such as Jackrabbit (content), Camel (integration), ElasticSearch (search), Drools (rules), and jBPM (workflow)</li>
+          <li>Clustering with Hazelcast (other similar tools are pluggable) for database cache invalidation, web session replication, background service executor, user notification, and JCache</li>
+          <li>More flexible and secure than hosted PAAS frameworks, and easy to host on-premise or in the cloud</li>
+          <li>A next-generation design based on over a decade of innovation and experience with Apache OFBiz</li>
+        </ul>
+        <p><strong>No code generation.</strong> Dynamic runtime functionality keeps development artifacts small and easy to maintain, not just easy to create. <strong>True 3-tier architecture:</strong> a strongly defined logic layer around service-oriented principles, so a service library for internal use can be exposed externally as needed.</p>
+        <p>The next layer up is <a href="/mantle.html">Mantle</a>: a Universal Data Model, Universal Service Library, and screens/forms on top of that. For a fuller list see <a href="/docs/framework/Framework+Features">Framework Features</a>.</p>
+
+        <h2>Why this tool set</h2>
+        <p>The design criteria were strong best practices (a place for everything), a small tool set to reduce switching costs, and efficient artifacts: simple, reusable by design, easy to read as well as write, minimally error prone, and small. As teams and projects get larger, consistency beats a pile of familiar-but-different frameworks.</p>
+        <p>Moqui is based on a decade of experience designing Apache OFBiz tools against real-world business application requirements, and using those tools to build systems that have been reused for thousands of custom systems. As OFBiz grew it became harder to make dramatic framework changes. Moqui is those improvements — convention over configuration, less redundancy, more consistency — in a fresh design.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Built with (and thanks to)</h2>
+        <div class="logo-grid" style="margin-bottom: 18px;">
+          <a class="logo-tile" href="http://www.jetbrains.com/idea/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/intellij.jpg" alt="IntelliJ IDEA"></a>
+          <a class="logo-tile" href="http://www.ej-technologies.com/products/jprofiler/overview.html" target="_blank" rel="noopener noreferrer"><img src="/img/logos/jprofiler.png" alt="JProfiler"></a>
+        </div>
+        <h3 class="muted">Open source projects used in the framework</h3>
+        <div class="logo-grid">
+          <a class="logo-tile" href="http://groovy-lang.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/groovy-logo-colored.svg" alt="Groovy"></a>
+          <a class="logo-tile" href="http://www.freemarker.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/freemarker.png" alt="FreeMarker"></a>
+          <a class="logo-tile" href="http://www.gradle.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/gradle.gif" alt="Gradle"></a>
+          <a class="logo-tile" href="http://www.slf4j.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/slf4j.jpg" alt="SLF4J"></a>
+          <a class="logo-tile" href="http://logging.apache.org/log4j/2.x/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/log4j.jpg" alt="Log4J 2"></a>
+          <a class="logo-tile" href="http://commons.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/commons.png" alt="Apache Commons"></a>
+          <a class="logo-tile" href="http://shiro.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/shiro.png" alt="Apache Shiro"></a>
+          <a class="logo-tile" href="https://github.com/bitronix/btm" target="_blank" rel="noopener noreferrer"><span>Bitronix TM</span></a>
+          <a class="logo-tile" href="http://ws.apache.org/xmlrpc/" target="_blank" rel="noopener noreferrer"><span>Apache XML-RPC</span></a>
+          <a class="logo-tile" href="http://spockframework.org/" target="_blank" rel="noopener noreferrer"><span>Spock</span></a>
+          <a class="logo-tile" href="http://www.eclipse.org/jetty/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/jetty.png" alt="Jetty"></a>
+          <a class="logo-tile" href="http://www.h2database.com/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/h2-logo.png" alt="H2 Database"></a>
+          <a class="logo-tile" href="http://jquery.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/jquery.png" alt="jQuery"></a>
+          <a class="logo-tile" href="http://getbootstrap.com" target="_blank" rel="noopener noreferrer"><img src="/img/logos/bootstrap.png" alt="Bootstrap"></a>
+          <a class="logo-tile" href="https://vuejs.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/vuejs.png" alt="Vue JS"></a>
+          <a class="logo-tile" href="http://swagger.io/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/swagger.png" alt="Swagger"></a>
+        </div>
+        <h3 class="muted" style="margin-top: 28px;">Used in tool components</h3>
+        <div class="logo-grid">
+          <a class="logo-tile" href="https://www.elastic.co/products/elasticsearch" target="_blank" rel="noopener noreferrer"><img src="/img/logos/elasticsearch.png" alt="ElasticSearch"></a>
+          <a class="logo-tile" href="http://lucene.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/lucene.png" alt="Apache Lucene"></a>
+          <a class="logo-tile" href="http://xmlgraphics.apache.org/fop/index.html" target="_blank" rel="noopener noreferrer"><img src="/img/logos/fop.jpg" alt="Apache FOP"></a>
+          <a class="logo-tile" href="https://hazelcast.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/hazelcast.png" alt="Hazelcast"></a>
+          <a class="logo-tile" href="http://www.orientdb.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/orientdb.png" alt="OrientDB"></a>
+          <a class="logo-tile" href="https://www.jboss.org/drools/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/drools.png" alt="Drools"></a>
+          <a class="logo-tile" href="http://camel.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/camel.png" alt="Apache Camel"></a>
+          <a class="logo-tile" href="http://jackrabbit.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/jackrabbit.gif" alt="Apache JackRabbit"></a>
+          <a class="logo-tile" href="http://www.atomikos.com/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/atomikos.png" alt="Atomikos"></a>
+          <a class="logo-tile" href="http://wiki.eclipse.org/Mylyn/Incubator/WikiText" target="_blank" rel="noopener noreferrer"><span>Mylyn WikiText</span></a>
+        </div>
+        <h3 class="muted" style="margin-top: 28px;">Selected servlet containers and databases</h3>
+        <div class="logo-grid">
+          <a class="logo-tile" href="http://tomcat.apache.org/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/tomcat.png" alt="Apache Tomcat"></a>
+          <a class="logo-tile" href="http://www.eclipse.org/jetty/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/jetty.png" alt="Jetty"></a>
+          <a class="logo-tile" href="https://www.mysql.com" target="_blank" rel="noopener noreferrer"><img src="/img/logos/mysql.png" alt="MySQL"></a>
+          <a class="logo-tile" href="http://www.postgresql.org" target="_blank" rel="noopener noreferrer"><img src="/img/logos/postgresql.png" alt="PostgreSQL"></a>
+          <a class="logo-tile" href="http://www-01.ibm.com/software/data/db2/" target="_blank" rel="noopener noreferrer"><img src="/img/logos/db2.png" alt="DB2"></a>
+          <a class="logo-tile" href="https://www.oracle.com/database/index.html" target="_blank" rel="noopener noreferrer"><img src="/img/logos/oracle.png" alt="Oracle"></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/site.js" defer></script>
+</body>
+</html>

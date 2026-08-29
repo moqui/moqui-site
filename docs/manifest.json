@@ -1,0 +1,23 @@
+{
+  "spaces": [
+    { "id": "moqui", "title": "Moqui Community" },
+    { "id": "framework", "title": "Moqui Framework" },
+    { "id": "mantle", "title": "Mantle Business Artifacts" },
+    { "id": "apps", "title": "Moqui Applications" }
+  ],
+  "pages": {
+    "moqui": [
+      { "path": "", "title": "Moqui Community" }
+    ],
+    "framework": [
+      { "path": "", "title": "Moqui Framework" },
+      { "path": "Quick Tutorial", "title": "Quick Tutorial" }
+    ],
+    "mantle": [
+      { "path": "", "title": "Mantle Business Artifacts" }
+    ],
+    "apps": [
+      { "path": "", "title": "Moqui Applications" }
+    ]
+  }
+}
