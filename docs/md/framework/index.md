@@ -15,6 +15,6 @@ Before you begin a larger project or do more significant development, these docu
 * [Source Management Guide](/docs/framework/Source+Management)
 * [IDE Setup](/docs/framework/IDE+Setup)
 * [Multi-instance Moqui with Docker](/docs/framework/Multi-instance+with+Docker)
-* [Security](/docs/framework/Security)
+* [Security](/docs/framework/Security) (attack surface inventory: [SECURITY_SURFACE.md](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md))
 * [Single Sign-On](/docs/framework/Single+Sign-On)
 

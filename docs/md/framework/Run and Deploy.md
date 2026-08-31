@@ -393,7 +393,7 @@ Checklist for a production instance:
 - **Data**: do not load demo data; do not leave `john.doe` / `moqui`. Set `instance_purpose=production`.
 - **Network**: the database and OpenSearch listen on a private network, not the public internet.
 - **Identity**: username/password is the default. Built-in [MFA](/docs/framework/Security#second-factor-mfa) can be required per user or UserGroup. Optional [SSO](/docs/framework/Single+Sign-On) (`moqui-sso`) for OIDC, OAuth, or SAML. MFA is not SSO; neither is a WAF.
-- **Admin surface**: Groovy Shell, SQL Runner, Auto Screens, and Entity Data Import are high privilege. Restrict them with artifact authz and do not put them on the public internet.
+- **Admin surface**: Groovy Shell, SQL Runner, Auto Screens, and Entity Data Import are high privilege. Restrict them with artifact authz and do not put them on the public internet. For the full inventory of servlets, screens, REST/RPC, WebSocket, and optional listeners (and lock-down options used on demo.moqui.org), see [SECURITY_SURFACE.md](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md).
 - **Reporting**: see [Security](/docs/framework/Security) and the [Community Guide](/docs/moqui/Community+Guide). Send undisclosed issues to **moqui-board@googlegroups.com**.
 
 ### Moqui Conf XML File

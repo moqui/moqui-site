@@ -4,7 +4,7 @@
 
 Moqui Framework handles **application** security: authentication, optional MFA, optional SSO, artifact-aware authorization, CSRF tokens, input allow-lists, and per-artifact velocity limits. It is designed to run **behind** a web application firewall and reverse proxy. It is not a WAF and is not the right place in the stack for WAF functionality.
 
-See also [Single Sign-On](/docs/framework/Single+Sign-On) for the optional `moqui-sso` component, [Run and Deploy](/docs/framework/Run+and+Deploy) for production deployment practice, and [Web Service](/docs/framework/System+Interfaces/Web+Service) for REST authentication.
+See also [Single Sign-On](/docs/framework/Single+Sign-On) for the optional `moqui-sso` component, [Run and Deploy](/docs/framework/Run+and+Deploy) for production deployment practice, [Web Service](/docs/framework/System+Interfaces/Web+Service) for REST authentication, and the [attack surface inventory](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md) for HTTP, screens, REST/RPC, WebSocket, and optional listeners in moqui-framework and moqui-runtime.
 
 ## Layers
 
@@ -15,6 +15,21 @@ A typical production request path is:
 The edge (WAF, load balancer, reverse proxy) is where TLS termination, volumetric and protocol attacks, bot scoring, geo/IP reputation, HTTP normalization, and similar concerns belong. Moqui's overlapping knobs (tarpit, login lockout, CSRF tokens, default response headers, `allow-html`) are for **application and business-risk mitigation** inside the app. They are not a substitute for a WAF.
 
 The `webapp_https_enabled`, `webapp_https_port`, and `webapp_http_host` settings are for **URL generation** when Moqui sits behind that edge. They do not make Moqui a TLS terminator or a WAF. Docker compose files under `moqui/docker/` (nginx-proxy, ACME/Let's Encrypt) are examples of TLS at the proxy.
+
+## Attack surface
+
+The catch-all HTTP servlet is `MoquiServlet` (`/*`): a hierarchical XML screen tree with artifact-aware authorization. Other listeners in moqui-framework and moqui-runtime (FOP, OpenSearch/Kibana proxies, WebSocket, `/rest`, `/rpc`, optional SubEtha SMTP, H2 TCP) are listed with default-on/off and review notes in [SECURITY_SURFACE.md](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md). That file also describes heavy lock-down (the demo.moqui.org / `moqui-demo` pattern: stub sharp Tools screens, VIEW-only admin authz).
+
+| Surface | Path / bind | Notes |
+| --- | --- | --- |
+| Screen tree | `/*` (`MoquiServlet`) | Root `webroot.xml`; Tools/System inherit-all for `ADMIN` |
+| FOP | `/fop/*` | Screen path as PDF |
+| OS/ES, Kibana proxies | `/elastic/*`, `/kibana/*` | `ElasticRemote` / `KibanaRemote` |
+| WebSocket | `/notws`, `/groovysh` | Notifications; Groovy Shell is RCE by design (`GROOVY_SHELL_WEB`) |
+| REST / RPC | `/rest/...`, `/rpc/json` | Entity REST, Service REST, SystemMessage, JSON-RPC (`allow-remote`) |
+| Optional | SMTP 2525, H2 9092, Jackrabbit 8081 | Off or H2-only unless configured |
+
+Production checklist: [Run and Deploy](/docs/framework/Run+and+Deploy). Do not put Groovy Shell, SQL Runner, Auto Screens, or Entity Data Import on the public internet.
 
 ## Authentication
 
