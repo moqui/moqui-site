@@ -187,6 +187,8 @@ Imagine a system with hundreds of screens and transitions, thousands of services
 
 The solution is inheritable authorization. With this you can set up access to an entire application or part of an application with authz configuration for a single screen that all sub-screens, transitions, services, and entities will inherit. To limit the scope, sensitive services and entities can have a deny authz that overrides the inheritable authz, requiring special authorization to those artifacts. With this approach you have a combination of flexibility, simplicity, and granular control of sensitive resources.
 
+Screen **transitions** have an **authz-action** (`view`, `create`, `update`, `delete`, `all`) used both when the transition runs and when links check whether it is permitted. If the attribute is omitted: a transition-level `service-call` uses that service's authz-action (or verb); `read-only="true"` transitions default to **view**; other transitions with actions default to **update**; redirect-only transitions default to **view**. `read-only` is about insecure URL parameters, not authz. Privileged read-only transitions (entity data export, ElFinder commands, and similar) set `authz-action` explicitly. A VIEW-only inheritable `ArtifactAuthz` therefore does **not** authorize cache clear, Service Run, instance start/stop, and other mutating Tools/System transitions.
+
 This is also used to track performance metrics for each artifact. See [Performance](/docs/framework/Performance) for artifact execution runtime profiling.
 
 ### Artifact Authz
