@@ -4,7 +4,7 @@
 
 Moqui Framework handles **application** security: authentication, optional MFA, optional SSO, artifact-aware authorization, CSRF tokens, input allow-lists, and per-artifact velocity limits. It is designed to run **behind** a web application firewall and reverse proxy. It is not a WAF and is not the right place in the stack for WAF functionality.
 
-See also [Single Sign-On](/docs/framework/Single+Sign-On) for the optional `moqui-sso` component, [Run and Deploy](/docs/framework/Run+and+Deploy) for production deployment practice, [Web Service](/docs/framework/System+Interfaces/Web+Service) for REST authentication, and the [attack surface inventory](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md) for HTTP, screens, REST/RPC, WebSocket, and optional listeners in moqui-framework and moqui-runtime.
+See also [Single Sign-On](/docs/framework/Single+Sign-On) for the optional `moqui-sso` component, [Run and Deploy](/docs/framework/Run+and+Deploy) for production deployment practice, [Web Service](/docs/framework/System+Interfaces/Web+Service) for REST authentication, the [attack surface inventory](https://github.com/moqui/moqui-framework/blob/master/SECURITY_SURFACE.md) for HTTP, screens, REST/RPC, WebSocket, and optional listeners in moqui-framework and moqui-runtime, and [SECURITY_TESTS.md](https://github.com/moqui/moqui-framework/blob/master/SECURITY_TESTS.md) for the proof-test catalog.
 
 ## Layers
 
